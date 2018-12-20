@@ -1,0 +1,38 @@
+<% include ../partials/start %>
+<% include ../partials/nav %>
+
+<% if(currentUser && currentUser.isAdmin) { %>
+<section class="container content-height py-3">
+    <a href="#" class="btn btn-primary btn-sm mb-3">Adicionar Inquilino</a>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-sm bg-white">
+            <caption class="sr-only">Lista de inquilinos</caption>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">CPF/CNPJ</th>
+                    <th scope="col">Contato</th>
+                    <th scope="col">Telefone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tenants.forEach(function(tenant, index) { %>
+                    <tr>
+                        <th scope="row"><%= index + 1 %></th>
+                        <td><%= tenant.name %></td>
+                        <td><%= tenant.type %></td>
+                        <td><%= tenant.idNum %></td>
+                        <td><%= tenant.contactName %></td>
+                        <td><%= tenant.contactNum %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</section>
+<% } %>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>

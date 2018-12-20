@@ -1,0 +1,68 @@
+<% include ../partials/start %>
+<% include ../partials/nav %>
+
+<% if(currentUser && currentUser.isAdmin) { %>
+<section class="container content-height py-3">
+    <a href="/imoveis/novo" class="btn btn-primary btn-sm mb-3">Adicionar Imóvel</a>
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm bg-white">
+            <caption>
+                <ul class="list-inline">
+                    <li class="list-inline-item">Legenda:</li>
+                    <li class="list-inline-item"><i class="fas fa-xs fa-circle text-success"></i> Alugado</li>
+                </ul>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Dono</th>
+                    <th scope="col">Inquilino</th>
+                    <th scope="col">Início do Contrato</th>
+                    <th scope="col">Fim do Contrato</th>
+                    <th scope="col">Aluguel <small>(R$)</small></th>
+                    <th scope="col">Condomínio <small>(R$)</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% realty.forEach(function(realty, index) { %>
+                    <% var isRented = (realty.isRented === "Sim") ? "table-success" : "" %>
+                    <tr class="<%= isRented %>">
+                        <th scope="row"><%= index + 1 %></th>
+                        <td>
+                            <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
+                                <%= realty.name %>
+                            </a>
+                        </td>
+                        <td><%= realty.owner %></td>
+                        <td><%= realty.tenant.name %></td>
+                        <td>
+                            <% if(realty.contractStart) { %>
+                                <%= moment(realty.contractStart).format("DD[/]MM[/]YY") %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if(realty.contractEnd) { %>
+                                <%= moment(realty.contractEnd).format("DD[/]MM[/]YY") %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if(realty.rentValue > 0) { %>
+                                <%= realty.rentValue %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if(realty.rentValue > 0) { %>
+                                <%= realty.condominiumValue %>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</section>
+<% } %>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>

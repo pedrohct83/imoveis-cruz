@@ -1,0 +1,144 @@
+<% include ../partials/start %>
+<% include ../partials/nav %>
+
+<div class="container content-height py-3">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <h1 class="font-weight-light text-center mb-3">Editar Imóvel</h1>
+        <div class="card bg-white rounded">
+            <div class="card-body">
+                <form action="/imoveis/<%= realty._id %>?_method=PUT" method="POST">
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="type">Tipo do imóvel <span class="text-danger">*</span></label>
+                                <select class="custom-select" id="type" name="realty[type]" required>
+                                    <% var options = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Pavimento", "Sala", "Sobreloja", "Terreno"] %>
+                                    <% for (var i = 0; i < options.length; i++) { %>
+                                        <% var selected = (options[i] == realty.type) ? "selected" : "" %>
+                                        <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="owner">Dono/Proprietário <span class="text-danger">*</span></label>
+                                <select class="custom-select" id="owner" name="realty[owner]" required>
+                                    <% var options = ["Cruz", "Agro", "MPN"] %>
+                                    <% for (var i = 0; i < options.length; i++) { %>
+                                        <% var selected = (options[i] == realty.owner) ? "selected" : "" %>
+                                        <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="name">Nome <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="realty[name]" value="<%= realty.name %>" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="location">Endereço <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="location" name="realty[location]" value="<%= realty.location %>" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mapIframe">Localização do Google Maps</label>
+                        <input type="text" class="form-control" id="mapIframe" name="realty[mapIframe]" value="<%= realty.mapIframe %>">
+                        <small id="contractEndHelpBlock" class="form-text text-muted">
+                            <a href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=pt-BR" target="Google Maps iframe">Como obter o iframe de uma localização?</a>
+                        </small>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="areaSize">Área <small>(m<sup>2</sup>)</small></label>
+                                <input type="number" class="form-control" id="areaSize" name="realty[areaSize]" min="1" step="0.01" value="<%= realty.areaSize %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="fiscalNum">Inscrição Fiscal <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="fiscalNum" name="realty[fiscalNum]" min="1" step="1" value="<%= realty.fiscalNum %>" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isRented">Este imóvel está alugado? <span class="text-danger">*</span></label>
+                        <select class="custom-select" id="isRented" name="realty[isRented]" required>
+                            <% var options = ["Sim", "Não"] %>
+                            <% for (var i = 0; i < options.length; i++) { %>
+                                <% var selected = (options[i] == realty.isRented) ? "selected" : "" %>
+                                <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="form-group d-none tenantField">
+                        <label for="tenantId">Nome do Inquilino <span class="text-danger">*</span></label>
+                        <select class="custom-select" id="tenantId" name="realty[tenantId]">
+                            <option value="">-- Selecione o Inquilino --</option>
+                            <% for (var i = 0; i < tenants.length; i++) { %>
+                                <% var selected = (tenants[i].name == realty.tenant.name) ? "selected" : "" %>
+                                <option value="<%= tenants[i]._id %>" <%= selected %>><%= tenants[i].name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group d-none tenantField">
+                                <label for="contractStart">Início do Contrato</label>
+                                <input type="date" class="form-control" id="contractStart" name="realty[contractStart]" aria-describedby="contractStartHelpBlock" value="<%= moment(realty.contractStart).format("YYYY[-]MM[-]DD") %>">
+                                <small id="contractStartHelpBlock" class="form-text text-muted">
+                                    Preencha a data no formato acima
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group d-none tenantField">
+                                <label for="contractEnd">Fim do Contrato</label>
+                                <input type="date" class="form-control" id="contractEnd" name="realty[contractEnd]" aria-describedby="contractEndHelpBlock" value="<%= moment(realty.contractEnd).format("YYYY[-]MM[-]DD") %>">
+                                <small id="contractEndHelpBlock" class="form-text text-muted">
+                                    Preencha a data no formato acima
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group d-none tenantField">
+                                <label for="rentValue">Valor do Aluguel <small>(R$)</small></label>
+                                <input type="number" class="form-control" id="rentValue" name="realty[rentValue]" min="0" step="0.01" value="<%= realty.rentValue %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group d-none tenantField">
+                                <label for="condominiumValue">Valor do Condomínio <small>(R$)</small></label>
+                                <input type="number" class="form-control" id="condominiumValue" name="realty[condominiumValue]" min="0" step="0.01" value="<%= realty.condominiumValue %>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Observações</label>
+                        <textarea class="form-control" id="notes" name="realty[notes]" rows="4" maxlength="300"><%= realty.notes %></textarea>
+                        <small id="contractEndHelpBlock" class="form-text text-muted">
+                            Máximo: 300 caracteres.
+                        </small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <p class="text-danger">* <small class="m-0">Campos obrigatórios</small></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <a href="javascript:history.back()" class="mt-3">&laquo; Voltar</a>
+    </div>
+</div>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>

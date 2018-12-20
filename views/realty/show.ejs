@@ -1,0 +1,96 @@
+<% include ../partials/start %>
+<% include ../partials/nav %>
+
+<section class="container content-height py-3">
+    <!--Realty info-->
+    <div class="d-md-flex justify-content-between align-items-center">
+        <h1 class="font-weight-light m-0"><%= realty.name %></h1>
+        <div>
+            <% if(realty.isRented === "Sim") { %>
+                <span class="badge badge-success p-lg-2">Alugado: <%= realty.isRented %></span>
+            <% } else { %>
+                <span class="badge badge-danger p-lg-2">Alugado: <%= realty.isRented %></span>
+            <% } %>
+            <span class="badge badge-info p-lg-2">Tipo: <%= realty.type %></span>
+            <span class="badge badge-info p-lg-2">Dono: <%= realty.owner %></span>
+        </div>
+    </div>
+    <span class="d-block d-md-inline text-muted mb-0 mt-2 mt-md-0">
+        <strong class="text-black-50">Inscrição Fiscal</strong>: <%= realty.fiscalNum %>
+    </span>
+    <small class="d-none d-md-inline text-black-50" style="vertical-align: text-bottom;">&nbsp;/&nbsp;</small>
+    <span class="d-block d-md-inline text-muted m-0">
+        <strong class="text-black-50">Área</strong>: 
+        <% if(realty.areaSize) { %>
+            <%= realty.areaSize %> <small>m<sup>2</sup></small>
+        <% } else { %>
+            Não informada
+        <% } %>
+    </span>
+    <hr>
+    
+    <!--Map-->
+    <div class="realty-map">
+        <%- realty.mapIframe %>
+    </div>
+
+    <!--Tenant Info-->
+    <% if(realty.isRented === "Sim") { %>
+        <div class="card my-3">
+            <div class="card-body">
+                <h5 class="card-title">Dados de Locação</h5>
+                <p class="m-0"><strong class="text-black-50">Nome:</strong> <%= realty.tenant.name %></p>
+                <p class="m-0">
+                    <strong class="text-black-50">Início do contrato: </strong>
+                    <% if(realty.contractStart && realty.contractEnd) { %>
+                        <%= moment(realty.contractStart).format("DD[/]MM[/]YY") %> à <%= moment(realty.contractEnd).format("DD[/]MM[/]YY") %>
+                    <% } else { %>
+                        Não informado
+                    <% } %>
+                </p>
+                <p class="m-0"><strong class="text-black-50">Valor do aluguel: </strong><small>R$</small> <%= realty.rentValue %></p>
+                <p class="m-0"><strong class="text-black-50">Valor do condomínio: </strong><small>R$</small> <%= realty.condominiumValue %></p>
+                <div><strong class="text-black-50">Observações:</strong> <%= realty.notes %></div>
+            </div>
+        </div>
+    <% } %>
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Back button -->
+        <a href="javascript:history.back()">&laquo; Voltar</a>
+        <div>
+            <!-- Button trigger delete realty modal -->
+            <a href="/imoveis/<%= realty._id %>/edit" class="text-info mr-3"><i class="fas fa-edit mr-1"></i>Editar</a>
+            <!-- Button trigger delete realty modal -->
+            <a href="#" class="text-danger" data-toggle="modal" data-target="#deleteRealtyModal">
+                <i class="fas fa-trash mr-1"></i>Excluir
+            </a>
+        </div>
+    </div>
+    
+    <!-- Delete realty modal -->
+    <div class="modal fade" id="deleteRealtyModal" tabindex="-1" role="dialog" aria-labelledby="deleteRealtyModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteRealtyModalLabel">Excluir Imóvel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                </div>
+                <div class="modal-body">
+                    Você tem certeza que deseja excluir este imóvel?
+                </div>
+                <div class="modal-footer">
+                    <form action="/imoveis/<%= realty._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button class="btn btn-danger">Sim</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>
