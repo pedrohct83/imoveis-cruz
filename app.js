@@ -25,7 +25,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 
 // Set mongoose connection url
-var url = "mongodb://localhost:27017/imoveis";
+var url = process.env.DATABASEURL || "mongodb://localhost:27017/imoveis";
 mongoose.connect(url, {useNewUrlParser: true});
 
 // Require moment
