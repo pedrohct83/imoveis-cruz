@@ -79,7 +79,7 @@
                         </select>
                     </div>
                     <div class="form-group d-none tenantField">
-                        <label for="tenantId">Nome do Inquilino <span class="text-danger">*</span></label>
+                        <label for="tenantId">Selecione o Inquilino <span class="text-danger">*</span></label>
                         <select class="custom-select" id="tenantId" name="realty[tenantId]">
                             <option value="">-- Selecione o Inquilino --</option>
                             <% for (var i = 0; i < tenants.length; i++) { %>
@@ -125,7 +125,7 @@
                     <div class="form-group">
                         <label for="notes">Observações</label>
                         <textarea class="form-control" id="notes" name="realty[notes]" rows="4" maxlength="300"><%= realty.notes %></textarea>
-                        <small id="contractEndHelpBlock" class="form-text text-muted">
+                        <small id="notesHelpBlock" class="form-text text-muted">
                             Máximo: 300 caracteres.
                         </small>
                     </div>

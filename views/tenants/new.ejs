@@ -1,0 +1,66 @@
+<% include ../partials/start %>
+<% include ../partials/nav %>
+
+<div class="container content-height py-3">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <h1 class="font-weight-light text-center mb-3">Novo Inquilino</h1>
+        <div class="card bg-white rounded">
+            <div class="card-body">
+                <form action="/inquilinos" method="POST">
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="name">Nome/Razão Social <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="type">Tipo <span class="text-danger">*</span></label>
+                                <select class="custom-select" id="type" name="type" required>
+                                    <% var options = ["Pessoa Física", "Pessoa Jurídica"] %>
+                                    <% for (var i = 0; i < options.length; i++) { %>
+                                        <option value="<%= options[i] %>"><%= options[i] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="idNum">CPF/CNPJ <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="idNum" name="idNum" min="1" step="1" required>
+                    </div>   
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="contactName">Nome p/ Contato</label>
+                                <input type="text" class="form-control" id="contactName" name="contactName">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="contactNum">Telefone p/ Contato</label>
+                                <input type="text" class="form-control" id="contactNum" name="contactNum">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Observações</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4" maxlength="300"></textarea>
+                        <small id="notesHelpBlock" class="form-text text-muted">
+                            Máximo: 300 caracteres.
+                        </small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <p class="text-danger">* <small class="m-0">Campos obrigatórios</small></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <a href="javascript:history.back()" class="mt-3">&laquo; Voltar</a>
+    </div>
+</div>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>

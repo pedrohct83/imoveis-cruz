@@ -45,42 +45,42 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
     
 // CREATE - Add new realty to db
 router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
-    Tenant.findById(req.body.tenantId, function(err, tenant) {
-        if (err || !tenant) {
-            req.flash("error", "Inquilino não encontrado");
-            res.redirect("/imoveis/novo");
-        }
-        else {
-            var newRealty = {
-                name: req.body.name,
-                type: req.body.type,
-                owner: req.body.owner,
-                location: req.body.location,
-                mapIframe: req.body.mapIframe,
-                areaSize: req.body.areaSize,
-                fiscalNum: req.body.fiscalNum,
-                isRented: req.body.isRented,
-                contractStart: req.body.contractStart || null,
-                contractEnd: req.body.contractEnd || null,
-                rentValue: req.body.rentValue || 0,
-                condominiumValue: req.body.condominiumValue || 0,
-                notes: req.body.notes,
-            };
-            if(req.body.isRented === "Sim") {
+    var newRealty = {
+        name: req.body.name,
+        type: req.body.type,
+        owner: req.body.owner,
+        location: req.body.location,
+        mapIframe: req.body.mapIframe,
+        areaSize: req.body.areaSize,
+        fiscalNum: req.body.fiscalNum,
+        isRented: req.body.isRented,
+        contractStart: req.body.contractStart || null,
+        contractEnd: req.body.contractEnd || null,
+        rentValue: req.body.rentValue || 0,
+        condominiumValue: req.body.condominiumValue || 0,
+        notes: req.body.notes,
+    };
+    if(req.body.isRented === "Sim" && req.body.tenantId) {
+        Tenant.findById(req.body.tenantId, function(err, tenant) {
+            if (err || !tenant) {
+                req.flash("error", "Inquilino não encontrado");
+                res.redirect("/imoveis/novo");
+            }
+            else {
                 newRealty.tenant = {
                     id: tenant._id,
                     name: tenant.name
                 };
             }
-            try {
-                Realty.create(newRealty);
-                req.flash("success", "Novo imóvel adicionado");
-                res.redirect("/imoveis");
-            } catch(err) {
-                req.flash("error", `Erro ao adicionar novo imóvel: ${err.message}`);
-            }
-        }
-    });
+        });
+    }
+    try {
+        Realty.create(newRealty);
+        req.flash("success", "Novo imóvel adicionado");
+        res.redirect("/imoveis");
+    } catch(err) {
+        req.flash("error", `Erro ao adicionar novo imóvel: ${err.message}`);
+    }
 });
 
 // EDIT - Show the edit realty form page
