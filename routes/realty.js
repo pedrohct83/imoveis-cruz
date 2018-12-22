@@ -34,10 +34,16 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
     Realty.findById(req.params.id).exec(function(err, realty) {
         if (err || !realty) {
             req.flash("error", "Imóvel não encontrado");
-            res.redirect("/entrar");
-        }
-        else {
-            res.render("realty/show", { realty });
+            res.redirect("/imoveis");
+        } else {
+            Tenant.findById(realty.tenant.id).exec(function(err, tenant) {
+                if(err) {
+                    console.log(err);
+                    res.redirect("/imoveis");
+                } else {
+                    res.render("realty/show", { realty, tenant });
+                }
+            });
         } 
     });
 });

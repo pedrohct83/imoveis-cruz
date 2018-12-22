@@ -3,7 +3,7 @@
 
 <section class="container content-height py-3">
     <!--Realty info-->
-    <div class="d-md-flex justify-content-between align-items-center">
+    <div class="d-md-flex justify-content-between align-items-baseline">
         <h1 class="font-weight-light m-0"><%= realty.name %></h1>
         <div>
             <% if(realty.isRented === "Sim") { %>
@@ -15,46 +15,71 @@
             <span class="badge badge-info p-lg-2">Dono: <%= realty.owner %></span>
         </div>
     </div>
-    <span class="d-block d-md-inline text-muted mb-0 mt-2 mt-md-0">
-        <strong class="text-black-50">Inscrição Fiscal</strong>: <%= realty.fiscalNum %>
-    </span>
-    <small class="d-none d-md-inline text-black-50" style="vertical-align: text-bottom;">&nbsp;/&nbsp;</small>
-    <span class="d-block d-md-inline text-muted m-0">
-        <strong class="text-black-50">Área</strong>: 
-        <% if(realty.areaSize) { %>
-            <%= realty.areaSize %> <small>m<sup>2</sup></small>
-        <% } else { %>
-            Não informada
-        <% } %>
-    </span>
     <hr>
-    
     <!--Map-->
     <div class="realty-map">
         <%- realty.mapIframe %>
     </div>
-
-    <!--Tenant Info-->
-    <% if(realty.isRented === "Sim") { %>
-        <div class="card my-3">
-            <div class="card-body">
-                <h5 class="card-title">Dados de Locação</h5>
-                <p class="m-0"><strong class="text-black-50">Nome:</strong> <%= realty.tenant.name %></p>
-                <p class="m-0">
-                    <strong class="text-black-50">Início do contrato: </strong>
-                    <% if(realty.contractStart && realty.contractEnd) { %>
-                        <%= moment(realty.contractStart).format("DD[/]MM[/]YY") %> à <%= moment(realty.contractEnd).format("DD[/]MM[/]YY") %>
-                    <% } else { %>
-                        Não informado
-                    <% } %>
-                </p>
-                <p class="m-0"><strong class="text-black-50">Valor do aluguel: </strong><small>R$</small> <%= realty.rentValue %></p>
-                <p class="m-0"><strong class="text-black-50">Valor do condomínio: </strong><small>R$</small> <%= realty.condominiumValue %></p>
-                <div><strong class="text-black-50">Observações:</strong> <%= realty.notes %></div>
+    <div class="row">
+        <!--Realty Info-->
+        <div class="col-md-6">
+            <div class="card my-3">
+                <div class="card-body">
+                    <h5 class="card-title">Dados do Imóvel</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <strong class="text-black-50">Insc. Fiscal</strong>: <%= realty.fiscalNum %>
+                        </li>
+                        <li>
+                            <strong class="text-black-50">Área</strong>: 
+                            <% if(realty.areaSize) { %>
+                                <%= realty.areaSize %> <small>m<sup>2</sup></small>
+                            <% } else { %>
+                                Não informada
+                            <% } %>
+                        </li>
+                        <li>
+                            <strong class="text-black-50">Observações:</strong> <%= realty.notes %>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    <% } %>
-    
+        <!--Tenant Info-->
+        <div class="col-md-6">
+            <div class="card my-3">
+                <div class="card-body">
+                    <h5 class="card-title">Dados de Locação</h5>
+                    <% if(realty.isRented === "Sim") { %>
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <strong class="text-black-50">Nome/Razão Social:</strong> <%= realty.tenant.name %>
+                            </li>
+                            <li>
+                                <strong class="text-black-50">Duração do contrato: </strong>
+                                <% if(realty.contractStart && realty.contractEnd) { %>
+                                    <%= moment(realty.contractStart).format("DD[/]MM[/]YY") %> à <%= moment(realty.contractEnd).format("DD[/]MM[/]YY") %>
+                                <% } else { %>
+                                    Não informado
+                                <% } %>
+                            </li>
+                            <li>
+                                <strong class="text-black-50">Valor do aluguel:</strong> <small>R$</small> <%= realty.rentValue %>
+                            </li>
+                            <li>
+                                <strong class="text-black-50">Valor do condomínio:</strong> <small>R$</small> <%= realty.condominiumValue %>
+                            </li>
+                            <li>
+                                <strong class="text-black-50">Observações:</strong> <%= tenant.notes %>
+                            </li>
+                        </ul>
+                    <% } else { %>
+                        <p class="mb-0">Este imóvel não está alugado</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="d-flex justify-content-between align-items-center">
         <!-- Back button -->
         <a href="javascript:history.back()">&laquo; Voltar</a>
@@ -67,7 +92,6 @@
             </a>
         </div>
     </div>
-    
     <!-- Delete realty modal -->
     <div class="modal fade" id="deleteRealtyModal" tabindex="-1" role="dialog" aria-labelledby="deleteRealtyModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -75,8 +99,8 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteRealtyModalLabel">Excluir Imóvel</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     Você tem certeza que deseja excluir este imóvel?

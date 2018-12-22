@@ -15,6 +15,7 @@
                     <th scope="col">CPF/CNPJ</th>
                     <th scope="col">Contato</th>
                     <th scope="col">Telefone</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +27,38 @@
                         <td><%= tenant.idNum %></td>
                         <td><%= tenant.contactName %></td>
                         <td><%= tenant.contactNum %></td>
+                        <td>
+                            <!-- Button trigger delete tenant modal -->
+                            <a href="#" class="text-danger" data-toggle="modal" data-target="#tenant<%= index %>">
+                                <i class="fas fa-trash mr-1"></i>Excluir
+                            </a>
+                        </td>
+                        <!-- Delete realty modal -->
+                        <div class="modal fade" id="tenant<%= index %>" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Excluir Inquilino</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Você tem certeza que deseja excluir este inquilino?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="/inquilinos/<%= tenant._id %>?_method=DELETE" method="POST" class="d-inline">
+                                            <button class="btn btn-danger">Sim</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </tr>
                 <% }); %>
             </tbody>
-        </table>
+        </table>       
     </div>
 </section>
 <% } %>

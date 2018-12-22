@@ -40,4 +40,19 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
     }
 });
 
+// DESTROY - Delete tenant
+router.delete("/:id", function(req, res) {
+    Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {
+        if (err) {
+            console.log(err);
+            res.redirect("/inquilinos");
+        }
+        else {
+            tenant.remove();
+            req.flash("success", `Inquilino "${tenant.name}" foi removido.`);
+            res.redirect("/inquilinos");
+        }
+    });
+});
+
 module.exports = router;
