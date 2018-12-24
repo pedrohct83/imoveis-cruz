@@ -1,0 +1,60 @@
+<% include ../partials/start %>
+<% include ../partials/nav-admin %>
+
+<section class="container content-height py-3">
+    <a href="/usuarios/novo" class="btn btn-primary btn-sm mb-3">Adicionar Usuário</a>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-sm bg-white">
+            <caption class="sr-only">Lista de usuários</caption>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(function(user, index) { %>
+                    <tr>
+                        <th scope="row"><%= index + 1 %></th>
+                        <td><%= user.username %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.isAdmin %></td>
+                        <td>
+                            <!-- Button trigger delete user modal -->
+                            <a href="#" class="text-danger" data-toggle="modal" data-target="#user<%= index %>">
+                                <i class="fas fa-trash mr-1"></i>Excluir
+                            </a>
+                        </td>
+                        <!-- Delete realty modal -->
+                        <div class="modal fade" id="user<%= index %>" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Excluir Usuário</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Você tem certeza que deseja excluir este usuário?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="/usuarios/<%= user._id %>?_method=DELETE" method="POST" class="d-inline">
+                                            <button class="btn btn-danger">Sim</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>       
+    </div>
+</section>
+
+<% include ../partials/footer %>
+<% include ../partials/end %>

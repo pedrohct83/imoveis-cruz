@@ -13,7 +13,8 @@ var express = require("express"),
 // Require and create route variables
 var indexRoutes = require("./routes/index"),
     realtyRoutes = require("./routes/realty"),
-    tenantRoutes = require("./routes/tenants");
+    tenantRoutes = require("./routes/tenants"),
+    adminRoutes = require("./routes/admin");
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
@@ -63,6 +64,7 @@ app.use(function(req, res, next) {
 app.use("/", indexRoutes);
 app.use("/imoveis", realtyRoutes);
 app.use("/inquilinos", tenantRoutes);
+app.use("/admin", adminRoutes);
 
 // Binds and listens for connections on the specified host and port
 app.listen(process.env.PORT, process.env.IP, function() {

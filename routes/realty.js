@@ -47,7 +47,6 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
         } 
     });
 });
-
     
 // CREATE - Add new realty to db
 router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
