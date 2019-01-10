@@ -28,6 +28,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         type: req.body.type,
         idNum: req.body.idNum,
         contactName: req.body.contactName,
+        contactEmail: req.body.contactEmail,
         contactNum: req.body.contactNum,
         notes: req.body.notes
     };
@@ -36,7 +37,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         req.flash("success", "Novo inquilino adicionado");
         res.redirect("/inquilinos");
     } catch(err) {
-        req.flash("error", `Erro ao adicionar novo inquilino: ${err.message}`);
+        req.flash("error", `Erro ao adicionar inquilino: ${err.message}`);
     }
 });
 

@@ -68,16 +68,16 @@ async function seedDB(){
         await Realty.deleteMany();
         await Tenant.deleteMany();
         console.log('Realty and tenants removed');
-        for(let seed of realtySeeds) {
-            let realty = await Realty.create(seed);
-            console.log(`Realty created: ${realty.name}`);
-            realty.save();
-        }
-        for(let seed of tenantSeeds) {
-            let tenant = await Tenant.create(seed);
-            console.log(`Tenant created: ${tenant.name}`);
-            tenant.save();
-        }
+        // for(let seed of realtySeeds) {
+        //     let realty = await Realty.create(seed);
+        //     console.log(`Realty created: ${realty.name}`);
+        //     realty.save();
+        // }
+        // for(let seed of tenantSeeds) {
+        //     let tenant = await Tenant.create(seed);
+        //     console.log(`Tenant created: ${tenant.name}`);
+        //     tenant.save();
+        // }
     } catch(err) {
         console.log(err);
     }

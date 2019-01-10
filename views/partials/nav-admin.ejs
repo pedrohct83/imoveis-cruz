@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/admin/usuarios">
+                <a class="nav-link <%= typeof page !== 'undefined' && page === 'usuarios' ? 'active' : '' %>" href="/admin/usuarios">
                     Usuários
                 </a>
             </li>

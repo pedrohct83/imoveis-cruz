@@ -65,21 +65,25 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         condominiumValue: req.body.condominiumValue || 0,
         notes: req.body.notes,
     };
-    if(req.body.isRented === "Sim" && req.body.tenantId) {
-        Tenant.findById(req.body.tenantId, function(err, tenant) {
-            if (err || !tenant) {
-                req.flash("error", "Inquilino não encontrado");
-                res.redirect("/imoveis/novo");
-            }
-            else {
-                newRealty.tenant = {
-                    id: tenant._id,
-                    name: tenant.name
-                };
-            }
-        });
-    }
     try {
+        if(req.body.isRented === "Sim" && req.body.tenantId) {
+            Tenant.findById(req.body.tenantId, function(err, tenant) {
+                if (err || !tenant) {
+                    req.flash("error", "Inquilino não encontrado");
+                    res.redirect("/imoveis/novo");
+                }
+                else {
+                    newRealty.tenant = {
+                        id: tenant._id,
+                        name: tenant.name
+                    };
+                }
+            });
+        } else {
+            newRealty.contractStart = null;
+            newRealty.contractEnd = null;
+            newRealty.rentValue = 0;
+        }
         Realty.create(newRealty);
         req.flash("success", "Novo imóvel adicionado");
         res.redirect("/imoveis");

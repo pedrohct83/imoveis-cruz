@@ -1,7 +1,6 @@
 <% include ../partials/start %>
 <% include ../partials/nav %>
 
-<% if(currentUser && currentUser.isAdmin) { %>
 <section class="container content-height py-3">
     <a href="/inquilinos/novo" class="btn btn-primary btn-sm mb-3">Adicionar Inquilino</a>
     <div class="table-responsive">
@@ -14,6 +13,7 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">CPF/CNPJ</th>
                     <th scope="col">Contato</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">Ações</th>
                 </tr>
@@ -26,6 +26,7 @@
                         <td><%= tenant.type %></td>
                         <td><%= tenant.idNum %></td>
                         <td><%= tenant.contactName %></td>
+                        <td><%= tenant.contactEmail %></td>
                         <td><%= tenant.contactNum %></td>
                         <td>
                             <!-- Button trigger delete tenant modal -->
@@ -61,7 +62,6 @@
         </table>       
     </div>
 </section>
-<% } %>
 
 <% include ../partials/footer %>
 <% include ../partials/end %>

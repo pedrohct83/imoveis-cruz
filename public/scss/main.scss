@@ -9,8 +9,12 @@ $navbar-dark-hover-color: rgba(white, .90);
 .vh-100 {
     height: 100vh;
 }
+
+// Content full height + header and footer
+nav {height: 56px;}
+footer {height: 37px;}
 .content-height {
-    min-height: calc(100vh - 97px);
+    min-height: calc(100vh - 56px - 37px);
 }
 
 // Realty map iframe

@@ -6315,8 +6315,14 @@ a.text-dark:hover, a.text-dark:focus {
 .vh-100 {
   height: 100vh; }
 
+nav {
+  height: 56px; }
+
+footer {
+  height: 37px; }
+
 .content-height {
-  min-height: calc(100vh - 97px); }
+  min-height: calc(100vh - 56px - 37px); }
 
 .realty-map iframe {
   height: 250px;

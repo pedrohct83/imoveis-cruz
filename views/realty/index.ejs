@@ -1,7 +1,6 @@
 <% include ../partials/start %>
 <% include ../partials/nav %>
 
-<% if(currentUser && currentUser.isAdmin) { %>
 <section class="container content-height py-3">
     <a href="/imoveis/novo" class="btn btn-primary btn-sm mb-3">Adicionar Imóvel</a>
     <div class="table-responsive">
@@ -52,7 +51,7 @@
                             <% } %>
                         </td>
                         <td>
-                            <% if(realty.rentValue > 0) { %>
+                            <% if(realty.condominiumValue > 0) { %>
                                 <%= realty.condominiumValue %>
                             <% } %>
                         </td>
@@ -62,7 +61,6 @@
         </table>
     </div>
 </section>
-<% } %>
 
 <% include ../partials/footer %>
 <% include ../partials/end %>

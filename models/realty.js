@@ -9,6 +9,8 @@ var realtySchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     areaSize: { type: Number, min: 1 },
     fiscalNum: { type: Number, min: 1 },
+    condominiumValue: {type: Number, get: getPrice, set: setPrice},
+    notes: String,
     isRented: String,
     tenant: {
         id: {
@@ -19,9 +21,7 @@ var realtySchema = new mongoose.Schema({
     },
     contractStart: Date,
     contractEnd: Date,
-    rentValue: {type: Number, get: getPrice, set: setPrice},
-    condominiumValue: {type: Number, get: getPrice, set: setPrice},
-    notes: String
+    rentValue: {type: Number, get: getPrice, set: setPrice}
 });
 
 function getPrice(num){

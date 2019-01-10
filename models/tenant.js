@@ -5,6 +5,7 @@ var tenantSchema = new mongoose.Schema({
     type: String,
     idNum: { type: Number, min: 1 },
     contactName: String,
+    contactEmail: String,
     contactNum: { type: Number, min: 1 },
     notes: String
 });

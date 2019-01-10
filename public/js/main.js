@@ -21,4 +21,25 @@
             }  
         } 
     }
+    
+    // Toggle sale form fields on the create realty form
+    var forSaleSelector = document.getElementById("forSale");
+    var forSaleFields = document.getElementsByClassName("forSaleField");
+    if(forSaleSelector && forSaleFields.length !== 0) {
+        toggleForSaleFields();
+        forSaleSelector.addEventListener("change", toggleForSaleFields);
+    }
+    function toggleForSaleFields() {
+        if(forSaleSelector.value === "Sim") {
+            for(let i of forSaleFields) {
+                i.classList.remove("d-none");
+                i.classList.add("d-block");
+            }     
+        } else {
+            for(let i of forSaleFields) {
+                i.classList.remove("d-block");
+                i.classList.add("d-none");
+            }  
+        } 
+    }
 })();
