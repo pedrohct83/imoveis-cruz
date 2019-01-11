@@ -7,8 +7,8 @@ var express = require("express"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
-    User = require("./models/user"),
-    seedDB = require("./seeds");
+    User = require("./models/user");
+    //seedDB = require("./seeds");
 
 // Require and create route variables
 var indexRoutes = require("./routes/index"),
@@ -58,7 +58,7 @@ app.use(function(req, res, next) {
 });
 
 // Clean and seed the database
-seedDB();
+//seedDB();
 
 // Link route variables with app routes
 app.use("/", indexRoutes);
