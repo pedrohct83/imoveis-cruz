@@ -15,6 +15,7 @@
                     <th scope="col">Contato</th>
                     <th scope="col">Email</th>
                     <th scope="col">Telefone</th>
+                    <th scope="col">Observações</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                         <td><%= tenant.contactName %></td>
                         <td><%= tenant.contactEmail %></td>
                         <td><%= tenant.contactNum %></td>
+                        <td><%= tenant.notes %></td>
                         <td>
                             <!-- Button trigger delete tenant modal -->
                             <a href="#" class="text-danger" data-toggle="modal" data-target="#tenant<%= index %>">

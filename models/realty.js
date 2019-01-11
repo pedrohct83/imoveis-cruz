@@ -17,7 +17,8 @@ var realtySchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Tenant"
         },
-        name: String
+        name: String,
+        notes: String
     },
     contractStart: Date,
     contractEnd: Date,
