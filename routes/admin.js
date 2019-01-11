@@ -3,8 +3,7 @@ var express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
     User = require("../models/user"),
-    middleware = require("../middleware/"),
-    passport = require("passport");
+    middleware = require("../middleware/");
 
 // INDEX - Show admin page
 router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {

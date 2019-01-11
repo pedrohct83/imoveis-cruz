@@ -1,5 +1,6 @@
 var Realty = require("./models/realty"),
-    Tenant = require("./models/tenant");
+    Tenant = require("./models/tenant"),
+    User = require("./models/user");
 
 var realtySeeds = [
     {
@@ -61,13 +62,27 @@ var tenantSeeds = [
         createdAt: { type: Date, default: Date.now },
         notes: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     }
-]
+];
 
 async function seedDB(){
     try {
         await Realty.deleteMany();
         await Tenant.deleteMany();
-        console.log('Realty and tenants removed');
+        await User.deleteMany();
+        console.log('Realty, tenants and users removed');
+        var newUser = new User({
+            username: "Pedro",
+            email: "pedrohct83@gmail.com",
+            isAdmin: true
+        });
+        User.register(newUser, "N3wP@ssCTC", function(err, user) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log("User Pedro set as admin");
+            }
+        });
         // for(let seed of realtySeeds) {
         //     let realty = await Realty.create(seed);
         //     console.log(`Realty created: ${realty.name}`);
