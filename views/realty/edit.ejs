@@ -12,7 +12,7 @@
                             <div class="form-group">
                                 <label for="type">Tipo do imóvel <span class="text-danger">*</span></label>
                                 <select class="custom-select" id="type" name="realty[type]" required>
-                                    <% var options = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Pavimento", "Sala", "Sobreloja", "Terreno"] %>
+                                    <% var options = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"] %>
                                     <% for (var i = 0; i < options.length; i++) { %>
                                         <% var selected = (options[i] == realty.type) ? "selected" : "" %>
                                         <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
