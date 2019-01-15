@@ -69,6 +69,10 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="condominiumValue">Valor do Condomínio <small>(R$)</small></label>
+                        <input type="number" class="form-control" id="condominiumValue" name="condominiumValue" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
                         <label for="isRented">Este imóvel está alugado? <span class="text-danger">*</span></label>
                         <select class="custom-select" id="isRented" name="realty[isRented]" required>
                             <% var options = ["Sim", "Não"] %>
@@ -108,19 +112,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="col-lg-6">
-                            <div class="form-group d-none tenantField">
-                                <label for="rentValue">Valor do Aluguel <small>(R$)</small></label>
-                                <input type="number" class="form-control" id="rentValue" name="realty[rentValue]" min="0" step="0.01" value="<%= realty.rentValue %>">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group d-none tenantField">
-                                <label for="condominiumValue">Valor do Condomínio <small>(R$)</small></label>
-                                <input type="number" class="form-control" id="condominiumValue" name="realty[condominiumValue]" min="0" step="0.01" value="<%= realty.condominiumValue %>">
-                            </div>
-                        </div>
+                    <div class="form-group d-none tenantField">
+                        <label for="rentValue">Valor do Aluguel <small>(R$)</small></label>
+                        <input type="number" class="form-control" id="rentValue" name="realty[rentValue]" min="0" step="0.01" value="<%= realty.rentValue %>">
                     </div>
                     <div class="form-group">
                         <label for="notes">Observações</label>
