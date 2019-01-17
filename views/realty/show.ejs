@@ -46,7 +46,8 @@
                             <small>R$</small> <%= realty.condominiumValue %>
                         </li>
                         <li>
-                            <strong class="text-black-50">Observações:</strong> <%= realty.notes %>
+                            <strong class="text-black-50">Observações:</strong>
+                            <span class="mb-0 ws-pre"><%= realty.notes %></span>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +55,7 @@
         </div>
         <!--Tenant Info-->
         <div class="col-md-6">
-            <div class="card my-3">
+            <div class="card mb-3 my-lg-3">
                 <div class="card-body">
                     <h5 class="card-title">Dados de Locação</h5>
                     <% if(realty.isRented === "Sim") { %>
@@ -74,7 +75,8 @@
                                 <strong class="text-black-50">Valor do aluguel:</strong> <small>R$</small> <%= realty.rentValue %>
                             </li>
                             <li>
-                                <strong class="text-black-50">Observações:</strong> <%= tenant.notes %>
+                                <strong class="text-black-50">Observações:</strong>
+                                <span class="mb-0 ws-pre"><%= tenant.notes %></span>
                             </li>
                         </ul>
                     <% } else { %>

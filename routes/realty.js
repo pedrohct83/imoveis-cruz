@@ -63,7 +63,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         contractEnd: req.body.contractEnd || null,
         rentValue: req.body.rentValue || 0,
         condominiumValue: req.body.condominiumValue || 0,
-        notes: req.body.notes,
+        notes: req.body.notes
     };
     if(req.body.isRented === "Sim" && req.body.tenantId) {
         Tenant.findById(req.body.tenantId, function(err, tenant) {

@@ -2,18 +2,21 @@
 <% include ../partials/nav %>
 
 <section class="container content-height py-3">
-    <a href="/imoveis/novo" class="btn btn-primary btn-sm mb-3">Adicionar Imóvel</a>
+    <div class="d-flex justify-content-between align-items-start">
+        <a href="/imoveis/novo" class="btn btn-primary mb-3">Adicionar Imóvel</a>
+        <div class="text-right">
+            <small class="d-block">
+                <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
+                <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
+            </small>
+            <small class="d-block">Total: <%= realty.length %> imóveis</small>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table table-bordered table-sm bg-white">
-            <caption>
-                <ul class="list-inline">
-                    <li class="list-inline-item">Legenda:</li>
-                    <li class="list-inline-item"><i class="fas fa-xs fa-circle text-success"></i> Alugado</li>
-                </ul>
-            </caption>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Dono</th>
                     <th scope="col">Inquilino</th>
@@ -25,9 +28,9 @@
             </thead>
             <tbody>
                 <% realty.forEach(function(realty, index) { %>
-                    <% var isRented = (realty.isRented === "Sim") ? "table-success" : "" %>
-                    <tr class="<%= isRented %>">
-                        <th scope="row"><%= index + 1 %></th>
+                    <tr>
+                        <% var isRented = (realty.isRented === "Sim") ? "text-success" : "text-warning" %>
+                        <th scope="row"><i class="fas fa-xs fa-circle <%= isRented %>"></i></th>
                         <td>
                             <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
                                 <%= realty.name %>
