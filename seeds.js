@@ -66,27 +66,27 @@ var Realty = require("./models/realty"),
 
 async function seedDB(){
     try {
-        for (let i = 1; i <= 24; i++) {
-            let newRealty = {
-                name: "Ed. Jusmar Garagem " + i,
-                type: "Garagem",
-                owner: "Cruz",
-                location: "Praça Presidente Getúlio Vargas, 35, Ed. Jusmar, garagem " + i + ", Centro, Vitória - Espírito Santo, Centro, Vitória/ES, 29010-350",
-                mapIframe: "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d935.3799917307854!2d-40.3312639!3d-20.3201273!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb83da2e9883b6d%3A0xc4eda3b615a742a4!2sEdif%C3%ADcio+Jusmar!5e0!3m2!1sen!2sbr!4v1547760377891\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen><\/iframe>",
-                areaSize: "",
-                fiscalNum: "",
-                isRented: "Não",
-                contractStart: null,
-                contractEnd: null,
-                rentValue: 0,
-                condominiumValue: 80,
-                notes: "",
-                tenant: {}
-            };
-            let realty = await Realty.create(newRealty);
-            console.log(`Realty created: ${realty.name}`);
-            realty.save();
-        }
+        // for (let i = 1; i <= 24; i++) {
+        //     let newRealty = {
+        //         name: "Ed. Jusmar Garagem " + i,
+        //         type: "Garagem",
+        //         owner: "Cruz",
+        //         location: "Praça Presidente Getúlio Vargas, 35, Ed. Jusmar, garagem " + i + ", Centro, Vitória - Espírito Santo, Centro, Vitória/ES, 29010-350",
+        //         mapIframe: "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d935.3799917307854!2d-40.3312639!3d-20.3201273!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb83da2e9883b6d%3A0xc4eda3b615a742a4!2sEdif%C3%ADcio+Jusmar!5e0!3m2!1sen!2sbr!4v1547760377891\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen><\/iframe>",
+        //         areaSize: "",
+        //         fiscalNum: "",
+        //         isRented: "Não",
+        //         contractStart: null,
+        //         contractEnd: null,
+        //         rentValue: 0,
+        //         condominiumValue: 80,
+        //         notes: "",
+        //         tenant: {}
+        //     };
+        //     let realty = await Realty.create(newRealty);
+        //     console.log(`Realty created: ${realty.name}`);
+        //     realty.save();
+        // }
     
         // await Realty.deleteMany();
         // await Tenant.deleteMany();
