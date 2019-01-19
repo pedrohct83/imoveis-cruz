@@ -146,7 +146,7 @@ router.put("/:id", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true
 });
 
 // DESTROY - Delete realty
-router.delete("/:id", function(req, res) {
+router.delete("/:id", middleware.isAdmin, function(req, res) {
     Realty.findByIdAndRemove(req.params.id, function(err, realty) {
         if (err) {
             console.log(err);
