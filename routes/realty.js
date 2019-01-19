@@ -160,9 +160,4 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
     });
 });
 
-// Use this code to only allow digits and decimal in price field, without $. So they can enter 49, 49.99, 49.00, but not 49.0 or $49
-// if ( req.body.price ) {
-//     req.assert('price', 'Enter a price (numbers only)').regex(/^\d+(\.\d{2})?$/);
-// }
-
 module.exports = router;

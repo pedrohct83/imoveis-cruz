@@ -1,24 +1,5 @@
 <% include ./partials/start %>
 
-<div class="container">
-    <% if (error && error.length > 0) { %>
-        <div class="alert alert-danger alert-dismissible mb-0 mt-3" role="alert">
-            <%= error %>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <% } %>
-    <% if (success && success.length > 0) { %>
-        <div class="alert alert-success alert-dismissible mb-0 mt-3" role="alert">
-            <%= success %>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <% } %>
-</div>
-
 <div class="container-fluid" style="background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/img/terceira-ponte-vitoria.jpg') no-repeat center center; background-size: cover;">
     <div class="d-flex flex-column align-items-center justify-content-center vh-100">
         <h1 class="font-weight-light text-center mb-3">Entrar</h1>
@@ -37,6 +18,12 @@
                 </form>
             </div>
         </div>
+        <% if (error && error.length > 0) { %>
+            <span class="text-danger mt-3"><%= error %></span>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+            <span class="text-success mt-3"><%= success %></span>
+        <% } %>        
     </div>
 </div>
 

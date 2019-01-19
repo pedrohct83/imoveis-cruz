@@ -1,1 +1,0 @@
-<% var isRented = (realty.isRented === "Sim") ? "table-success" : "" %>
