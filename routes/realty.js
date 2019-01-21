@@ -7,12 +7,27 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    Realty.find().exec(function(err, realty) {
+    var perPage = 14;
+    var pageQuery = parseInt(req.query.page, 10);
+    var pageNumber = pageQuery ? pageQuery : 1;
+    
+    Realty.find().skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
         if(err) {
             console.log(err);
             res.redirect("back");
         } else {
-            res.render("realty/index", { realty, page: "imoveis" });
+            Realty.count().exec(function (err, count) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    res.render("realty/index", {
+                        realty,
+                        page: "imoveis",
+                        current: pageNumber,
+                        pages: Math.ceil(count / perPage)
+                    });
+                }
+            });
         }
     });
 });
@@ -58,6 +73,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         mapIframe: req.body.mapIframe,
         areaSize: req.body.areaSize,
         fiscalNum: req.body.fiscalNum,
+        isUnappropriate: req.body.isUnappropriate,
         isRented: req.body.isRented,
         contractStart: req.body.contractStart || null,
         contractEnd: req.body.contractEnd || null,

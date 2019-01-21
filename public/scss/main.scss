@@ -38,3 +38,9 @@ $navbar-dark-hover-color: rgba(white, .90);
 .table-success, .table-success > th, .table-success > td {
     background-color: hsla(134, 41%, 83%, 0.2);;
 }
+
+// Pagination active style
+.page-item.active .page-link {
+    background-color: $gray-100;
+    content: '';
+}

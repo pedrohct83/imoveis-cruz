@@ -6339,3 +6339,7 @@ a.text-dark:hover, a.text-dark:focus {
 .table-success > th,
 .table-success > td {
   background-color: rgba(194, 229, 202, 0.2); }
+
+.page-item.active .page-link {
+  background-color: #f8f9fa;
+  content: ''; }
