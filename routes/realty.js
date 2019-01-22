@@ -7,24 +7,31 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 14;
+    var perPage = 13;
     var pageQuery = parseInt(req.query.page, 10);
     var pageNumber = pageQuery ? pageQuery : 1;
-    
-    Realty.find().skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
+    Realty.find().exec(function(err, allRealty) {
         if(err) {
             console.log(err);
             res.redirect("back");
         } else {
-            Realty.count().exec(function (err, count) {
+            Realty.find().skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
                 if(err) {
                     console.log(err);
+                    res.redirect("back");
                 } else {
-                    res.render("realty/index", {
-                        realty,
-                        page: "imoveis",
-                        current: pageNumber,
-                        pages: Math.ceil(count / perPage)
+                    Realty.count().exec(function (err, count) {
+                        if(err) {
+                            console.log(err);
+                        } else {
+                            res.render("realty/index", {
+                                allRealty,
+                                realty,
+                                page: "imoveis",
+                                current: pageNumber,
+                                pages: Math.ceil(count / perPage)
+                            });
+                        }
                     });
                 }
             });
