@@ -66,27 +66,27 @@ var Realty = require("./models/realty"),
 
 async function seedDB(){
     try {
-        for (let i = 1; i <= 22; i++) {
-            let newRealty = {
-                name: "Ed. Março Garagem " + i,
-                type: "Garagem",
-                owner: "Agro",
-                location: "Av. Princesa Isabel, 599, Ed. Março, garagem " + i + ", Centro, Vitória/ES, 29010-361",
-                mapIframe: "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.5390399553444!2d-40.33134868502536!3d-20.319338555781382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb83da31a0da183%3A0x75fc2c217bfcf82d!2sCondom%C3%ADnio+do+Edif%C3%ADcio+Marco+-+Av.+Princesa+Isabel%2C+599+-+Centro%2C+Vit%C3%B3ria+-+ES%2C+29010-361!5e0!3m2!1spt-BR!2sbr!4v1548165010247\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen><\/iframe>",
-                areaSize: "",
-                fiscalNum: "",
-                isRented: "Não",
-                contractStart: null,
-                contractEnd: null,
-                rentValue: 0,
-                condominiumValue: 0,
-                notes: "",
-                tenant: {}
-            };
-            let realty = await Realty.create(newRealty);
-            console.log(`Realty created: ${realty.name}`);
-            realty.save();
-        }
+        // for (let i = 1; i <= 22; i++) {
+        //     let newRealty = {
+        //         name: "Ed. Março Garagem " + i,
+        //         type: "Garagem",
+        //         owner: "Agro",
+        //         location: "Av. Princesa Isabel, 599, Ed. Março, garagem " + i + ", Centro, Vitória/ES, 29010-361",
+        //         mapIframe: "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.5390399553444!2d-40.33134868502536!3d-20.319338555781382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb83da31a0da183%3A0x75fc2c217bfcf82d!2sCondom%C3%ADnio+do+Edif%C3%ADcio+Marco+-+Av.+Princesa+Isabel%2C+599+-+Centro%2C+Vit%C3%B3ria+-+ES%2C+29010-361!5e0!3m2!1spt-BR!2sbr!4v1548165010247\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen><\/iframe>",
+        //         areaSize: "",
+        //         fiscalNum: "",
+        //         isRented: "Não",
+        //         contractStart: null,
+        //         contractEnd: null,
+        //         rentValue: 0,
+        //         condominiumValue: 0,
+        //         notes: "",
+        //         tenant: {}
+        //     };
+        //     let realty = await Realty.create(newRealty);
+        //     console.log(`Realty created: ${realty.name}`);
+        //     realty.save();
+        // }
     
         // await Realty.deleteMany();
         // await Tenant.deleteMany();

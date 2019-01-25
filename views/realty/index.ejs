@@ -88,8 +88,13 @@
         </table>
     </div>
     <% if (pages && pages > 0) { %>
-        <nav aria-label="Paginação dos imóveis">
-            <ul class="pagination">
+        <nav aria-label="Paginação dos imóveis" class="table-responsive">
+            <ul class="pagination pagination-sm">
+                <% if (current == 1) { %>
+                    <li class="page-item disabled"><a class="page-link"><small>Primeira</small></a></li>
+                <% } else { %>
+                    <li class="page-item"><a href="/imoveis" class="page-link"><small>Primeira</small></a></li>
+                <% } %>
                 <% if (current == 1) { %>
                     <li class="page-item disabled">
                         <a class="page-link" aria-label="Anterior">
@@ -103,11 +108,11 @@
                         </a>
                     </li>
                 <% } %>
-                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
                 <% if (i !== 1) { %>
                     <li class="page-item disabled"><a class="page-link">...</a></li>
                 <% } %>
-                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
                     <% if (i == current) { %>
                         <li class="page-item disabled active">
                             <a class="page-link"><%= i %></a>
@@ -117,7 +122,7 @@
                             <a class="page-link" href="/imoveis?page=<%= i %>"><%= i %></a>
                         </li>
                     <% } %>
-                    <% if (i == Number(current) + 4 && i < pages) { %>
+                    <% if (i == Number(current) + 2 && i < pages) { %>
                         <li class="page-item disabled"><a class="page-link">...</a></li>
                     <% } %>
                 <% } %>
@@ -129,10 +134,16 @@
                     </li>
                 <% } else { %>
                     <li class="page-item">
-                        <a class="page-link disabled" href="/imoveis?page=<%= Number(current) + 1 %>" aria-label="Próximo">
+                        <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %>" aria-label="Próximo">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                <% } %>
+     
+                <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link"><small>Última</small></a></li>
+                <% } else { %>
+                    <li class="page-item"><a href="/imoveis?page=<%= pages %>" class="page-link"><small>Última</small></a></li>
                 <% } %>
             </ul>
         </nav>  

@@ -7,14 +7,15 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 13;
+    var perPage = 20;
     var pageQuery = parseInt(req.query.page, 10);
     var pageNumber = pageQuery ? pageQuery : 1;
+
     Realty.find().exec(function(err, allRealty) {
         if(err) {
             console.log(err);
             res.redirect("back");
-        } else {
+        } else {           
             Realty.find().skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
                 if(err) {
                     console.log(err);
