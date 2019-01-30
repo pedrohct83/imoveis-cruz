@@ -6,19 +6,17 @@
         <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0">
             <div class="card">
                 <div class="card-body">
-                    <!--["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"]-->
-                    
                     <h5 class="card-title">Filtros</h5>
                     <form action="/imoveis" method="GET">
                         <% for (let i in typesArray) { %>
                             <% if(selectedTypesArray.includes(typesArray[i])) { %>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type[]" value="<%= typesArray[i] %>">    
+                                    <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
                                     <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
                                 </div>
                             <% } else { %>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type[]" value="<%= typesArray[i] %>">    
+                                    <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
                                     <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
                                 </div>
                             <% } %>
@@ -35,7 +33,6 @@
                     <small class="d-block">
                         <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
                         <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
-                        <!--<span><i class="fas fa-xs fa-circle text-danger"></i> Impróprio</span>-->
                     </small>
                     <small class="d-block">Total: <%= allRealty.length %> imóveis</small>
                 </div>
@@ -118,6 +115,12 @@
             <% if (pages && pages > 0) { %>
                 <nav aria-label="Paginação dos imóveis" class="table-responsive">
                     <ul class="pagination pagination-sm mb-0">
+                        <% var typesUrl = "" %>
+                        <% if(selectedTypesArray.length !== 0) {%>
+                            <% for (let i in selectedTypesArray) { %>
+                                <% typesUrl = typesUrl + "&type=" + selectedTypesArray[i]; %>
+                            <% } %>
+                        <% } %>
                         <% if (current == 1) { %>
                             <li class="page-item disabled"><a class="page-link"><small>Primeira</small></a></li>
                         <% } else { %>
@@ -131,7 +134,7 @@
                             </li>
                         <% } else { %>
                             <li class="page-item">
-                                <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %>" aria-label="Anterior">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %><%= typesUrl %>" aria-label="Anterior">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -147,7 +150,7 @@
                                 </li>
                             <% } else { %>
                                 <li class="page-item">
-                                    <a class="page-link" href="/imoveis?page=<%= i %>"><%= i %></a>
+                                    <a class="page-link" href="/imoveis?page=<%= i %><%= typesUrl %>"><%= i %></a>
                                 </li>
                             <% } %>
                             <% if (i == Number(current) + 2 && i < pages) { %>
@@ -162,16 +165,15 @@
                             </li>
                         <% } else { %>
                             <li class="page-item">
-                                <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %>" aria-label="Próximo">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %><%= typesUrl %>" aria-label="Próximo">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                         <% } %>
-             
                         <% if (current == pages) { %>
                             <li class="page-item disabled"><a class="page-link"><small>Última</small></a></li>
                         <% } else { %>
-                            <li class="page-item"><a href="/imoveis?page=<%= pages %>" class="page-link"><small>Última</small></a></li>
+                            <li class="page-item"><a href="/imoveis?page=<%= pages %><%= typesUrl %>" class="page-link"><small>Última</small></a></li>
                         <% } %>
                     </ul>
                 </nav>  
