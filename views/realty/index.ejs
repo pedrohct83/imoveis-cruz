@@ -2,152 +2,183 @@
 <% include ../partials/nav %>
 
 <section class="container-fluid content-height py-3">
-    <div class="d-flex justify-content-between align-items-start">
-        <a href="/imoveis/novo" class="btn btn-primary mb-3">Adicionar Imóvel</a>
-        <div class="text-right">
-            <small class="d-block">
-                <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
-                <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
-                <!--<span><i class="fas fa-xs fa-circle text-danger"></i> Impróprio</span>-->
-            </small>
-            <small class="d-block">Total: <%= allRealty.length %> imóveis</small>
+    <div class="row">
+        <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0">
+            <div class="card">
+                <div class="card-body">
+                    <!--["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"]-->
+                    
+                    <h5 class="card-title">Filtros</h5>
+                    <form action="/imoveis" method="GET">
+                        <% for (let i in typesArray) { %>
+                            <% if(selectedTypesArray.includes(typesArray[i])) { %>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type[]" value="<%= typesArray[i] %>">    
+                                    <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                                </div>
+                            <% } else { %>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type[]" value="<%= typesArray[i] %>">    
+                                    <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                                </div>
+                            <% } %>
+                        <% } %>
+                        <button type="submit" class="btn btn-primary btn-sm">Aplicar</button>
+                    </form>                    
+                </div>
+            </div>         
         </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-sm bg-white">
-            <thead>
-                <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Dono</th>
-                    <th scope="col">Inquilino</th>
-                    <th scope="col">Aluguel <small>(R$)</small></th>
-                    <th scope="col">Condomínio <small>(R$)</small></th>
-                    <th scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% realty.forEach(function(realty, index) { %>
-                    <tr>
-                        <% var isRented = (realty.isRented === "Sim") ? "text-success" : "text-warning" %>
-                        <th scope="row">
-                            <i class="fas fa-xs fa-circle <%= isRented %>"></i>
-                        </th>
-                        <td>
-                            <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
-                                <%= realty.name %>
-                            </a>
-                        </td>
-                        <td><%= realty.owner %></td>
-                        <td><%= realty.tenant.name %></td>
-                        <td>
-                            <% if(realty.rentValue > 0) { %>
-                                <%= realty.rentValue %>
-                            <% } %>
-                        </td>
-                        <td>
-                            <% if(realty.condominiumValue > 0) { %>
-                                <%= realty.condominiumValue %>
-                            <% } %>
-                        </td>
-                        <td>
-                            <!-- Trigger delete realty modal -->
-                            <% if (currentUser.isAdmin) { %>
-                            <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
-                            <% } %>
-                            <!-- Go to edit realty page -->
-                            <a href="/imoveis/<%= realty._id %>/edit" class="text-info" title="Editar imóvel">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </td>
-                        <!-- Delete realty modal -->
-                        <div class="modal fade" id="realty<%= index %>" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Excluir Imóvel</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Você tem certeza que deseja excluir este imóvel?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="/imoveis/<%= realty._id %>?_method=DELETE" method="POST" class="d-inline">
-                                            <button class="btn btn-danger">Sim</button>
-                                        </form>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+        <div class="col-lg-9 col-xl-10">
+            <div class="d-flex justify-content-between align-items-start">
+                <a href="/imoveis/novo" class="btn btn-secondary mb-3">Adicionar Imóvel</a>
+                <div class="text-right">
+                    <small class="d-block">
+                        <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
+                        <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
+                        <!--<span><i class="fas fa-xs fa-circle text-danger"></i> Impróprio</span>-->
+                    </small>
+                    <small class="d-block">Total: <%= allRealty.length %> imóveis</small>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm bg-white">
+                    <thead>
+                        <tr>
+                            <th scope="col">Status</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Dono</th>
+                            <th scope="col">Inquilino</th>
+                            <th scope="col">Aluguel <small>(R$)</small></th>
+                            <th scope="col">Condomínio <small>(R$)</small></th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% realty.forEach(function(realty, index) { %>
+                            <tr>
+                                <% var isRented = (realty.isRented === "Sim") ? "text-success" : "text-warning" %>
+                                <th scope="row">
+                                    <i class="fas fa-xs fa-circle <%= isRented %>"></i>
+                                </th>
+                                <td>
+                                    <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
+                                        <%= realty.name %>
+                                    </a>
+                                </td>
+                                <td><%= realty.owner %></td>
+                                <td><%= realty.tenant.name %></td>
+                                <td>
+                                    <% if(realty.rentValue > 0) { %>
+                                        <%= realty.rentValue %>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if(realty.condominiumValue > 0) { %>
+                                        <%= realty.condominiumValue %>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <!-- Trigger delete realty modal -->
+                                    <% if (currentUser.isAdmin) { %>
+                                    <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
+                                    <% } %>
+                                    <!-- Go to edit realty page -->
+                                    <a href="/imoveis/<%= realty._id %>/edit" class="text-info" title="Editar imóvel">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <!-- Delete realty modal -->
+                                <div class="modal fade" id="realty<%= index %>" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Excluir Imóvel</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Você tem certeza que deseja excluir este imóvel?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="/imoveis/<%= realty._id %>?_method=DELETE" method="POST" class="d-inline">
+                                                    <button class="btn btn-danger">Sim</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <% if (pages && pages > 0) { %>
+                <nav aria-label="Paginação dos imóveis" class="table-responsive">
+                    <ul class="pagination pagination-sm mb-0">
+                        <% if (current == 1) { %>
+                            <li class="page-item disabled"><a class="page-link"><small>Primeira</small></a></li>
+                        <% } else { %>
+                            <li class="page-item"><a href="/imoveis" class="page-link"><small>Primeira</small></a></li>
+                        <% } %>
+                        <% if (current == 1) { %>
+                            <li class="page-item disabled">
+                                <a class="page-link" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %>" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <% } %>
+                        <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
+                        <% if (i !== 1) { %>
+                            <li class="page-item disabled"><a class="page-link">...</a></li>
+                        <% } %>
+                        <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                                <li class="page-item disabled active">
+                                    <a class="page-link"><%= i %></a>
+                                </li>
+                            <% } else { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="/imoveis?page=<%= i %>"><%= i %></a>
+                                </li>
+                            <% } %>
+                            <% if (i == Number(current) + 2 && i < pages) { %>
+                                <li class="page-item disabled"><a class="page-link">...</a></li>
+                            <% } %>
+                        <% } %>
+                        <% if (current == pages) { %>
+                            <li class="page-item">
+                                <a class="page-link disabled" aria-label="Próximo">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %>" aria-label="Próximo">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <% } %>
+             
+                        <% if (current == pages) { %>
+                            <li class="page-item disabled"><a class="page-link"><small>Última</small></a></li>
+                        <% } else { %>
+                            <li class="page-item"><a href="/imoveis?page=<%= pages %>" class="page-link"><small>Última</small></a></li>
+                        <% } %>
+                    </ul>
+                </nav>  
+            <% } %>            
+        </div>
     </div>
-    <% if (pages && pages > 0) { %>
-        <nav aria-label="Paginação dos imóveis" class="table-responsive">
-            <ul class="pagination pagination-sm">
-                <% if (current == 1) { %>
-                    <li class="page-item disabled"><a class="page-link"><small>Primeira</small></a></li>
-                <% } else { %>
-                    <li class="page-item"><a href="/imoveis" class="page-link"><small>Primeira</small></a></li>
-                <% } %>
-                <% if (current == 1) { %>
-                    <li class="page-item disabled">
-                        <a class="page-link" aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <% } else { %>
-                    <li class="page-item">
-                        <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %>" aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <% } %>
-                <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
-                <% if (i !== 1) { %>
-                    <li class="page-item disabled"><a class="page-link">...</a></li>
-                <% } %>
-                <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                    <% if (i == current) { %>
-                        <li class="page-item disabled active">
-                            <a class="page-link"><%= i %></a>
-                        </li>
-                    <% } else { %>
-                        <li class="page-item">
-                            <a class="page-link" href="/imoveis?page=<%= i %>"><%= i %></a>
-                        </li>
-                    <% } %>
-                    <% if (i == Number(current) + 2 && i < pages) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                <% } %>
-                <% if (current == pages) { %>
-                    <li class="page-item">
-                        <a class="page-link disabled" aria-label="Próximo">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <% } else { %>
-                    <li class="page-item">
-                        <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %>" aria-label="Próximo">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <% } %>
-     
-                <% if (current == pages) { %>
-                    <li class="page-item disabled"><a class="page-link"><small>Última</small></a></li>
-                <% } else { %>
-                    <li class="page-item"><a href="/imoveis?page=<%= pages %>" class="page-link"><small>Última</small></a></li>
-                <% } %>
-            </ul>
-        </nav>  
-    <% } %>  
+  
 </section>
 
 <% include ../partials/footer %>

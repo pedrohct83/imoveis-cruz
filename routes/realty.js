@@ -7,16 +7,19 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 20;
-    var pageQuery = parseInt(req.query.page, 10);
-    var pageNumber = pageQuery ? pageQuery : 1;
-
+    var perPage = 20,
+        pageQuery = parseInt(req.query.page, 10),
+        pageNumber = pageQuery ? pageQuery : 1,
+        typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"];    
+    if(!req.query.type) {
+        req.query.type = typesArray;
+    }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
             console.log(err);
             res.redirect("back");
         } else {           
-            Realty.find().skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
+            Realty.find({type: {$in: req.query.type}}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
                 if(err) {
                     console.log(err);
                     res.redirect("back");
@@ -30,7 +33,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 realty,
                                 page: "imoveis",
                                 current: pageNumber,
-                                pages: Math.ceil(count / perPage)
+                                pages: Math.ceil(count / perPage),
+                                typesArray: typesArray,
+                                selectedTypesArray: req.query.type
                             });
                         }
                     });
