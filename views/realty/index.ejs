@@ -3,25 +3,25 @@
 
 <section class="container-fluid content-height py-3">
     <div class="row">
-        <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0">
+        <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Filtros</h5>
                     <form action="/imoveis" method="GET">
                         <% for (let i in typesArray) { %>
                             <% if(selectedTypesArray.includes(typesArray[i])) { %>
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                                     <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
                                     <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
                                 </div>
                             <% } else { %>
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                                     <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
                                     <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
                                 </div>
                             <% } %>
                         <% } %>
-                        <button type="submit" class="btn btn-primary btn-sm">Aplicar</button>
+                        <button type="submit" class="btn btn-primary btn-sm d-block mt-3">Aplicar</button>
                     </form>                    
                 </div>
             </div>         
@@ -41,9 +41,8 @@
                 <table class="table table-bordered table-sm bg-white">
                     <thead>
                         <tr>
-                            <th scope="col">Status</th>
+                            <th scope="col"><i class="fas fa-user-check"></i></th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Dono</th>
                             <th scope="col">Inquilino</th>
                             <th scope="col">Aluguel <small>(R$)</small></th>
                             <th scope="col">Condomínio <small>(R$)</small></th>
@@ -62,7 +61,6 @@
                                         <%= realty.name %>
                                     </a>
                                 </td>
-                                <td><%= realty.owner %></td>
                                 <td><%= realty.tenant.name %></td>
                                 <td>
                                     <% if(realty.rentValue > 0) { %>
