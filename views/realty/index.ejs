@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/imoveis" method="GET">
-                        <h5 class="card-title">Ordenação</h5>
+                        <h5 class="card-title">Ordenar por</h5>
                         <select class="custom-select" name="sortBy">
                             <option selected disabled>Selecione</option>
                             <option value="1">Nome: A-Z</option>
@@ -17,7 +17,7 @@
                             <option value="5">Condomínio: crescente</option>
                             <option value="6">Condomínio: decrescente</option>
                         </select>
-                        <h5 class="card-title mt-3">Filtros</h5>
+                        <h5 class="card-title mt-3">Mostrar somente</h5>
                         <% for (let i in typesArray) { %>
                             <% if(selectedTypesArray.includes(typesArray[i])) { %>
                                 <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
@@ -55,9 +55,9 @@
                             <th scope="col"><i class="fas fa-user-check"></i></th>
                             <th scope="col">Nome</th>
                             <th scope="col">Inquilino</th>
-                            <th scope="col">Aluguel <small>(R$)</small></th>
-                            <th scope="col">Condomínio <small>(R$)</small></th>
-                            <th scope="col">Ações</th>
+                            <th scope="col">Aluguel <small class="d-none d-lg-inline">(R$)</small></th>
+                            <th scope="col">Condomínio <small class="d-none d-lg-inline">(R$)</small></th>
+                            <th scope="col" class="d-none d-lg-table-cell">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +83,7 @@
                                         <%= realty.condominiumValue %>
                                     <% } %>
                                 </td>
-                                <td>
+                                <td class="d-none d-lg-table-cell">
                                     <!-- Trigger delete realty modal -->
                                     <% if (currentUser.isAdmin) { %>
                                     <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
