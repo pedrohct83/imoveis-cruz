@@ -18,11 +18,13 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     switch(req.query.sortBy) {
         case "1": sortBy.name = 1; break;
         case "2": sortBy.name = -1; break;
-        case "3": sortBy.rentValue = 1; break;
-        case "4": sortBy.rentValue = -1; break;
-        case "5": sortBy.condominiumValue = 1; break;
-        case "6": sortBy.condominiumValue = -1; break;
-        default: sortBy.type = 1;
+        case "3": sortBy.type = 1; break;
+        case "4": sortBy.type = -1; break;
+        case "5": sortBy.rentValue = 1; break;
+        case "6": sortBy.rentValue = -1; break;
+        case "7": sortBy.condominiumValue = 1; break;
+        case "8": sortBy.condominiumValue = -1; break;
+        default: sortBy.isRented = -1;
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {

@@ -4,7 +4,7 @@
 <section class="container-fluid content-height py-3">
     <div class="row">
         <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
-            <div class="card rounded-0">
+            <div class="card rounded-0 sticky-top">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <a href="/imoveis/novo" class="btn btn-secondary btn-block">Adicionar Imóvel</a>
@@ -16,10 +16,12 @@
                                 <option selected disabled>Selecione</option>
                                 <option value="1">Nome: A-Z</option>
                                 <option value="2">Nome: Z-A</option>
-                                <option value="3">Aluguel: crescente</option>
-                                <option value="4">Aluguel: decrescente</option>
-                                <option value="5">Condomínio: crescente</option>
-                                <option value="6">Condomínio: decrescente</option>
+                                <option value="3">Tipo: A-Z</option>
+                                <option value="4">Tipo: Z-A</option>
+                                <option value="5">Aluguel: menor p/ maior</option>
+                                <option value="6">Aluguel: maior p/ menor</option>
+                                <option value="7">Condomínio: menor p/ maior</option>
+                                <option value="8">Condomínio: maior p/ menor</option>
                             </select>
                             <h5 class="card-title mt-3">Mostrar somente</h5>
                             <% for (let i in typesArray) { %>
@@ -49,6 +51,7 @@
                         <tr>
                             <th scope="col"><i class="fas fa-user-check"></i></th>
                             <th scope="col">Nome</th>
+                            <th scope="col">Tipo</th>
                             <th scope="col">Inquilino</th>
                             <th scope="col">Aluguel <small class="d-none d-lg-inline">(R$)</small></th>
                             <th scope="col">Condomínio <small class="d-none d-lg-inline">(R$)</small></th>
@@ -66,6 +69,9 @@
                                     <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
                                         <%= realty.name %>
                                     </a>
+                                </td>
+                                <td>
+                                    <%= realty.type %>
                                 </td>
                                 <td><%= realty.tenant.name %></td>
                                 <td>
