@@ -10,16 +10,30 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
-        typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"];    
+        typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
+        sortBy = {};
     if(!req.query.type) {
         req.query.type = typesArray;
+    }
+    switch(req.query.sortBy) {
+        case "1": sortBy.name = 1; break;
+        case "2": sortBy.name = -1; break;
+        case "3": sortBy.rentValue = 1; break;
+        case "4": sortBy.rentValue = -1; break;
+        case "5": sortBy.condominiumValue = 1; break;
+        case "6": sortBy.condominiumValue = -1; break;
+        default: sortBy.type = 1;
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
             console.log(err);
             res.redirect("back");
         } else {           
-            Realty.find({type: {$in: req.query.type}}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function(err, realty) {
+            Realty.find({type: {$in: req.query.type}})
+            .sort(sortBy)
+            .skip((perPage * pageNumber) - perPage)
+            .limit(perPage)
+            .exec(function(err, realty) {
                 if(err) {
                     console.log(err);
                     res.redirect("back");
@@ -35,7 +49,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 current: pageNumber,
                                 pages: Math.ceil(count / perPage),
                                 typesArray: typesArray,
-                                selectedTypesArray: req.query.type
+                                selectedTypesArray: req.query.type,
+                                sortBy: req.query.sortBy
                             });
                         }
                     });

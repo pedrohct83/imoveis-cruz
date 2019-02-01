@@ -6,8 +6,18 @@
         <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Filtros</h5>
                     <form action="/imoveis" method="GET">
+                        <h5 class="card-title">Ordenação</h5>
+                        <select class="custom-select" name="sortBy">
+                            <option selected disabled>Selecione</option>
+                            <option value="1">Nome: A-Z</option>
+                            <option value="2">Nome: Z-A</option>
+                            <option value="3">Aluguel: crescente</option>
+                            <option value="4">Aluguel: decrescente</option>
+                            <option value="5">Condomínio: crescente</option>
+                            <option value="6">Condomínio: decrescente</option>
+                        </select>
+                        <h5 class="card-title mt-3">Filtros</h5>
                         <% for (let i in typesArray) { %>
                             <% if(selectedTypesArray.includes(typesArray[i])) { %>
                                 <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
@@ -21,8 +31,9 @@
                                 </div>
                             <% } %>
                         <% } %>
-                        <button type="submit" class="btn btn-primary btn-sm d-block mt-3">Aplicar</button>
-                    </form>                    
+                        <hr>
+                        <button type="submit" class="btn btn-primary btn-sm btn-block mt-3">Aplicar</button>
+                    </form>
                 </div>
             </div>         
         </div>
@@ -119,6 +130,8 @@
                                 <% typesUrl = typesUrl + "&type=" + selectedTypesArray[i]; %>
                             <% } %>
                         <% } %>
+                        <% var sortBy = "&sortBy=" + sortBy %>
+                        <% console.log(sortBy) %>
                         <% if (current == 1) { %>
                             <li class="page-item disabled"><a class="page-link"><small>Primeira</small></a></li>
                         <% } else { %>
@@ -132,7 +145,7 @@
                             </li>
                         <% } else { %>
                             <li class="page-item">
-                                <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %><%= typesUrl %>" aria-label="Anterior">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) -1 %><%= sortBy %><%= typesUrl %>" aria-label="Anterior">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -148,7 +161,7 @@
                                 </li>
                             <% } else { %>
                                 <li class="page-item">
-                                    <a class="page-link" href="/imoveis?page=<%= i %><%= typesUrl %>"><%= i %></a>
+                                    <a class="page-link" href="/imoveis?page=<%= i %><%= sortBy %><%= typesUrl %>"><%= i %></a>
                                 </li>
                             <% } %>
                             <% if (i == Number(current) + 2 && i < pages) { %>
@@ -163,7 +176,7 @@
                             </li>
                         <% } else { %>
                             <li class="page-item">
-                                <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %><%= typesUrl %>" aria-label="Próximo">
+                                <a class="page-link" href="/imoveis?page=<%= Number(current) + 1 %><%= sortBy %><%= typesUrl %>" aria-label="Próximo">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -171,7 +184,7 @@
                         <% if (current == pages) { %>
                             <li class="page-item disabled"><a class="page-link"><small>Última</small></a></li>
                         <% } else { %>
-                            <li class="page-item"><a href="/imoveis?page=<%= pages %><%= typesUrl %>" class="page-link"><small>Última</small></a></li>
+                            <li class="page-item"><a href="/imoveis?page=<%= pages %><%= sortBy %><%= typesUrl %>" class="page-link"><small>Última</small></a></li>
                         <% } %>
                     </ul>
                 </nav>  
