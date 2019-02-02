@@ -49,10 +49,12 @@
                 <table class="table table-sm bg-white mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Locação</th>
-                            <th scope="col">Condomínio <small class="d-none d-lg-inline">(R$)</small></th>
-                            <th scope="col" class="d-none d-lg-table-cell">Ações</th>
+                            <th scope="col" class="border-0">Imóvel</th>
+                            <th scope="col" class="border-0">Locação</th>
+                            <th scope="col" class="border-0">Condomínio</th>
+                            <% if (currentUser.isAdmin) { %>
+                                <th scope="col" class="d-none d-lg-table-cell border-0">Ações</th>
+                            <% } %>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,21 +73,20 @@
                                         <small class="d-block text-muted">Aluguel: R$<%= realty.rentValue %></small>   
                                     <% } %>
                                 </td>
-                                <td>
+                                <td class="align-middle">
                                     <% if(realty.condominiumValue > 0) { %>
-                                        <%= realty.condominiumValue %>
+                                        R$<%= realty.condominiumValue %>
                                     <% } %>
                                 </td>
-                                <td class="d-none d-lg-table-cell">
-                                    <!-- Trigger delete realty modal -->
-                                    <% if (currentUser.isAdmin) { %>
-                                    <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
-                                    <% } %>
-                                    <!-- Go to edit realty page -->
-                                    <a href="/imoveis/<%= realty._id %>/edit" class="text-info" title="Editar imóvel">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
+                                <% if (currentUser.isAdmin) { %>
+                                    <td class="d-none d-lg-table-cell">
+                                        <!-- Actions -->
+                                        <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
+                                        <a href="/imoveis/<%= realty._id %>/edit" class="text-info" title="Editar imóvel">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                <% } %>
                                 <!-- Delete realty modal -->
                                 <div class="modal fade" id="realty<%= index %>" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
