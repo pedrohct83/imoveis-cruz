@@ -40,7 +40,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     console.log(err);
                     res.redirect("back");
                 } else {
-                    Realty.count().exec(function (err, count) {
+                    Realty.countDocuments({type: {$in: req.query.type}}).exec(function (err, count) {
                         if(err) {
                             console.log(err);
                         } else {
@@ -50,6 +50,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 page: "imoveis",
                                 current: pageNumber,
                                 pages: Math.ceil(count / perPage),
+                                perPage: perPage,
+                                count: count,
                                 typesArray: typesArray,
                                 selectedTypesArray: req.query.type,
                                 sortBy: req.query.sortBy
