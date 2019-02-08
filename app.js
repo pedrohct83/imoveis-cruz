@@ -7,7 +7,8 @@ var express = require("express"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
-    User = require("./models/user");
+    User = require("./models/user"),
+    backup = require('mongodb-backup');
     //seedDB = require("./seeds");
 
 // Require and create route variables
@@ -28,6 +29,19 @@ app.use(methodOverride("_method"));
 // Set mongoose connection url
 var url = process.env.DATABASEURL || "mongodb://localhost:27017/imoveis";
 mongoose.connect(url, {useNewUrlParser: true});
+
+// Config mongodb backup
+backup({
+   uri: process.env.DATABASEURL || "mongodb://localhost:27017/imoveis",
+   root: __dirname,
+   callback: function(err) {
+       if(err) {
+           console.error(err);
+       } else {
+           console.log("MongoDB backup finished");
+       }
+   }
+});
 
 // Require moment
 app.locals.moment = require("moment");
