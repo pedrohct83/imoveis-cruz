@@ -33,7 +33,7 @@ mongoose.connect(url, {useNewUrlParser: true});
 // Config mongodb backup
 backup({
    uri: process.env.DATABASEURL || "mongodb://localhost:27017/imoveis",
-   root: __dirname,
+   root: __dirname + "/mongodb-backup",
    callback: function(err) {
        if(err) {
            console.error(err);
