@@ -16,20 +16,9 @@
                     <small class="d-block">Mostrando <%= perPage %> imóveis de <%= count %></small>
                     <small class="d-block">Total de páginas: <%= pages %></small>
                 </div>
-                <!--<form action="/imoveis" method="GET" class="box-shadow">-->
-                <!--    <div class="form-row align-items-center">-->
-                <!--        <div class="col-auto pr-0">-->
-                <!--            <label class="sr-only" for="search">Procurar</label>-->
-                <!--            <input type="text" class="form-control rounded-0" id="search" name="searchQuery" placeholder="Procurar imóvel" style="max-width: 150px;">-->
-                <!--        </div>-->
-                <!--        <div class="col-auto pl-0">-->
-                <!--            <button type="submit" class="btn btn-secondary rounded-0"><i class="fas fa-search fa-sm"></i></button>-->
-                <!--        </div>-->
-                <!--    </div>                -->
-                <!--</form>-->
             </div>
-            <% if(noMatch) { %>
-                <span class="d-block mb-3">Mostrando imóveis com o termo: "<%= searchQuery %>"</span>
+            <% if(searchQuery) { %>
+                <span class="d-block mb-3">Mostrando imóveis pelo nome: "<%= searchQuery %>"</span>
             <% } %>
             <div class="table-responsive box-shadow">
                 <table class="table table-sm bg-white mb-0">
