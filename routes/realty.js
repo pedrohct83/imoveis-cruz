@@ -14,6 +14,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         sortBy = {};
     if(!req.query.type) {
         req.query.type = typesArray;
+    } else {
+        if(!Array.isArray(req.query.type)) {
+            req.query.type = req.query.type.split();
+        }
     }
     switch(req.query.sortBy) {
         case "1": sortBy.name = 1; break;
