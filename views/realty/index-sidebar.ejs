@@ -1,8 +1,13 @@
 <div class="card rounded-0 border-0 sticky-top box-shadow">
+    <div class="card-header">
+        <h5 class="m-0">Filtros</h5>
+    </div>
     <div class="card-body">
         <form action="/imoveis" method="GET">
-            <h5 class="card-title font-weight-normal">Ordenar por:</h5>
-            <select class="custom-select rounded-0" name="sortBy">
+            <label class="font-weight-bold">Procurar por nome:</label>
+            <input type="text" class="form-control rounded-0 mb-3" id="search" name="searchQuery" placeholder="ex: Jusmar" value="<%= searchQuery %>">
+            <label class="font-weight-bold">Ordenar por:</label>
+            <select class="custom-select rounded-0 mb-3" name="sortBy">
                 <option value="1" <%= (sortBy == 1) ? "selected" : "" %>>Nome: A-Z</option>
                 <option value="2" <%= (sortBy == 2) ? "selected" : "" %>>Nome: Z-A</option>
                 <option value="3" <%= (sortBy == 3) ? "selected" : "" %>>Tipo: A-Z</option>
@@ -12,7 +17,7 @@
                 <option value="7" <%= (sortBy == 7) ? "selected" : "" %>>Condomínio: menor p/ maior &nbsp;&nbsp;</option>
                 <option value="8" <%= (sortBy == 8) ? "selected" : "" %>>Condomínio: maior p/ menor &nbsp;&nbsp;</option>
             </select>
-            <h5 class="card-title font-weight-normal mt-3">Mostrar somente:</h5>
+            <label class="font-weight-bold">Mostrar somente:</label>
             <% for (let i in typesArray) { %>
                 <% if(selectedTypesArray.includes(typesArray[i])) { %>
                     <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
@@ -29,5 +34,6 @@
             <hr>
             <button type="submit" class="btn btn-primary btn-sm btn-block rounded-0 mt-3">Aplicar</button>
         </form>
+        <a href="/imoveis" class="btn btn-light btn-sm btn-block rounded-0 mt-2">Resetar filtros</a>
     </div>
 </div>  

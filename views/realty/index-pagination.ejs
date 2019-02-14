@@ -1,8 +1,3 @@
-<% if(perPage > count) { %>
-    <% perPage = count %>
-<% } %>
-<small class="d-block">Mostrando <%= perPage %> imóveis de <%= count %></small>
-<small class="d-block mb-3">Total de páginas: <%= pages %></small>
 <% if (pages && pages > 0) { %>
     <nav aria-label="Paginação dos imóveis" class="table-responsive w-auto order-1 box-shadow" style="display: table-row-group">
         <ul class="pagination pagination-sm rounded-0 m-0">
