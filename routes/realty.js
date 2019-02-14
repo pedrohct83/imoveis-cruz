@@ -8,7 +8,7 @@ var express = require("express"),
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var noMatch = null,
-        perPage = 25,
+        perPage = 2,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
@@ -39,7 +39,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         case "6": sortBy.rentValue = -1; break;
         case "7": sortBy.condominiumValue = 1; break;
         case "8": sortBy.condominiumValue = -1; break;
-        default: sortBy.name = -1;
+        default: sortBy.name = 1;
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {

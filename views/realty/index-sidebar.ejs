@@ -3,15 +3,14 @@
         <form action="/imoveis" method="GET">
             <h5 class="card-title font-weight-normal">Ordenar por:</h5>
             <select class="custom-select rounded-0" name="sortBy">
-                <option selected disabled>Selecione</option>
-                <option value="1">Nome: A-Z</option>
-                <option value="2">Nome: Z-A</option>
-                <option value="3">Tipo: A-Z</option>
-                <option value="4">Tipo: Z-A</option>
-                <option value="5">Aluguel: menor p/ maior &nbsp;&nbsp;</option>
-                <option value="6">Aluguel: maior p/ menor &nbsp;&nbsp;</option>
-                <option value="7">Condomínio: menor p/ maior &nbsp;&nbsp;</option>
-                <option value="8">Condomínio: maior p/ menor &nbsp;&nbsp;</option>
+                <option value="1" <%= (sortBy == 1) ? "selected" : "" %>>Nome: A-Z</option>
+                <option value="2" <%= (sortBy == 2) ? "selected" : "" %>>Nome: Z-A</option>
+                <option value="3" <%= (sortBy == 3) ? "selected" : "" %>>Tipo: A-Z</option>
+                <option value="4" <%= (sortBy == 4) ? "selected" : "" %>>Tipo: Z-A</option>
+                <option value="5" <%= (sortBy == 5) ? "selected" : "" %>>Aluguel: menor p/ maior &nbsp;&nbsp;</option>
+                <option value="6" <%= (sortBy == 6) ? "selected" : "" %>>Aluguel: maior p/ menor &nbsp;&nbsp;</option>
+                <option value="7" <%= (sortBy == 7) ? "selected" : "" %>>Condomínio: menor p/ maior &nbsp;&nbsp;</option>
+                <option value="8" <%= (sortBy == 8) ? "selected" : "" %>>Condomínio: maior p/ menor &nbsp;&nbsp;</option>
             </select>
             <h5 class="card-title font-weight-normal mt-3">Mostrar somente:</h5>
             <% for (let i in typesArray) { %>

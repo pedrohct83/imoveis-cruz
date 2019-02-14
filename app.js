@@ -48,7 +48,7 @@ app.locals.moment = require("moment");
 
 // Create session middleware
 app.use(session({
-    secret: "Once again Rusty wins cutest dog!",
+    secret: "P@ssw0rd",
     resave: false,
     saveUninitialized: false
 }));
