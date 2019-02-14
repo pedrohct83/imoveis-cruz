@@ -7,16 +7,27 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 25,
+    var noMatch = null,
+        perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
-        sortBy = {};
-    if(!req.query.type) {
-        req.query.type = typesArray;
+        sortBy = {},
+        searchQuery = req.query.searchQuery,
+        typeQuery = req.query.type,
+        regex = null;
+    if(searchQuery) {
+        regex = new RegExp(escapeRegex(searchQuery), 'gi');
+        noMatch = true;
     } else {
-        if(!Array.isArray(req.query.type)) {
-            req.query.type = req.query.type.split();
+        regex = /.*/gi;
+        noMatch = false;
+    }
+    if(!typeQuery) {
+        typeQuery = typesArray;
+    } else {
+        if(!Array.isArray(typeQuery)) {
+            typeQuery = typeQuery.split();
         }
     }
     switch(req.query.sortBy) {
@@ -28,14 +39,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         case "6": sortBy.rentValue = -1; break;
         case "7": sortBy.condominiumValue = 1; break;
         case "8": sortBy.condominiumValue = -1; break;
-        default: sortBy.isRented = -1;
+        default: sortBy.name = -1;
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
             console.log(err);
             res.redirect("back");
         } else {           
-            Realty.find({type: {$in: req.query.type}})
+            Realty.find({type: {$in: typeQuery}, name: regex})
             .sort(sortBy)
             .skip((perPage * pageNumber) - perPage)
             .limit(perPage)
@@ -44,7 +55,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     console.log(err);
                     res.redirect("back");
                 } else {
-                    Realty.countDocuments({type: {$in: req.query.type}}).exec(function (err, count) {
+                    Realty.countDocuments({type: {$in: typeQuery}, name: regex}).exec(function (err, count) {
                         if(err) {
                             console.log(err);
                         } else {
@@ -57,8 +68,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 perPage: perPage,
                                 count: count,
                                 typesArray: typesArray,
-                                selectedTypesArray: req.query.type,
-                                sortBy: req.query.sortBy
+                                selectedTypesArray: typeQuery,
+                                sortBy: req.query.sortBy,
+                                noMatch: noMatch,
+                                searchQuery: searchQuery
                             });
                         }
                     });
@@ -211,5 +224,9 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
         }
     });
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 
 module.exports = router;

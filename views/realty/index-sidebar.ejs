@@ -1,0 +1,34 @@
+<div class="card rounded-0 border-0 sticky-top box-shadow">
+    <div class="card-body">
+        <form action="/imoveis" method="GET">
+            <h5 class="card-title font-weight-normal">Ordenar por:</h5>
+            <select class="custom-select rounded-0" name="sortBy">
+                <option selected disabled>Selecione</option>
+                <option value="1">Nome: A-Z</option>
+                <option value="2">Nome: Z-A</option>
+                <option value="3">Tipo: A-Z</option>
+                <option value="4">Tipo: Z-A</option>
+                <option value="5">Aluguel: menor p/ maior &nbsp;&nbsp;</option>
+                <option value="6">Aluguel: maior p/ menor &nbsp;&nbsp;</option>
+                <option value="7">Condomínio: menor p/ maior &nbsp;&nbsp;</option>
+                <option value="8">Condomínio: maior p/ menor &nbsp;&nbsp;</option>
+            </select>
+            <h5 class="card-title font-weight-normal mt-3">Mostrar somente:</h5>
+            <% for (let i in typesArray) { %>
+                <% if(selectedTypesArray.includes(typesArray[i])) { %>
+                    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                        <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
+                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                    </div>
+                <% } else { %>
+                    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                        <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
+                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                    </div>
+                <% } %>
+            <% } %>
+            <hr>
+            <button type="submit" class="btn btn-primary btn-sm btn-block rounded-0 mt-3">Aplicar</button>
+        </form>
+    </div>
+</div>  

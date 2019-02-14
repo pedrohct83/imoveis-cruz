@@ -66,6 +66,7 @@ var Realty = require("./models/realty"),
 
 async function seedDB(){
     try {
+        console.log("Executing seedsDB");
         // for (let i = 1; i <= 22; i++) {
         //     let newRealty = {
         //         name: "Ed. Março Garagem " + i,
