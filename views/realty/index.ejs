@@ -17,8 +17,10 @@
                     <small class="d-block">Total de páginas: <%= pages %></small>
                 </div>
             </div>
-            <% if(searchQuery) { %>
+            <% if(count > 0 && searchQuery) { %>
                 <span class="d-block mb-3">Mostrando imóveis pelo nome: "<%= searchQuery %>"</span>
+            <% } else if(searchQuery) { %>
+                <span class="d-block mb-3">Nenhum imóvel encontrado com o nome "<%= searchQuery %>"</span>
             <% } %>
             <div class="table-responsive box-shadow">
                 <table class="table table-sm bg-white mb-0">
