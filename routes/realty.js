@@ -8,7 +8,7 @@ var express = require("express"),
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var noMatch = null,
-        perPage = 2,
+        perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
