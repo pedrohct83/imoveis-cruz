@@ -1,6 +1,13 @@
 var mongoose = require("mongoose");
 
 var realtySchema = new mongoose.Schema({
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
     name: String,
     type: String,
     owner: String,
@@ -23,7 +30,13 @@ var realtySchema = new mongoose.Schema({
     },
     contractStart: Date,
     contractEnd: Date,
-    rentValue: {type: Number, get: getPrice, set: setPrice}
+    rentValue: {type: Number, get: getPrice, set: setPrice},
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ],
 });
 
 function getPrice(num){
