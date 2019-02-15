@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <form action="/imoveis" method="GET">
-            <label class="font-weight-bold">Procurar por nome:</label>
+            <label class="font-weight-bold">Procurar imóvel:</label>
             <input type="text" class="form-control rounded-0 mb-3" id="search" name="searchQuery" placeholder="ex: Jusmar" value="<%= searchQuery %>">
             <label class="font-weight-bold">Ordenado por:</label>
             <select class="custom-select rounded-0 mb-3" name="sortBy">
@@ -12,12 +12,12 @@
                 <option value="2" <%= (sortBy == 2) ? "selected" : "" %>>Nome: Z-A</option>
                 <option value="3" <%= (sortBy == 3) ? "selected" : "" %>>Tipo: A-Z</option>
                 <option value="4" <%= (sortBy == 4) ? "selected" : "" %>>Tipo: Z-A</option>
-                <option value="5" <%= (sortBy == 5) ? "selected" : "" %>>Aluguel: menor p/ maior &nbsp;&nbsp;</option>
-                <option value="6" <%= (sortBy == 6) ? "selected" : "" %>>Aluguel: maior p/ menor &nbsp;&nbsp;</option>
-                <option value="7" <%= (sortBy == 7) ? "selected" : "" %>>Condomínio: menor p/ maior &nbsp;&nbsp;</option>
-                <option value="8" <%= (sortBy == 8) ? "selected" : "" %>>Condomínio: maior p/ menor &nbsp;&nbsp;</option>
+                <option value="5" <%= (sortBy == 5) ? "selected" : "" %>>Menor aluguel &nbsp;&nbsp;</option>
+                <option value="6" <%= (sortBy == 6 || sortBy == undefined) ? "selected" : "" %>>Maior aluguel &nbsp;&nbsp;</option>
+                <option value="7" <%= (sortBy == 7) ? "selected" : "" %>>Menor condomínio &nbsp;&nbsp;</option>
+                <option value="8" <%= (sortBy == 8) ? "selected" : "" %>>Maior condomínio &nbsp;&nbsp;</option>
             </select>
-            <label class="font-weight-bold">Mostrar somente:</label>
+            <label class="d-block font-weight-bold">Mostrar somente:</label>
             <% for (let i in typesArray) { %>
                 <% if(selectedTypesArray.includes(typesArray[i])) { %>
                     <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">

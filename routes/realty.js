@@ -36,7 +36,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         case "6": sortBy.rentValue = -1; break;
         case "7": sortBy.condominiumValue = 1; break;
         case "8": sortBy.condominiumValue = -1; break;
-        default: sortBy.name = 1;
+        default: sortBy.rentValue = -1;
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
