@@ -6330,9 +6330,9 @@ a.text-dark:hover, a.text-dark:focus {
     min-height: calc(100vh - 56px - 37px); } }
 
 .realty-map iframe {
+  display: block;
   height: 250px;
-  width: 100%;
-  border: 1px solid #dee2e6 !important; }
+  width: 100%; }
 
 @media (min-width: 768px) {
   .realty-map iframe {
