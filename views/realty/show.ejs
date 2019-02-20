@@ -82,23 +82,45 @@
             </div>
         </div>
     </div>
-    <!--<div class="card border-0 rounder-0 box-shadow my-3">-->
-    <!--    <div class="card-body">-->
-    <!--        <h5 class="card-title">Comentários</h5>-->
-    <!--        <div class="comment border-left pl-2 mb-3">-->
-    <!--            <small><span class="font-weight-bold">Júlia</span>, 5 minutos atrás</small>-->
-    <!--            <div class="comment-content">-->
-    <!--                &ldquo;Lorem ipsum dolor sit amet&rdquo;-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--        <div class="comment border-left pl-2 mb-3">-->
-    <!--            <small><span class="font-weight-bold">Júlia</span>, 5 minutos atrás</small>-->
-    <!--            <div class="comment-content">-->
-    <!--                &ldquo;Lorem ipsum dolor sit amet&rdquo;-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</div>-->
+    <div class="card border-0 rounder-0 box-shadow my-3">
+        <div class="card-body">
+            <h5 class="card-title">Comentários</h5>
+            <% if(realty.comments.length === 0 ) { %>
+                <p>Não há comentários para este imóvel</p>
+            <% } else { %>
+                <% realty.comments.forEach(function(comment) { %>
+                    <div class="comment border-left pl-2 mb-3">
+                        <small><span class="font-weight-bold"><%= comment.author.username %></span>, <%= moment(comment.createdAt).fromNow() %></small>
+                        <div class="comment-content mt-2">
+                            &ldquo;<%= comment.text %>&rdquo;
+                        </div>
+                        <!--<% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>-->
+                        <!--    <div class="comment-actions mt-2">-->
+                        <!--        <a class="btn btn-link text-warning p-0" href="/realty/<%= realty._id %>/comments/<%= comment._id %>/edit"><small>Editar</small></a>-->
+                        <!--        <form action="/realty/<%= realty._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="d-inline">-->
+                        <!--            <button type="button" class="btn btn-link text-danger p-0"><small>Deletar</small></button>-->
+                        <!--        </form>-->
+                        <!--    </div>-->
+                        <!--<% } %>                       -->
+                    </div>
+                <% }) %>
+            <% } %>
+            <i class="fas fa-comments text-primary"></i> <a data-toggle="collapse" href="#newCommentCollapse" role="button">Adicionar comentário</a>
+            <div class="collapse mt-3" id="newCommentCollapse">
+                <div class="card card-body">
+                    <form action="/imoveis/<%= realty._id %>/comments" method="POST">
+                        <p>Autor: <%= currentUser.username %></p>
+                        <div class="form-group">
+                            <textarea class="form-control" name="comment[text]" placeholder="Digite aqui seu comentário" rows="5" cols="70"></textarea>
+                        </div>
+                        <div class="form-group mb-0">
+                            <button class="btn btn-success btn-sm">Enviar</button>
+                        </div>
+                    </form>                   
+                </div>
+            </div>            
+        </div>
+    </div>
     <div class="d-flex justify-content-between align-items-center">
         <a href="javascript:history.back()">&laquo; Voltar</a>
         <div>

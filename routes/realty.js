@@ -89,9 +89,9 @@ router.get("/novo", middleware.isLoggedIn, function(req, res) {
     });
 });
 
-// SHOW - Go to a realty page
+// SHOW - Show more info about a realty
 router.get("/:id", middleware.isLoggedIn, function(req, res) {
-    Realty.findById(req.params.id).exec(function(err, realty) {
+    Realty.findById(req.params.id).populate("comments").exec(function(err, realty) {
         if (err || !realty) {
             req.flash("error", "Imóvel não encontrado");
             res.redirect("/imoveis");

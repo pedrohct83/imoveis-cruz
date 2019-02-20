@@ -1,8 +1,9 @@
-var express = require("express");
-var router = express.Router({mergeParams: true});
-var Realty = require("../models/realty");
-var Comment = require("../models/comment");
-var middleware = require("../middleware");
+var express = require("express"),
+    router = express.Router({mergeParams: true}),
+    bodyParser = require("body-parser"),
+    Realty = require("../models/realty"),
+    Comment = require("../models/comment"),
+    middleware = require("../middleware");
 
 // Comments new
 // router.get("/new", middleware.isLoggedIn, function(req, res) {
@@ -15,35 +16,30 @@ var middleware = require("../middleware");
 //     });
 // });
 
-// Comments create
-// router.post("/", middleware.isLoggedIn, function(req, res) {
-//   Campground.findById(req.params.id, function(err, campground) {
-//      if(err){
-//          console.log(err);
-//          res.redirect("/campgrounds");
-//      } else {
-//          Comment.create(req.body.comment, function(err, comment) {
-//              if(err) {
-//                  req.flash("error", "Something went wrong");
-//                  console.log(err);
-//              } else {
-//                  // Add username and id to comment, then save it
-//                  comment.author.id = req.user._id;
-//                  comment.author.username = req.user.username;
-//                  comment.save();
-                 
-//                  // Add comment to the campground and save the campground
-//                  campground.comments.push(comment);
-//                  campground.save();
-                 
-//                  req.flash("success", "Successfully added comment");
-                 
-//                  res.redirect("/campgrounds/" + campground._id);
-//              }
-//          });
-//      }
-//   });
-// });
+router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
+    Realty.findById(req.params.id, function(err, realty) {
+        if (err) {
+            console.log(err);
+            res.redirect("back");
+        }
+        else {
+            Comment.create(req.body.comment, function(err, comment) {
+                if (err) {
+                    req.flash("error", "Erro ao criar comentário");
+                    console.log(err);
+                }
+                else {
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    comment.save();
+                    realty.comments.push(comment);
+                    realty.save();
+                    res.redirect("/imoveis/" + realty._id);
+                }
+            });
+        }
+    });
+});
 
 // Comments edit
 // router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req,res){
