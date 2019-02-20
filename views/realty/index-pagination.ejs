@@ -8,14 +8,18 @@
                 <% } %>
             <% } %>
             <% var sort = "&sortBy=" + sortBy %>
-            <% var search = "&searchQuery=" + searchQuery %>
+            <% var search = "" %>
+            <% if(searchQuery) { %>
+                <% search = "&searchQuery=" + searchQuery %>
+            <% } %>
+            <% var allParameters = search + sort + typesUrl %>
             <% if (current == 1) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0"><small>Primeira</small></a>
                 </li>
             <% } else { %>
                 <li class="page-item">
-                    <a href="/imoveis?page=1<%= search %><%= sort %><%= typesUrl %>" class="page-link border-0"><small>Primeira</small></a>
+                    <a href="/imoveis?page=1<%= allParameters %>" class="page-link border-0"><small>Primeira</small></a>
                 </li>
             <% } %>
             <% if (current == 1) { %>
@@ -26,7 +30,7 @@
                 </li>
             <% } else { %>
                 <li class="page-item">
-                    <a class="page-link border-0" href="/imoveis?page=<%= Number(current) -1 %><%= search %><%= sort %><%= typesUrl %>" aria-label="Anterior">
+                    <a class="page-link border-0" href="/imoveis?page=<%= Number(current) -1 %><%= allParameters %>" aria-label="Anterior">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -42,7 +46,7 @@
                     </li>
                 <% } else { %>
                     <li class="page-item">
-                        <a class="page-link border-0" href="/imoveis?page=<%= i %><%= search %><%= sort %><%= typesUrl %>"><%= i %></a>
+                        <a class="page-link border-0" href="/imoveis?page=<%= i %><%= allParameters %>"><%= i %></a>
                     </li>
                 <% } %>
                 <% if (i == Number(current) + 2 && i < pages) { %>
@@ -59,7 +63,7 @@
                 </li>
             <% } else { %>
                 <li class="page-item">
-                    <a class="page-link border-0" href="/imoveis?page=<%= Number(current) + 1 %><%= search %><%= sort %><%= typesUrl %>" aria-label="Próximo">
+                    <a class="page-link border-0" href="/imoveis?page=<%= Number(current) + 1 %><%= allParameters %>" aria-label="Próximo">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -70,7 +74,7 @@
                 </li>
             <% } else { %>
                 <li class="page-item">
-                    <a href="/imoveis?page=<%= pages %><%= search %><%= sort %><%= typesUrl %>" class="page-link border-0"><small>Última</small></a>
+                    <a href="/imoveis?page=<%= pages %><%= allParameters %>" class="page-link border-0"><small>Última</small></a>
                 </li>
             <% } %>
         </ul>
