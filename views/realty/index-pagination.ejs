@@ -8,10 +8,7 @@
                 <% } %>
             <% } %>
             <% var sort = "&sortBy=" + sortBy %>
-            <% var search = "" %>
-            <% if(searchQuery) { %>
-                <% search = "&searchQuery=" + searchQuery %>
-            <% } %>
+            <% var search = "&searchQuery=" + searchQuery %>
             <% var allParameters = search + sort + typesUrl %>
             <% if (current == 1) { %>
                 <li class="page-item disabled">
