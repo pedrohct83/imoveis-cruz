@@ -47,6 +47,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             .sort(sortBy)
             .skip((perPage * pageNumber) - perPage)
             .limit(perPage)
+            .populate("comments")
             .exec(function(err, realty) {
                 if(err) {
                     console.log(err);

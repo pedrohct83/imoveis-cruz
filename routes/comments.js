@@ -63,12 +63,11 @@ router.put("/:comment_id", middleware.checkCommentOwnership, bodyParser.urlencod
 
 // DESTROY
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findByIdAndRemove(req.params.comment_id, function(err) {
+    Comment.findByIdAndDelete(req.params.comment_id, function(err) {
         if (err) {
             res.redirect("back");
         }
         else {
-            console.log('delete route');
             req.flash("success", "Comentário removido");
             res.redirect("/imoveis/" + req.params.id);
         }
