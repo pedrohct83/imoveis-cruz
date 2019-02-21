@@ -95,14 +95,18 @@
                         <div class="comment-content mt-2">
                             &ldquo;<%= comment.text %>&rdquo;
                         </div>
-                        <!--<% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>-->
-                        <!--    <div class="comment-actions mt-2">-->
-                        <!--        <a class="btn btn-link text-warning p-0" href="/realty/<%= realty._id %>/comments/<%= comment._id %>/edit"><small>Editar</small></a>-->
-                        <!--        <form action="/realty/<%= realty._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="d-inline">-->
-                        <!--            <button type="button" class="btn btn-link text-danger p-0"><small>Deletar</small></button>-->
-                        <!--        </form>-->
-                        <!--    </div>-->
-                        <!--<% } %>                       -->
+                        <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+                            <div class="comment-actions mt-2">
+                                <a class="btn btn-link text-info p-0 mr-2" href="/imoveis/<%= realty._id %>/comments/<%= comment._id %>/edit">
+                                    <small><i class="fas fa-edit mr-1"></i>Editar</small>
+                                </a>
+                                <form action="/imoveis/<%= realty._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="d-inline">
+                                    <button class="btn btn-link text-danger p-0">
+                                        <small><i class="fas fa-trash-alt mr-1"></i>Excluir</small>
+                                    </button>
+                                </form>
+                            </div>
+                        <% } %>
                     </div>
                 <% }) %>
             <% } %>
@@ -127,7 +131,7 @@
         <div>
             <a href="/imoveis/<%= realty._id %>/edit" class="text-info mr-3"><i class="fas fa-edit mr-1"></i>Editar</a>
             <a href="#" class="text-danger" data-toggle="modal" data-target="#deleteRealtyModal">
-                <i class="fas fa-trash mr-1"></i>Excluir
+                <i class="fas fa-trash-alt mr-1"></i>Excluir
             </a>
         </div>
     </div>

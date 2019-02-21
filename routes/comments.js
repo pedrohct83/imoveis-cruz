@@ -1,21 +1,11 @@
 var express = require("express"),
-    router = express.Router({mergeParams: true}),
+    router = express.Router({ mergeParams: true }),
     bodyParser = require("body-parser"),
     Realty = require("../models/realty"),
     Comment = require("../models/comment"),
     middleware = require("../middleware");
 
-// Comments new
-// router.get("/new", middleware.isLoggedIn, function(req, res) {
-//     Campground.findById(req.params.id, function(err, campground) {
-//       if(err){
-//           console.log(err);
-//       } else {
-//           res.render("comments/new", {campground: campground});
-//       }
-//     });
-// });
-
+// CREATE
 router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
     Realty.findById(req.params.id, function(err, realty) {
         if (err) {
@@ -41,44 +31,48 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
     });
 });
 
-// Comments edit
-// router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req,res){
-//     Campground.findById(req.params.id, function(err, foundCampground){
-//         if (err || !foundCampground) {
-//             req.flash("error", "No campground found");
-//             return res.redirect("back");    
-//         }    
-//         Comment.findById(req.params.comment_id, function(err,foundComment){
-//             if(err){
-//                 res.redirect("back");
-//             } else {
-//                 res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
-//             }
-//         }); 
-//     });
-// });
+// EDIT PAGE
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res) {
+    Realty.findById(req.params.id, function(err, realty) {
+        if (err || !realty) {
+            req.flash("error", "Imóvel não encontrado");
+            return res.redirect("back");
+        }
+        Comment.findById(req.params.comment_id, function(err, comment) {
+            if (err) {
+                res.redirect("back");
+            }
+            else {
+                res.render("comments/edit", { realtyId: req.params.id, comment });
+            }
+        });
+    });
+});
 
-// Comments update
-// router.put("/:comment_id", middleware.checkCommentOwnership, function(req,res){
-//   Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
-//       if(err){
-//           res.redirect("back");
-//       } else {
-//           res.redirect("/campgrounds/" + req.params.id);
-//       }
-//   }); 
-// });
+// UPDATE
+router.put("/:comment_id", middleware.checkCommentOwnership, bodyParser.urlencoded({ extended: true }), function(req, res) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment) {
+        if (err) {
+            res.redirect("back");
+        }
+        else {
+            res.redirect("/imoveis/" + req.params.id);
+        }
+    });
+});
 
-// Comment destroy
-// router.delete("/:comment_id", middleware.checkCommentOwnership, function(req,res){
-//   Comment.findByIdAndRemove(req.params.comment_id, function(err){
-//       if(err) {
-//           res.redirect("back");
-//       } else {
-//           req.flash("success", "Comment deleted");
-//           res.redirect("/campgrounds/" + req.params.id);
-//       }
-//   });
-// });
+// DESTROY
+router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
+    Comment.findByIdAndRemove(req.params.comment_id, function(err) {
+        if (err) {
+            res.redirect("back");
+        }
+        else {
+            console.log('delete route');
+            req.flash("success", "Comentário removido");
+            res.redirect("/imoveis/" + req.params.id);
+        }
+    });
+});
 
 module.exports = router;
