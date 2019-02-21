@@ -3,6 +3,7 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     Realty = require("../models/realty"),
     Tenant = require("../models/tenant"),
+    Comment = require("../models/comment"),
     middleware = require("../middleware");
 
 // INDEX - Show all realty
@@ -215,9 +216,16 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
             res.redirect("/imoveis");
         }
         else {
-            realty.remove();
-            req.flash("success", `Imóvel "${realty.name}" foi removido.`);
-            res.redirect("/imoveis");
+            Comment.remove({"_id": {$in: realty.comments}}, function (err) {
+                if(err) {
+                    console.log(err);
+                    return res.redirect("/imoveis");
+                } else {
+                    realty.remove();
+                    req.flash("success", `Imóvel "${realty.name}" foi removido.`);
+                    res.redirect("/imoveis");
+                }
+            });
         }
     });
 });
