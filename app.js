@@ -9,7 +9,7 @@ var express = require("express"),
     methodOverride = require("method-override"),
     User = require("./models/user"),
     backup = require('mongodb-backup');
-    //seedDB = require("./seeds");
+    //seedDB = require("./scripts/seeds");
 
 // Require and create route variables
 var indexRoutes = require("./routes/index"),

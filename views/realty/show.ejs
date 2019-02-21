@@ -84,7 +84,8 @@
     </div>
     <div class="card border-0 rounder-0 box-shadow my-3">
         <div class="card-body">
-            <h5 class="card-title">Comentários</h5>
+            <% var totalComments = (realty.comments.length > 0) ? " (" + realty.comments.length + ")" : "" %>
+            <h5 class="card-title">Comentários<%= totalComments %></h5>
             <% if(realty.comments.length === 0 ) { %>
                 <p>Não há comentários para este imóvel</p>
             <% } else { %>
