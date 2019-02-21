@@ -17,6 +17,7 @@ var realtySchema = new mongoose.Schema({
     areaSize: { type: Number, min: 1 },
     fiscalNum: { type: Number, min: 1 },
     condominiumValue: {type: Number, get: getPrice, set: setPrice},
+    iptuValue: {type: Number, get: getPrice, set: setPrice},
     notes: String,
     isRented: String,
     tenant: {

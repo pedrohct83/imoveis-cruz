@@ -126,6 +126,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         contractEnd: req.body.contractEnd || null,
         rentValue: req.body.rentValue || 0,
         condominiumValue: req.body.condominiumValue || 0,
+        iptuValue: req.body.iptuValue || 0,
         notes: req.body.notes
     };
     if(req.body.isRented === "Sim" && req.body.tenantId) {
