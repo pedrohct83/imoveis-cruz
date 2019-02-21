@@ -18,7 +18,6 @@ var realtySchema = new mongoose.Schema({
     fiscalNum: { type: Number, min: 1 },
     condominiumValue: {type: Number, get: getPrice, set: setPrice},
     iptuValue: {type: Number, get: getPrice, set: setPrice},
-    notes: String,
     isRented: String,
     tenant: {
         id: {
@@ -31,6 +30,7 @@ var realtySchema = new mongoose.Schema({
     contractStart: Date,
     contractEnd: Date,
     rentValue: {type: Number, get: getPrice, set: setPrice},
+    notes: String,
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
