@@ -8,7 +8,7 @@ var express = require("express"),
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 25,
+    var perPage = 3,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
@@ -69,7 +69,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 typesArray: typesArray,
                                 selectedTypesArray: typeQuery,
                                 sortBy: req.query.sortBy,
-                                searchQuery: searchQuery
+                                searchQuery: searchQuery || ""
                             });
                         }
                     });
