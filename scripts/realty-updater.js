@@ -5,7 +5,7 @@ var url = process.env.DATABASEURL || "mongodb://localhost:27017/imoveis";
 mongoose.connect(url, { useNewUrlParser: true });
 
 var myArgs = require('optimist').argv,
-    help = 'Realty Updater 1.0\nRode o script com as flags: -n realty_name -k realty_key -v realty_key_newvalue';
+    help = 'Realty Updater 1.0\nRun with the flags: -n realty_name -k realty_key -v realty_key_newvalue';
 
 if ((myArgs.h) || (myArgs.help)) {
     console.log(help);
@@ -16,7 +16,6 @@ if (myArgs.n && myArgs.k && myArgs.v) {
     console.log(`All flags detected: ${myArgs.n} ${myArgs.k} ${myArgs.v}`);
     var realtyName = new RegExp(escapeRegex(myArgs.n), 'gi');
     (async () => {
-        let realtyName = new RegExp(escapeRegex(myArgs.n), 'gi');
         let promise = await Realty.find({ name: realtyName });
         if (promise.length === 0) {
             console.log("No realty found with that name");
