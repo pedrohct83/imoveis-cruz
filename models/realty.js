@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
 var realtySchema = new mongoose.Schema({
+    isFamily: Boolean,
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

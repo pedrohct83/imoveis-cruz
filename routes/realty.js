@@ -129,6 +129,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
         iptuValue: req.body.iptuValue || 0,
         notes: req.body.notes
     };
+    (req.body.isFamily === "on") ? newRealty.isFamily = true : newRealty.isFamily = false;
     if(req.body.isRented === "Sim" && req.body.tenantId) {
         Tenant.findById(req.body.tenantId, function(err, tenant) {
             if (err || !tenant) {
@@ -196,6 +197,7 @@ router.put("/:id", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true
                     id: req.body.realty.tenantId,
                     name: tenant.name
                 };
+                (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
                 Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
                     if(err) {
                         console.log(err);

@@ -93,6 +93,13 @@
                         </select>
                     </div>
                     <div class="form-group d-none tenantField">
+                        <div class="custom-control custom-checkbox">
+                            <% var checked = (realty.isFamily) ? "checked" : "" %>
+                            <input type="checkbox" class="custom-control-input" id="realty[isFamily]" name="realty[isFamily]" <%= checked %>>    
+                            <label class="custom-control-label" for="realty[isFamily]">Inquilino é membro da família Cruz</label>
+                        </div>
+                    </div> 
+                    <div class="form-group d-none tenantField">
                         <label for="tenantId">Selecione o Inquilino <span class="text-danger">*</span></label>
                         <select class="custom-select" id="tenantId" name="realty[tenantId]">
                             <option value="">-- Selecione o Inquilino --</option>

@@ -1,11 +1,2 @@
-1) 
-finalize o visao geral 1.0
-
-2)
+1)
 praque isloggedin e isadmin? só isadmin basta (middlewares...)
-
-3)
->>> trocar isRented por algo q represente a situacao (alugado, ocupado por familiar, anunciado p/ aluguel, anunciado p/ venda, anunciado p/ aluguel ou venda)
-> e como ficam os imoveis ja cadastrados?
-
-R: Muito complicado mudar isso neste momento, a solução mais fácil é inserir uma nova key "family" no schema do tenant e usar esta informação quando necessário, como por exemplo: aluguel médio (teria q remover os realties que estão alugados para tenants com a key family true). Mas, antes disso, planeje o dashboard e veja o que será realmente necessário.

@@ -2,25 +2,78 @@
 <% include ../partials/nav %>
 
 <section class="container content-height py-3">
-    <h1 class="h6 text-uppercase">Visão Geral</h1>
-    <div class="row">
-        <div class="col-6 col-md-4 mb-3">
-            <div class="card rounded-0 border-0 box-shadow">
+    <!--<div class="row mx-lg-n1">-->
+    <!--    <div class="col px-lg-1">-->
+    <!--        <h1 class="h4 mb-3">Visão Geral</h1>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <div class="row mx-lg-n1">
+        <div class="col-12 px-lg-1">
+            <h2 class="h6 text-uppercase text-muted">Imóveis</h2>
+        </div>
+        <div class="col-12 col-lg-3 px-lg-1 mb-2">
+            <div class="card rounded-0 border-0 box-shadow h-100">
                 <div class="card-body text-center">
-                    <h1 class="h6">Imóveis</h1>
+                    <h1 class="h6">Total</h1>
                     <h2 class="font-weight-light"><%= allRealty.length %></h2>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md-4 mb-3">
-            <div class="card rounded-0 border-0 box-shadow">
+        <div class="col-12 col-lg-3 px-lg-1 mb-2">
+            <div class="card rounded-0 border-0 box-shadow h-100">
                 <div class="card-body text-center">
-                    <h1 class="h6">Ocupados</h1>
-                    <h2 class="font-weight-light"><%= occupiedRealty.length %></h2>
+                    <h1 class="h6 text-warning">Disponíveis</h1>
+                    <h2 class="font-weight-light">
+                        <%= allRealty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
+                        <small class="font-weight-light">(<%= percentageOfAvailableRealty %>%)</small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-3 px-lg-1 mb-2">
+            <div class="card rounded-0 border-0 box-shadow h-100">
+                <div class="card-body text-center">
+                    <h1 class="h6 text-success">Ocupado por Inquilinos</h1>
+                    <h2 class="font-weight-light"><%= occupiedRealtyByOthers %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByOthers %>%)</small></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-3 px-lg-1 mb-2">
+            <div class="card rounded-0 border-0 box-shadow h-100">
+                <div class="card-body text-center">
+                    <h1 class="h6 text-danger">Ocupado por Familiares</h1>
+                    <h2 class="font-weight-light"><%= occupiedRealtyByFamily %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByFamily %>%)</small></h2>
                 </div>
             </div>
         </div>
     </div>
+    <!--<div class="row mx-lg-n1">-->
+    <!--    <div class="col-12 col-lg-4 px-lg-1 mb-2">-->
+    <!--        <div class="card rounded-0 border-0 box-shadow h-100">-->
+    <!--            <div class="card-body text-center">-->
+    <!--                <h1 class="h6">Imóveis Ocupados</h1>-->
+    <!--                <h2 class="font-weight-light"><%= occupiedRealtyByFamily + occupiedRealtyByOthers %> <small class="font-weight-light">(<%= percentageOfOccupiedRealty %>%)</small></h2>-->
+    <!--                <small class="d-block text-info">= <%= percentageOfOccupiedRealtyByOthers %>% (inquilinos) + <%= percentageOfOccupiedRealtyByFamily %>% (familiares)</small>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-12 col-lg-4 px-lg-1 mb-2">-->
+    <!--        <div class="card rounded-0 border-0 box-shadow h-100">-->
+    <!--            <div class="card-body text-center">-->
+    <!--                <h1 class="h6">Aluguéis</h1>-->
+    <!--                <h2 class="font-weight-light"><small class="font-weight-light">R$</small><%= totalRentValue %></h2>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-12 col-lg-4 px-lg-1 mb-2">-->
+    <!--        <div class="card rounded-0 border-0 box-shadow h-100">-->
+    <!--            <div class="card-body text-center">-->
+    <!--                <h1 class="h6">IPTU</h1>-->
+    <!--                <h2 class="font-weight-light"><small class="font-weight-light">R$</small><%= totalIptuValue %></h2>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>        -->
+    <!--</div>-->
 </section>
 
 <% include ../partials/footer %>
