@@ -1,3 +1,7 @@
 1) filtrar por typeQuery no visão geral
 
-2) praque isloggedin e isadmin? só isadmin basta (middlewares...)
+2) Colocar legenda vermelha na tabela de imoveis para isFamily
+
+3) praque isloggedin e isadmin? só isadmin basta (middlewares...)]
+
+4) acentos no search

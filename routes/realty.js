@@ -179,6 +179,8 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 router.put("/:id", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function (req, res) {
     if(req.body.realty.isRented == "Não") {
         req.body.realty.tenant = {};
+        req.body.realty.rentValue = 0;
+        req.body.realty.isFamily = false;
         Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
             if(err) {
                 console.log(err);
