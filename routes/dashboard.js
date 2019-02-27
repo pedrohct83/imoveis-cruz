@@ -25,7 +25,7 @@ router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
                                 percentageOfAvailableRealty = (((allRealty.length - occupiedRealty.length) / allRealty.length) * 100).toFixed(2),
                                 percentageOfOccupiedRealty = ((occupiedRealty.length / allRealty.length) * 100).toFixed(2),
                                 percentageOfOccupiedRealtyByFamily = ((familyRealty.length / allRealty.length) * 100).toFixed(2),
-                                percentageOfOccupiedRealtyByOthers = percentageOfOccupiedRealty - percentageOfOccupiedRealtyByFamily,
+                                percentageOfOccupiedRealtyByOthers = (percentageOfOccupiedRealty - percentageOfOccupiedRealtyByFamily).toFixed(2),
                                 totalRentValue = 0,
                                 totalIptuValue = 0;
                             for (let i in occupiedRealty) {
