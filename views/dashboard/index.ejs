@@ -1,48 +1,52 @@
 <% include ../partials/start %>
 <% include ../partials/nav %>
 
-<section class="container content-height py-3">
-    <!--<div class="row mx-lg-n1">-->
-    <!--    <div class="col px-lg-1">-->
-    <!--        <h1 class="h4 mb-3">Visão Geral</h1>-->
-    <!--    </div>-->
-    <!--</div>-->
-    <div class="row mx-lg-n1">
-        <div class="col-12 px-lg-1">
-            <h2 class="h6 text-uppercase text-muted">Imóveis</h2>
+<section class="container-fluid content-height py-3">
+    <div class="row">
+        <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
+            <% include index-sidebar %>       
         </div>
-        <div class="col-12 col-lg-3 px-lg-1 mb-2">
-            <div class="card rounded-0 border-0 box-shadow h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="h6">Total</h1>
-                    <h2 class="font-weight-light"><%= allRealty.length %></h2>
+        <div class="col-lg-9 col-xl-10">
+            <div class="row no-gutters">
+                <div class="col-12 px-lg-1">
+                    <% if(selectedTypesArray.length != typesArray.length) { %>
+                        <span class="d-block mb-3">Exibindo dados somente para: <strong>"<%= selectedTypesArray %>"</strong></span>
+                    <% } %>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-3 px-lg-1 mb-2">
-            <div class="card rounded-0 border-0 box-shadow h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="h6 text-warning">Disponíveis</h1>
-                    <h2 class="font-weight-light">
-                        <%= allRealty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
-                        <small class="font-weight-light">(<%= percentageOfAvailableRealty %>%)</small>
-                    </h2>
+                <div class="col-12 col-lg-3 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                            <h1 class="h6">Total</h1>
+                            <h2 class="font-weight-light"><%= allRealty.length %></h2>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-3 px-lg-1 mb-2">
-            <div class="card rounded-0 border-0 box-shadow h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="h6 text-success">Ocupado por Inquilinos</h1>
-                    <h2 class="font-weight-light"><%= occupiedRealtyByOthers %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByOthers %>%)</small></h2>
+                <div class="col-12 col-lg-3 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                            <h1 class="h6 text-warning">Disponíveis</h1>
+                            <h2 class="font-weight-light">
+                                <%= allRealty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
+                                <small class="font-weight-light">(<%= percentageOfAvailableRealty %>%)</small>
+                            </h2>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-3 px-lg-1 mb-2">
-            <div class="card rounded-0 border-0 box-shadow h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                    <h1 class="h6 text-danger">Ocupado por Familiares ou GrupoCTC</h1>
-                    <h2 class="font-weight-light"><%= occupiedRealtyByFamily %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByFamily %>%)</small></h2>
+                <div class="col-12 col-lg-3 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                            <h1 class="h6 text-success">Ocupado por Inquilinos</h1>
+                            <h2 class="font-weight-light"><%= occupiedRealtyByOthers %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByOthers %>%)</small></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                            <h1 class="h6 text-danger">Ocupado por Familiares ou GrupoCTC</h1>
+                            <h2 class="font-weight-light"><%= occupiedRealtyByFamily %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByFamily %>%)</small></h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

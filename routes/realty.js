@@ -11,7 +11,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
-        typesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"],
         sortBy = {},
         searchQuery = req.query.searchQuery,
         typeQuery = req.query.type,
@@ -22,7 +21,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         regex = /.*/gi;
     }
     if(!typeQuery) {
-        typeQuery = typesArray;
+        typeQuery = req.app.locals.realtyTypesArray;
     } else {
         if(!Array.isArray(typeQuery)) {
             typeQuery = typeQuery.split();
@@ -66,7 +65,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 pages: Math.ceil(count / perPage),
                                 perPage: perPage,
                                 count: count,
-                                typesArray: typesArray,
+                                typesArray: req.app.locals.realtyTypesArray,
                                 selectedTypesArray: typeQuery,
                                 sortBy: req.query.sortBy,
                                 searchQuery: searchQuery || ""

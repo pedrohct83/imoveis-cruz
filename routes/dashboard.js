@@ -5,21 +5,32 @@ var express = require("express"),
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
-    Realty.find().exec(function(err, allRealty) {
+    var typeQuery = req.query.type;
+    if (!typeQuery) {
+        typeQuery = req.app.locals.realtyTypesArray;
+    }
+    else {
+        if (!Array.isArray(typeQuery)) {
+            typeQuery = typeQuery.split();
+        }
+    }
+    Realty.find({ type: { $in: typeQuery } }).exec(function(err, allRealty) {
         if (err) {
             console.log(err);
         }
         else {
-            Realty.find({ isRented: "Sim" }).exec(function(err, occupiedRealty) {
+            Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
                 if (err) {
                     console.log(err);
                     res.redirect("back");
-                } else {
-                    Realty.find({ isFamily: true }).exec(function(err, familyRealty) {
-                        if(err) {
+                }
+                else {
+                    Realty.find({ isFamily: true, type: { $in: typeQuery } }).exec(function(err, familyRealty) {
+                        if (err) {
                             console.log(err);
                             res.redirect("back");
-                        } else {
+                        }
+                        else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
                                 percentageOfAvailableRealty = (((allRealty.length - occupiedRealty.length) / allRealty.length) * 100).toFixed(2),
@@ -34,7 +45,7 @@ router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
                             }
                             totalRentValue = totalRentValue.toFixed(2);
                             totalIptuValue = totalIptuValue.toFixed(2);
-                            res.render("dashboard/index", { 
+                            res.render("dashboard/index", {
                                 allRealty,
                                 occupiedRealtyByFamily,
                                 occupiedRealtyByOthers,
@@ -44,12 +55,12 @@ router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
                                 percentageOfOccupiedRealtyByOthers,
                                 totalRentValue,
                                 totalIptuValue,
+                                typesArray: req.app.locals.realtyTypesArray,
+                                selectedTypesArray: typeQuery,
                                 page: "visao-geral"
                             });
-                            
                         }
                     });
-                    
                 }
             });
         }

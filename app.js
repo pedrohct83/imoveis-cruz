@@ -9,7 +9,6 @@ var express = require("express"),
     methodOverride = require("method-override"),
     User = require("./models/user"),
     backup = require('mongodb-backup');
-    //seedDB = require("./scripts/seeds");
 
 // Require and create route variables
 var indexRoutes = require("./routes/index"),
@@ -73,8 +72,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-// Clean and seed the database
-//seedDB();
+// Set local variables that persist through requests
+app.locals.realtyTypesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Ilha", "Lanchonete", "Loja", "Pavimento", "Sala", "Sobreloja", "Terreno"];
+
+// Run DB scripts
 
 // Link route variables with app routes
 app.use("/", indexRoutes);

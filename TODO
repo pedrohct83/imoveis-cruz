@@ -1,7 +1,9 @@
-1) filtrar por typeQuery no visão geral
+1) Colocar legenda vermelha na tabela de imoveis para isFamily
 
-2) Colocar legenda vermelha na tabela de imoveis para isFamily
+2) praque isloggedin e isadmin? só isadmin basta (middlewares...)]
 
-3) praque isloggedin e isadmin? só isadmin basta (middlewares...)]
+3) acentos no search
 
-4) acentos no search
+4) editar inquilinos
+
+5) ordem alfabética considerar números

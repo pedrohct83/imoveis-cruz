@@ -1,0 +1,26 @@
+<!-- DASHBOARD SIDEBAR -->
+<div class="card rounded-0 border-0 sticky-top box-shadow">
+    <div class="card-header">
+        <h5 class="m-0">Filtros</h5>
+    </div>
+    <div class="card-body">
+        <form action="/visao-geral" method="GET">
+            <% for (let i in typesArray) { %>
+                <% if(selectedTypesArray.includes(typesArray[i])) { %>
+                    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                        <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
+                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                    </div>
+                <% } else { %>
+                    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                        <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
+                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                    </div>
+                <% } %>
+            <% } %>
+            <hr>
+            <button type="submit" class="btn btn-primary btn-sm btn-block rounded-0 mt-3">Aplicar</button>
+        </form>
+        <a href="/imoveis" class="btn btn-light btn-sm btn-block rounded-0 mt-2">Resetar filtros</a>
+    </div>
+</div>  
