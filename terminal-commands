@@ -1,0 +1,25 @@
+<!-- 1st Terminal :: Starting MongoDB -->
+cd ~
+sudo service mongod stop
+./mongod
+
+
+<!-- 2nd Terminal :: Starting the app -->
+cd ~
+cd environment/Imoveis
+nodemon --no-deprecation
+
+
+<!-- 3rd Terminal :: Starting node-sass watch -->
+cd ~
+cd environment/Imoveis/public
+node-sass -o css scss -w
+
+
+<!-- 4th Terminal :: Starting browserify/watchify -->
+cd ~
+cd environment/Imoveis/public/js
+/public/js watchify main.js -o bundle.js -v
+
+
+

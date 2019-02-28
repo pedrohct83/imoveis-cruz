@@ -88,7 +88,7 @@ router.get("/novo", middleware.isAdmin, function(req, res) {
             console.log(err);
             res.redirect("back");
         } else {
-            res.render("realty/new", { tenants });
+            res.render("realty/new", { tenants, typesArray: req.app.locals.realtyTypesArray });
         }
     });
 });
@@ -170,7 +170,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
                     console.log(err);
                     res.redirect("/imoveis");
                 } else {
-                    res.render("realty/edit", { realty, tenants });
+                    res.render("realty/edit", { realty, tenants, typesArray: req.app.locals.realtyTypesArray });
                 }
             });
         }

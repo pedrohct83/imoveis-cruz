@@ -1,4 +1,28 @@
 (function() {
+    // Initiate Inputmask
+    var Inputmask = require("inputmask");
+    Inputmask().mask(document.querySelectorAll("input"));
+    
+    // Toggle cpf or cnpj field depending on tenant.type choice
+    // var typeSelector = document.getElementById("type"),
+    //     typeFieldCPF = document.getElementsByClassName("typeFieldCPF"),
+    //     typeFieldCNPJ = document.getElementsByClassName("typeFieldCNPJ");
+    // if(typeSelector && typeFieldCPF.length !== 0 && typeFieldCNPJ.length !== 0) {
+    //     toggleTypeFields();
+    //     typeSelector.addEventListener("change", toggleTypeFields);  
+    // }
+    // function toggleTypeFields() {
+    //     if (typeSelector.value === "Pessoa Física") {
+    //         typeFieldCNPJ[0].childNodes[1].value = "";
+    //         typeFieldCPF[0].classList.remove("d-none");
+    //         typeFieldCNPJ[0].classList.add("d-none");
+    //     } else {
+    //         typeFieldCPF[0].childNodes[1].value = "";
+    //         typeFieldCNPJ[0].classList.remove("d-none");
+    //         typeFieldCPF[0].classList.add("d-none");
+    //     }
+    // }    
+    
     // Toggle tenant form fields on the create realty form
     var isRentedSelector = document.getElementById("isRented");
     var tenantFields = document.getElementsByClassName("tenantField");
