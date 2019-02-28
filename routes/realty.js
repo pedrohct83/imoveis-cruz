@@ -16,17 +16,19 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         typeQuery = req.query.type,
         regex = null,
         findObj = {};
-    if(searchQuery) {
-        regex = new RegExp(escapeRegex(searchQuery), 'gi');
-        findObj.type = {$in: typeQuery};
-        findObj.$text = {$search: regex, $diacriticSensitive: false};
-    }
     if(!typeQuery) {
         typeQuery = req.app.locals.realtyTypesArray;
     } else {
         if(!Array.isArray(typeQuery)) {
             typeQuery = typeQuery.split();
         }
+    }
+    if(searchQuery) {
+        regex = new RegExp(escapeRegex(searchQuery), 'gi');
+        findObj.type = {$in: typeQuery};
+        findObj.$text = {$search: regex, $diacriticSensitive: false};
+    } else {
+        findObj.type = {$in: typeQuery};
     }
     switch(req.query.sortBy) {
         case "1": sortBy.name = 1; break;
