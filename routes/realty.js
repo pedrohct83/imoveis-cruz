@@ -14,11 +14,12 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         sortBy = {},
         searchQuery = req.query.searchQuery,
         typeQuery = req.query.type,
-        regex = null;
+        regex = null,
+        findObj = {};
     if(searchQuery) {
         regex = new RegExp(escapeRegex(searchQuery), 'gi');
-    } else {
-        regex = /.*/gi;
+        findObj.type = {$in: typeQuery};
+        findObj.$text = {$search: regex, $diacriticSensitive: false};
     }
     if(!typeQuery) {
         typeQuery = req.app.locals.realtyTypesArray;
@@ -42,8 +43,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         if(err) {
             console.log(err);
             res.redirect("back");
-        } else {           
-            Realty.find({type: {$in: typeQuery}, name: regex})
+        } else {
+            Realty.find(findObj)
             .sort(sortBy)
             .skip((perPage * pageNumber) - perPage)
             .limit(perPage)
@@ -53,7 +54,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     console.log(err);
                     res.redirect("back");
                 } else {
-                    Realty.countDocuments({type: {$in: typeQuery}, name: regex}).exec(function (err, count) {
+                    Realty.countDocuments(findObj).exec(function (err, count) {
                         if(err) {
                             console.log(err);
                         } else {

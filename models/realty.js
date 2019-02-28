@@ -9,7 +9,7 @@ var realtySchema = new mongoose.Schema({
         },
         username: String
     },
-    name: String,
+    name: { type: String, text: true },
     type: String,
     owner: String,
     location: String,
@@ -39,6 +39,8 @@ var realtySchema = new mongoose.Schema({
         }
     ],
 });
+
+realtySchema.path("name").index({text: true});
 
 function getPrice(num){
     return (num/100).toFixed(2);
