@@ -17,12 +17,12 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 });
 
 // NEW - Show the create tenant form page
-router.get("/novo", middleware.isLoggedIn, function(req, res) {
+router.get("/novo", middleware.isAdmin, function(req, res) {
     res.render("tenants/new");
 });
 
 // CREATE - Add new tenant to db
-router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
+router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     var newTenant = {
         name: req.body.name,
         type: req.body.type,
@@ -42,7 +42,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
 });
 
 // DESTROY - Delete tenant
-router.delete("/:id", function(req, res) {
+router.delete("/:id", middleware.isAdmin, function(req, res) {
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {
         if (err) {
             console.log(err);

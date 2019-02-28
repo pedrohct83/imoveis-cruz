@@ -6,12 +6,12 @@ var express = require("express"),
     middleware = require("../middleware/");
 
 // INDEX - Show admin page
-router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
+router.get("/", middleware.isAdmin, function(req, res) {
     res.render("admin/index");
 });
 
 // USERS - Show users page
-router.get("/usuarios", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
+router.get("/usuarios", middleware.isAdmin, function(req, res) {
     User.find().exec(function(err, users) {
         if(err) {
             console.log(err);
@@ -23,12 +23,12 @@ router.get("/usuarios", middleware.isLoggedIn, middleware.isAdmin, function(req,
 });
 
 // NEW - Show the create user form page
-router.get("/usuarios/novo", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
+router.get("/usuarios/novo", middleware.isAdmin, function(req, res) {
     res.render("admin/users/new");
 });
 
 // CREATE - Add new user to db
-router.post("/usuarios", middleware.isLoggedIn, middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
+router.post("/usuarios", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     var newUser = new User({
         username: req.body.username,
         email: req.body.email
@@ -49,7 +49,7 @@ router.post("/usuarios", middleware.isLoggedIn, middleware.isAdmin, bodyParser.u
 });
 
 // DESTROY - Delete user
-router.delete("/usuarios/:id", function(req, res) {
+router.delete("/usuarios/:id", middleware.isAdmin, function(req, res) {
     User.findByIdAndRemove(req.params.id, function(err, user) {
         if (err) {
             console.log(err);

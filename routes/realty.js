@@ -79,7 +79,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 });
 
 // NEW - Show the create realty form page
-router.get("/novo", middleware.isLoggedIn, function(req, res) {
+router.get("/novo", middleware.isAdmin, function(req, res) {
     Tenant.find().exec(function(err, tenants) {
         if(err) {
             console.log(err);
@@ -110,7 +110,7 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
 });
     
 // CREATE - Add new realty to db
-router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
+router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     var newRealty = {
         name: req.body.name,
         type: req.body.type,
@@ -157,7 +157,7 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
 });
 
 // EDIT - Show the edit realty form page
-router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
+router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     Realty.findById(req.params.id, function(err, realty){
         if (err) {
             console.log(err);
@@ -175,7 +175,7 @@ router.get("/:id/edit", middleware.isLoggedIn, function(req, res) {
 });
 
 // UPDATE - Update realty
-router.put("/:id", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function (req, res) {
+router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
     if(req.body.realty.isRented == "Não") {
         req.body.realty.tenant = {};
         req.body.realty.rentValue = 0;

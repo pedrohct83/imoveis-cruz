@@ -4,7 +4,7 @@ var express = require("express"),
     middleware = require("../middleware/");
 
 // INDEX - Show dashboard page
-router.get("/", middleware.isLoggedIn, middleware.isAdmin, function(req, res) {
+router.get("/", middleware.isLoggedIn, function(req, res) {
     var typeQuery = req.query.type;
     if (!typeQuery) {
         typeQuery = req.app.locals.realtyTypesArray;
