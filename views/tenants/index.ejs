@@ -3,29 +3,27 @@
 
 <section class="container-fluid content-height py-3">
     <div class="d-flex justify-content-between align-items-start">
-        <a href="/inquilinos/novo" class="btn btn-primary mb-3">Adicionar Inquilino</a>
+        <a href="/inquilinos/novo" class="btn btn-secondary rounded-0 box-shadow mb-3" title="Adicionar inquilino">Novo Inquilino</a>
         <div class="text-right">
-            <!--<small class="d-block">-->
-            <!--    <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>-->
-            <!--    <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>-->
-            <!--</small>-->
             <small class="d-block">Total: <%= tenants.length %> inquilinos</small>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered table-sm bg-white">
+    <div class="table-responsive box-shadow">
+        <table class="table table-sm bg-white mb-0">
             <caption class="sr-only">Lista de inquilinos</caption>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">CPF/CNPJ</th>
-                    <th scope="col">Contato</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Telefone</th>
-                    <th scope="col">Informações Adicionais</th>
-                    <th scope="col">Ações</th>
+                    <th scope="col" class="border-0">#</th>
+                    <th scope="col" class="border-0">Nome</th>
+                    <th scope="col" class="border-0">Tipo</th>
+                    <th scope="col" class="border-0">CPF/CNPJ</th>
+                    <th scope="col" class="border-0">Contato</th>
+                    <th scope="col" class="border-0">Email</th>
+                    <th scope="col" class="border-0">Telefone</th>
+                    <th scope="col" class="border-0">Informações Adicionais</th>
+                    <% if (currentUser.isAdmin) { %>
+                        <th scope="col" class="d-none d-lg-table-cell border-0">Ações</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
@@ -39,34 +37,36 @@
                         <td><%= tenant.contactEmail %></td>
                         <td><%= tenant.contactNum %></td>
                         <td><%= tenant.notes %></td>
-                        <td>
-                            <!-- Trigger delete tenant modal -->
-                            <a href="#" class="text-danger" data-toggle="modal" data-target="#tenant<%= index %>">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </td>
-                        <!-- Delete tenant modal -->
-                        <div class="modal fade" id="tenant<%= index %>" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Excluir Inquilino</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Você tem certeza que deseja excluir este inquilino?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="/inquilinos/<%= tenant._id %>?_method=DELETE" method="POST" class="d-inline">
-                                            <button class="btn btn-danger">Sim</button>
-                                        </form>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        <% if (currentUser.isAdmin) { %>
+                            <td>
+                                <!-- Trigger delete tenant modal -->
+                                <a href="#" class="text-danger" data-toggle="modal" data-target="#tenant<%= index %>">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                            <!-- Delete tenant modal -->
+                            <div class="modal fade" id="tenant<%= index %>" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Excluir Inquilino</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Você tem certeza que deseja excluir este inquilino?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="/inquilinos/<%= tenant._id %>?_method=DELETE" method="POST" class="d-inline">
+                                                <button class="btn btn-danger">Sim</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <% } %>
                     </tr>
                 <% }); %>
             </tbody>
