@@ -38,7 +38,8 @@
                     <tbody>
                         <% realty.forEach(function(realty, index) { %>
                             <% var isRented = (realty.isRented === "Sim") ? "rented" : "available" %>
-                            <tr class="<%= isRented %>">
+                            <% var isFamily = (realty.isFamily) ? "occupiedByFamily" : "" %>
+                            <tr class="<%= isRented %> <%= isFamily %>">
                                 <td class="align-middle">
                                     <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
                                         <%= realty.name %>    
@@ -104,7 +105,8 @@
                 <div class="order-2 mb-2">
                     <small class="d-block">
                         <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
-                        <span><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
+                        <span class="mr-1"><i class="fas fa-xs fa-circle text-warning"></i> Disponível</span>
+                        <span><i class="fas fa-xs fa-circle text-danger"></i> GrupoCTC ou Família</span>
                     </small>
                 </div>
                 <div>

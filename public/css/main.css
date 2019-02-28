@@ -6344,7 +6344,7 @@ tr.rented {
 tr.available {
   border-left: 4px solid #ffc107; }
 
-tr.inappropriate {
+tr.occupiedByFamily {
   border-left: 4px solid #dc3545; }
 
 .page-item.active .page-link {

@@ -40,7 +40,7 @@ $navbar-dark-hover-color: rgba(white, .90);
 // Table colored status border
 tr.rented {border-left: 4px solid $success;}
 tr.available {border-left: 4px solid $warning;}
-tr.inappropriate {border-left: 4px solid $danger;}
+tr.occupiedByFamily {border-left: 4px solid $danger;}
 
 // Pagination active style
 .page-item.active .page-link {
