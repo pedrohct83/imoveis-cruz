@@ -1,3 +1,5 @@
+0) clean realtyTypes
+
 1) Inquilinos
 x Melhorar tabela visualmente
 - tenant type choice will show/hide cpf/cnpj (melhor criar dois index diferentes no tenant schema, um pra cpf outro pra cnpj e lidar com a logica no router)
