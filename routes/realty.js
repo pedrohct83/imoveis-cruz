@@ -26,10 +26,11 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     if(searchQuery) {
         regex = new RegExp(escapeRegex(searchQuery), 'gi');
         findObj.type = {$in: typeQuery};
-        findObj.$text = {$search: regex, $diacriticSensitive: false};
+        searchQuery = `\"${searchQuery}\"`;
+        findObj.$text = {$search: searchQuery, $diacriticSensitive: false};
     } else {
         findObj.type = {$in: typeQuery};
-    }
+    }   
     switch(req.query.sortBy) {
         case "1": sortBy.name = 1; break;
         case "2": sortBy.name = -1; break;
@@ -122,7 +123,6 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         mapIframe: req.body.mapIframe,
         areaSize: req.body.areaSize,
         fiscalNum: req.body.fiscalNum,
-        isUnappropriate: req.body.isUnappropriate,
         isRented: req.body.isRented,
         contractStart: req.body.contractStart || null,
         contractEnd: req.body.contractEnd || null,

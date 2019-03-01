@@ -1,5 +1,8 @@
 !! dashboard.js join faz com q a mensagem Filtrando por apareça sempre
 
+x) tirar o hide do index-sidebar.ejs#collapseFilters só no desktop?
+R: if (document.documentElement.clientWidth < 992) {add hide class to #collapseFilters}
+
 1) Inquilinos
 - tenant type choice will show/hide cpf/cnpj (melhor criar dois index diferentes no tenant schema, um pra cpf outro pra cnpj e lidar com a logica no router)
 - input masks
