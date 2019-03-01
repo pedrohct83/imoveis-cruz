@@ -14,7 +14,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         sortBy = {},
         searchQuery = req.query.searchQuery,
         typeQuery = req.query.type,
-        regex = null,
         findObj = {};
     if(!typeQuery) {
         typeQuery = req.app.locals.realtyTypesArray;
@@ -24,10 +23,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         }
     }
     if(searchQuery) {
-        regex = new RegExp(escapeRegex(searchQuery), 'gi');
         findObj.type = {$in: typeQuery};
-        searchQuery = `\"${searchQuery}\"`;
-        findObj.$text = {$search: searchQuery, $diacriticSensitive: false};
+        let searchQueryQuoted = `\"${searchQuery}\"`;
+        findObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
     } else {
         findObj.type = {$in: typeQuery};
     }   
@@ -236,9 +234,5 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
         }
     });
 });
-
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
 
 module.exports = router;

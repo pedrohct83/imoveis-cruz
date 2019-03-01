@@ -3976,6 +3976,13 @@ module.exports = require("./dist/inputmask/inputmask.js");
     var Inputmask = require("inputmask");
     Inputmask().mask(document.querySelectorAll("input"));
     
+    // Add hide to collapseFilters on mobile
+    var collapseFilters = document.getElementById("collapseFilters");
+    if (collapseFilters && document.documentElement.clientWidth >= 992) {
+        collapseFilters.classList.remove("hide");
+        collapseFilters.classList.add("show");
+    }
+    
     // Toggle cpf or cnpj field depending on tenant.type choice
     // var typeSelector = document.getElementById("type"),
     //     typeFieldCPF = document.getElementsByClassName("typeFieldCPF"),

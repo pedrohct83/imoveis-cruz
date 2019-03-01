@@ -56,7 +56,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalRentValue,
                                 totalIptuValue,
                                 typesArray: req.app.locals.realtyTypesArray,
-                                selectedTypesArray: typeQuery.join(", "),
+                                selectedTypesArray: typeQuery,
+                                selectedTypesString: typeQuery.join(", "),
                                 page: "visao-geral"
                             });
                         }
