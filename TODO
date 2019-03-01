@@ -1,3 +1,5 @@
+!! dashboard.js join faz com q a mensagem Filtrando por apareça sempre
+
 1) Inquilinos
 - tenant type choice will show/hide cpf/cnpj (melhor criar dois index diferentes no tenant schema, um pra cpf outro pra cnpj e lidar com a logica no router)
 - input masks
