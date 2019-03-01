@@ -13,7 +13,7 @@ $navbar-dark-hover-color: rgba(white, .90);
     white-space: pre-wrap;
 }
 .box-shadow {
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.19);
 }
 
 // Content full height + header and footer
@@ -38,9 +38,9 @@ $navbar-dark-hover-color: rgba(white, .90);
 }
 
 // Table colored status border
-tr.rented {border-left: 4px solid $success;}
-tr.available {border-left: 4px solid $warning;}
-tr.occupiedByFamily {border-left: 4px solid $danger;}
+tr.rented {border-left: 7px solid $success;}
+tr.available {border-left: 7px solid $warning;}
+tr.occupiedByFamily {border-left: 7px solid $danger;}
 
 // Pagination active style
 .page-item.active .page-link {
