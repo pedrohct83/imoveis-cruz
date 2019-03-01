@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 });
 
 // Set local variables that persist through requests
-app.locals.realtyTypesArray = ["Apartamento", "Armazém", "Casa", "Fundos", "Garagem", "Loja", "Pavimento", "Sala", "Terreno"];
+app.locals.realtyTypesArray = ["Apartamento", "Garagem", "Loja", "Pavimento", "Sala", "Terreno"];
 
 // Run DB scripts
 
