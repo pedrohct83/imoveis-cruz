@@ -28,7 +28,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         findObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
     } else {
         findObj.type = {$in: typeQuery};
-    }   
+    }
     switch(req.query.sortBy) {
         case "1": sortBy.name = 1; break;
         case "2": sortBy.name = -1; break;
@@ -46,7 +46,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             res.redirect("back");
         } else {
             Realty.find(findObj)
-            .sort(sortBy)
+            .sort(sortBy).collation({locale: "pt", numericOrdering: true})
             .skip((perPage * pageNumber) - perPage)
             .limit(perPage)
             .populate("comments")
