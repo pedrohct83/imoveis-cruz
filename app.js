@@ -47,6 +47,9 @@ backup({
 // Require moment
 app.locals.moment = require("moment");
 
+// Set moment locale
+app.locals.moment.locale('pt-br');
+
 // Create session middleware
 app.use(session({
     secret: "P@ssw0rd",

@@ -43,6 +43,18 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
     }
 });
 
+// EDIT - Show the edit tenant form page
+router.get("/:id/edit", middleware.isAdmin, function(req, res) {
+    Tenant.findById(req.params.id, function(err, tenant){
+        if (err) {
+            console.log(err);
+            res.redirect("back");
+        } else {
+            res.render("tenant/edit", { tenant });
+        }
+    });
+});
+
 // DESTROY - Delete tenant
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {

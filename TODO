@@ -1,8 +1,7 @@
 1) Inquilinos
-- antes de cadastrar os inquilinos do julho vale a pena formatar cnpj/cpf e tel:
-- tenant type choice will show/hide cpf/cnpj (melhor criar dois index diferentes no tenant schema, um pra cpf outro pra cnpj e lidar com a logica no router)
-- input masks
 - Editar inquilino
+
+Será que faz isso?
 -- lembrar que idNum ainda tá lá no schema, deletar dps que trocar tudo
 -- lembrar que contactNum ainda tá lá no schema, deletar dps que trocar tudo
 
