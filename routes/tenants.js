@@ -50,9 +50,22 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
             console.log(err);
             res.redirect("back");
         } else {
-            res.render("tenant/edit", { tenant });
+            res.render("tenants/edit", { tenant });
         }
     });
+});
+
+// UPDATE - Update tenant
+router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
+    (req.body.tenant.type === "Pessoa Física") ? req.body.tenant.cnpj = "" : req.body.tenant.cpf = "";
+    Tenant.findByIdAndUpdate(req.params.id, req.body.tenant, function(err, tenant) {
+        if(err) {
+            console.log(err);
+            res.redirect("/inquilinos");
+        } else {
+            res.redirect("/inquilinos");
+        }
+    });  
 });
 
 // DESTROY - Delete tenant

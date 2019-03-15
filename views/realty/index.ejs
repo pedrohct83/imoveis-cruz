@@ -68,10 +68,8 @@
                                 <% if (currentUser.isAdmin) { %>
                                     <td class="d-none d-lg-table-cell align-middle">
                                         <!-- Actions -->
+                                        <a href="/imoveis/<%= realty._id %>/edit" class="text-info mr-1" title="Editar imóvel"><i class="fas fa-edit"></i></a>
                                         <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
-                                        <a href="/imoveis/<%= realty._id %>/edit" class="text-info" title="Editar imóvel">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
                                     </td>
                                 <% } %>
                                 <!-- Delete realty modal -->

@@ -6,21 +6,22 @@
         <h1 class="font-weight-light text-center mb-3">Editar Inquilino</h1>
         <div class="card bg-white rounded">
             <div class="card-body">
-                <form action="/inquilinos" method="POST">
+                <form action="/inquilinos/<%= tenant._id %>?_method=PUT" method="POST">
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="name">Nome/Razão Social <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" required value="<%= tenant.name %>">
+                                <input type="text" class="form-control" id="name" name="tenant[name]" required value="<%= tenant.name %>">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="type">Tipo <span class="text-danger">*</span></label>
-                                <select class="custom-select" id="type" name="type" required>
+                                <select class="custom-select" id="type" name="tenant[type]" required>
                                     <% var options = ["Pessoa Física", "Pessoa Jurídica"] %>
                                     <% for (var i = 0; i < options.length; i++) { %>
-                                        <option value="<%= options[i] %>"><%= options[i] %></option>
+                                        <% let selected = (options[i] === tenant.type) ? "selected" : "" %>
+                                        <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -28,33 +29,33 @@
                     </div> 
                     <div class="form-group d-none cpfField">
                         <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" data-inputmask="'mask': '999.999.999-99'">
+                        <input type="text" class="form-control" id="cpf" name="tenant[cpf]" data-inputmask="'mask': '999.999.999-99'" value="<%= tenant.cpf || tenant.idNum %>">
                     </div>
                     <div class="form-group d-none cnpjField">
                         <label for="cnpj">CNPJ</label>
-                        <input type="text" class="form-control" id="cnpj" name="cnpj" data-inputmask="'mask': '99.999.999/9999-99'">
+                        <input type="text" class="form-control" id="cnpj" name="tenant[cnpj]" data-inputmask="'mask': '99.999.999/9999-99'" value="<%= tenant.cnpj || tenant.idNum %>">
                     </div>
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="contactName">Nome p/ Contato</label>
-                                <input type="text" class="form-control" id="contactName" name="contactName">
+                                <input type="text" class="form-control" id="contactName" name="tenant[contactName]" value="<%= tenant.contactName %>">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="phone">Telefone p/ Contato</label>
-                                <input type="tel" class="form-control" id="phone" name="phone"  data-inputmask="'mask': '(99) 99999999[9]'">
+                                <input type="tel" class="form-control" id="phone" name="tenant[phone]"  data-inputmask="'mask': '(99) 99999999[9]'"  value="<%= tenant.contactNum || tenant.phone%>">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="contactEmail">Email p/ Contato</label>
-                        <input type="email" class="form-control" id="contactEmail" name="contactEmail">
+                        <input type="email" class="form-control" id="contactEmail" name="tenant[contactEmail]"  value="<%= tenant.contactEmail %>">
                     </div>
                     <div class="form-group">
                         <label for="notes">Informações Adicionais</label>
-                        <textarea class="form-control" id="notes" name="notes" rows="4" maxlength="300"></textarea>
+                        <textarea class="form-control" id="notes" name="tenant[notes]" rows="4" maxlength="300"><%= tenant.notes %></textarea>
                         <small id="notesHelpBlock" class="form-text text-muted">
                             Máximo: 300 caracteres.
                         </small>

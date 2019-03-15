@@ -36,10 +36,9 @@
                         <td class="align-middle"><%= tenant.notes %></td>
                         <% if (currentUser.isAdmin) { %>
                             <td class="align-middle">
-                                <!-- Trigger delete tenant modal -->
-                                <a href="#" class="text-danger" data-toggle="modal" data-target="#tenant<%= index %>">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <!-- Actions -->
+                                <a href="/inquilinos/<%= tenant._id %>/edit" class="text-info mr-1" title="Editar inquilino"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="text-danger " data-toggle="modal" data-target="#tenant<%= index %>"><i class="fas fa-trash"></i></a>
                             </td>
                             <!-- Delete tenant modal -->
                             <div class="modal fade" id="tenant<%= index %>" tabindex="-1" role="dialog">
