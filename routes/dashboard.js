@@ -19,6 +19,12 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             console.log(err);
         }
         else {
+            var totalCondominium = 0;
+            allRealty.forEach(function(item) {
+                if (item.condominiumValue != 0) {
+                    totalCondominium += Number(item.condominiumValue);
+                }
+            });
             Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
                 if (err) {
                     console.log(err);
@@ -53,6 +59,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 percentageOfOccupiedRealty,
                                 percentageOfOccupiedRealtyByFamily,
                                 percentageOfOccupiedRealtyByOthers,
+                                totalCondominium,
                                 totalRentValue,
                                 totalIptuValue,
                                 typesArray: req.app.locals.realtyTypesArray,
