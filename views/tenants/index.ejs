@@ -26,12 +26,12 @@
                     <tr>
                         <td class="align-middle">
                             <%= tenant.name %>
-                            <small class="d-block text-muted"><%= tenant.idNum || tenant.cpf || tenant.cnpj %></small>
+                            <small class="d-block text-muted"><%= tenant.cpf || tenant.cnpj || tenant.idNum %></small>
                         </td>
                         <td class="align-middle">
                             <%= tenant.contactName %>
                             <small class="d-block text-muted"><%= tenant.contactEmail %></small>
-                            <small class="d-block text-muted"><%= tenant.contactNum %></small>
+                            <small class="d-block text-muted"><%= tenant.phone || tenant.contactNum %></small>
                         </td>
                         <td class="align-middle"><%= tenant.notes %></td>
                         <% if (currentUser.isAdmin) { %>
