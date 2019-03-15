@@ -8,7 +8,8 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
     User = require("./models/user"),
-    backup = require('mongodb-backup');
+    backup = require('mongodb-backup'),
+    favicon = require("serve-favicon");
 
 // Require and create route variables
 var indexRoutes = require("./routes/index"),
@@ -23,6 +24,9 @@ app.set("view engine", "ejs");
 
 // Set "public" as the static directory
 app.use(express.static(__dirname + "/public"));
+
+// Set the favicon path
+app.use(favicon(__dirname + '/public/img/favicon.png'));
 
 // Override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
