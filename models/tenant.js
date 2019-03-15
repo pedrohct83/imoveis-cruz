@@ -9,10 +9,6 @@ var tenantSchema = new mongoose.Schema({
     contactEmail: String,
     phone: String,
     notes: String,
-    
-    
-    idNum: { type: Number, min: 1 },
-    contactNum: { type: Number, min: 1 }
 });
 
 module.exports = mongoose.model("Tenant", tenantSchema);

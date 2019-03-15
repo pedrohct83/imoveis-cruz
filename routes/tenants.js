@@ -26,12 +26,10 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
     var newTenant = {
         name: req.body.name,
         type: req.body.type,
-        idNum: req.body.idNum,
         cpf: req.body.cpf,
         cnpj: req.body.cnpj,
         contactName: req.body.contactName,
         contactEmail: req.body.contactEmail,
-        contactNum: req.body.contactNum,
         notes: req.body.notes
     };
     try {

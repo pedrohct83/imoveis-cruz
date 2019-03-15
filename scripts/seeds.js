@@ -47,18 +47,14 @@ var Realty = require("./models/realty"),
 //     {
 //         name: "Pedro Henrique da Cruz Torres",
 //         type: "Pessoa Física",
-//         idNum: 09630832798,
 //         contactName: "Pedro",
-//         contactNum: 27981286558, 
 //         createdAt: { type: Date, default: Date.now },
 //         notes: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 //     },
 //     {
 //         name: "Maira Rocha Moreira da Cruz",
 //         type: "Pessoa Física",
-//         idNum: 09630832798,
 //         contactName: "Maira",
-//         contactNum: 27987848375, 
 //         createdAt: { type: Date, default: Date.now },
 //         notes: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 //     }
