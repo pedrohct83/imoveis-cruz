@@ -45,6 +45,23 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             console.log(err);
             res.redirect("back");
         } else {
+            let apartamentoCount = 0,
+                garagemCount = 0,
+                lojaCount = 0,
+                pavimentoCount = 0,
+                salaCount = 0,
+                terrenoCount = 0;
+            allRealty.forEach(function(item) {
+                switch(item.type) {
+                    case "Apartamento": apartamentoCount++; break;
+                    case "Garagem": garagemCount++; break;
+                    case "Loja": lojaCount++; break;
+                    case "Pavimento": pavimentoCount++; break;
+                    case "Sala": salaCount++; break;
+                    case "Terreno": terrenoCount++; break;
+                    default: break;
+                }
+            });
             Realty.find(findObj)
             .sort(sortBy).collation({locale: "pt", numericOrdering: true})
             .skip((perPage * pageNumber) - perPage)
@@ -70,7 +87,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 typesArray: req.app.locals.realtyTypesArray,
                                 selectedTypesArray: typeQuery,
                                 sortBy: req.query.sortBy,
-                                searchQuery: searchQuery || ""
+                                searchQuery: searchQuery || "",
+                                apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
                             });
                         }
                     });
