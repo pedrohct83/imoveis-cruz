@@ -9,12 +9,30 @@
                 <% if(selectedTypesArray.includes(typesArray[i])) { %>
                     <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                         <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
-                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                        <label class="custom-control-label" for="<%= typesArray[i] %>">
+                            <%= typesArray[i] %>
+                            <% if (typesArray[i] === "Apartamento") { %>(<%= apartamentoCount %>)
+                            <% } else if (typesArray[i] === "Garagem") { %>(<%= garagemCount %>)
+                            <% } else if (typesArray[i] === "Loja") { %>(<%= lojaCount %>)
+                            <% } else if (typesArray[i] === "Pavimento") { %>(<%= pavimentoCount %>)
+                            <% } else if (typesArray[i] === "Sala") { %>(<%= salaCount %>)
+                            <% } else if (typesArray[i] === "Terreno") { %>(<%= terrenoCount %>)
+                            <% } %>
+                        </label>
                     </div>
                 <% } else { %>
                     <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                         <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">    
-                        <label class="custom-control-label" for="<%= typesArray[i] %>"><%= typesArray[i] %></label>
+                        <label class="custom-control-label" for="<%= typesArray[i] %>">
+                            <%= typesArray[i] %>
+                            <% if (typesArray[i] === "Apartamento") { %>(<%= apartamentoCount %>)
+                            <% } else if (typesArray[i] === "Garagem") { %>(<%= garagemCount %>)
+                            <% } else if (typesArray[i] === "Loja") { %>(<%= lojaCount %>)
+                            <% } else if (typesArray[i] === "Pavimento") { %>(<%= pavimentoCount %>)
+                            <% } else if (typesArray[i] === "Sala") { %>(<%= salaCount %>)
+                            <% } else if (typesArray[i] === "Terreno") { %>(<%= terrenoCount %>)
+                            <% } %>
+                        </label>
                     </div>
                 <% } %>
             <% } %>

@@ -20,9 +20,24 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         }
         else {
             var totalCondominium = 0;
+            let apartamentoCount = 0,
+                garagemCount = 0,
+                lojaCount = 0,
+                pavimentoCount = 0,
+                salaCount = 0,
+                terrenoCount = 0;
             allRealty.forEach(function(item) {
                 if (item.condominiumValue != 0) {
                     totalCondominium += Number(item.condominiumValue);
+                }
+                switch(item.type) {
+                    case "Apartamento": apartamentoCount++; break;
+                    case "Garagem": garagemCount++; break;
+                    case "Loja": lojaCount++; break;
+                    case "Pavimento": pavimentoCount++; break;
+                    case "Sala": salaCount++; break;
+                    case "Terreno": terrenoCount++; break;
+                    default: break;
                 }
             });
             Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
@@ -65,7 +80,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 typesArray: req.app.locals.realtyTypesArray,
                                 selectedTypesArray: typeQuery,
                                 selectedTypesString: typeQuery.join(", "),
-                                page: "visao-geral"
+                                page: "visao-geral",
+                                apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
                             });
                         }
                     });
