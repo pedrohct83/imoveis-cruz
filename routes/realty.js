@@ -45,50 +45,57 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             console.log(err);
             res.redirect("back");
         } else {
-            let apartamentoCount = 0,
-                garagemCount = 0,
-                lojaCount = 0,
-                pavimentoCount = 0,
-                salaCount = 0,
-                terrenoCount = 0;
-            allRealty.forEach(function(item) {
-                switch(item.type) {
-                    case "Apartamento": apartamentoCount++; break;
-                    case "Garagem": garagemCount++; break;
-                    case "Loja": lojaCount++; break;
-                    case "Pavimento": pavimentoCount++; break;
-                    case "Sala": salaCount++; break;
-                    case "Terreno": terrenoCount++; break;
-                    default: break;
-                }
-            });
-            Realty.find(findObj)
-            .sort(sortBy).collation({locale: "pt", numericOrdering: true})
-            .skip((perPage * pageNumber) - perPage)
-            .limit(perPage)
-            .populate("comments")
-            .exec(function(err, realty) {
+            Realty.find(findObj).exec(function(err, realty) {
                 if(err) {
                     console.log(err);
                     res.redirect("back");
                 } else {
-                    Realty.countDocuments(findObj).exec(function (err, count) {
+                    let apartamentoCount = 0,
+                        garagemCount = 0,
+                        lojaCount = 0,
+                        pavimentoCount = 0,
+                        salaCount = 0,
+                        terrenoCount = 0;
+                    realty.forEach(function(item) {
+                        switch(item.type) {
+                            case "Apartamento": apartamentoCount++; break;
+                            case "Garagem": garagemCount++; break;
+                            case "Loja": lojaCount++; break;
+                            case "Pavimento": pavimentoCount++; break;
+                            case "Sala": salaCount++; break;
+                            case "Terreno": terrenoCount++; break;
+                            default: break;
+                        }
+                    });
+                    Realty.find(findObj)
+                    .sort(sortBy).collation({locale: "pt", numericOrdering: true})
+                    .skip((perPage * pageNumber) - perPage)
+                    .limit(perPage)
+                    .populate("comments")
+                    .exec(function(err, sortSkipLimitRealty) {
                         if(err) {
                             console.log(err);
+                            res.redirect("back");
                         } else {
-                            res.render("realty/index", {
-                                allRealty,
-                                realty,
-                                page: "imoveis",
-                                current: pageNumber,
-                                pages: Math.ceil(count / perPage),
-                                perPage: perPage,
-                                count: count,
-                                typesArray: req.app.locals.realtyTypesArray,
-                                selectedTypesArray: typeQuery,
-                                sortBy: req.query.sortBy,
-                                searchQuery: searchQuery || "",
-                                apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
+                            Realty.countDocuments(findObj).exec(function (err, count) {
+                                if(err) {
+                                    console.log(err);
+                                } else {
+                                    res.render("realty/index", {
+                                        allRealty,
+                                        realty: sortSkipLimitRealty,
+                                        page: "imoveis",
+                                        current: pageNumber,
+                                        pages: Math.ceil(count / perPage),
+                                        perPage: perPage,
+                                        count: count,
+                                        typesArray: req.app.locals.realtyTypesArray,
+                                        selectedTypesArray: typeQuery,
+                                        sortBy: req.query.sortBy,
+                                        searchQuery: searchQuery || "",
+                                        apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
+                                    });
+                                }
                             });
                         }
                     });
