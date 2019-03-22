@@ -42,10 +42,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
-            console.log(err);
+            console.losg(err);
             res.redirect("back");
         } else {
-            Realty.find(findObj).exec(function(err, realty) {
+            Realty.find(findObj).exec(function(err, searchRealty) {
                 if(err) {
                     console.log(err);
                     res.redirect("back");
@@ -56,7 +56,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         pavimentoCount = 0,
                         salaCount = 0,
                         terrenoCount = 0;
-                    realty.forEach(function(item) {
+                    searchRealty.forEach(function(item) {
                         switch(item.type) {
                             case "Apartamento": apartamentoCount++; break;
                             case "Garagem": garagemCount++; break;
