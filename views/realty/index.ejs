@@ -28,8 +28,7 @@
                         <tr>
                             <th scope="col" class="border-0">Imóvel</th>
                             <th scope="col" class="border-0">Locação</th>
-                            <th scope="col" class="border-0">Condomínio</th>
-                            <th scope="col" class="border-0">IPTU</th>
+                            <th scope="col" class="border-0">Condomínio / IPTU</th>
                             <% if (currentUser.isAdmin) { %>
                                 <th scope="col" class="d-none d-lg-table-cell border-0">Ações</th>
                             <% } %>
@@ -57,12 +56,10 @@
                                 </td>
                                 <td class="align-middle">
                                     <% if(realty.condominiumValue > 0) { %>
-                                        R$<%= realty.condominiumValue %>
+                                        <span class="d-block"><span class="text-muted">Condomínio:</span> R$<%= realty.condominiumValue %></span>
                                     <% } %>
-                                </td>
-                                <td class="align-middle">
                                     <% if(realty.iptuValue > 0) { %>
-                                        R$<%= realty.iptuValue %>
+                                        <span class="d-block"><span class="text-muted">IPTU:</span> R$<%= realty.iptuValue %></span>
                                     <% } %>
                                 </td>
                                 <% if (currentUser.isAdmin) { %>

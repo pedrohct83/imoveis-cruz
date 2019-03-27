@@ -42,7 +42,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     }
     Realty.find().exec(function(err, allRealty) {
         if(err) {
-            console.losg(err);
+            console.log(err);
             res.redirect("back");
         } else {
             Realty.find(findObj).exec(function(err, searchRealty) {
