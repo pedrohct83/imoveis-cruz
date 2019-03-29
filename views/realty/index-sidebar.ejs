@@ -22,9 +22,30 @@
                         <option value="7" <%= (sortBy == 7) ? "selected" : "" %>>Menor condomínio &nbsp;&nbsp;</option>
                         <option value="8" <%= (sortBy == 8) ? "selected" : "" %>>Maior condomínio &nbsp;&nbsp;</option>
                     </select>
-                    <label class="d-block font-weight-bold">Mostrar somente:</label>
+                    <label class="d-block font-weight-bold">Proprietário:</label>
+                    <% for (let i in ownersArray) { %>
+                        <% if(selectedOwnersArray.includes(ownersArray[i])) { %>
+                            <!-- Checked -->
+                            <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                                <input type="checkbox" checked class="custom-control-input" id="<%= ownersArray[i] %>" name="owner" value="<%= ownersArray[i] %>">
+                                <label class="custom-control-label" for="<%= ownersArray[i] %>">
+                                    <%= ownersArray[i] %>
+                                </label>
+                            </div>
+                        <% } else { %>
+                            <!-- Not checked -->
+                            <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+                                <input type="checkbox" class="custom-control-input" id="<%= ownersArray[i] %>" name="owner" value="<%= ownersArray[i] %>">
+                                <label class="custom-control-label" for="<%= ownersArray[i] %>">
+                                    <%= ownersArray[i] %>
+                                </label>
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <label class="d-block font-weight-bold mt-3">Mostrar somente:</label>
                     <% for (let i in typesArray) { %>
                         <% if(selectedTypesArray.includes(typesArray[i])) { %>
+                            <!-- Checked -->
                             <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                                 <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">
                                 <label class="custom-control-label" for="<%= typesArray[i] %>">
@@ -39,6 +60,7 @@
                                 </label>
                             </div>
                         <% } else { %>
+                            <!-- Not checked -->
                             <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
                                 <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">
                                 <label class="custom-control-label" for="<%= typesArray[i] %>">
