@@ -7,7 +7,7 @@ var express = require("express"),
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var typeQuery = req.query.type;
     if (!typeQuery) {
-        typeQuery = req.app.locals.realtyTypesArray;
+        typeQuery = req.app.locals.realtyTypes;
     }
     else {
         if (!Array.isArray(typeQuery)) {
@@ -75,7 +75,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalCondominiumByOthers,
                                 totalRentValue,
                                 totalIptuValue,
-                                typesArray: req.app.locals.realtyTypesArray,
+                                typesArray: req.app.locals.realtyTypes,
                                 selectedTypesArray: typeQuery,
                                 selectedTypesString: typeQuery.join(", "),
                                 page: "visao-geral",

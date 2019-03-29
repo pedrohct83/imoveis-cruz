@@ -80,8 +80,8 @@ app.use(function(req, res, next) {
 });
 
 // Set local variables that persist through requests
-app.locals.realtyTypesArray = ["Apartamento", "Garagem", "Loja", "Pavimento", "Sala", "Terreno"];
-app.locals.realtyOwnersArray = ["Cruz", "Agro", "MPN"];
+app.locals.realtyTypes = ["Apartamento", "Garagem", "Loja", "Pavimento", "Sala", "Terreno"];
+app.locals.realtyOwners = ["Cruz", "Agro", "MPN"];
 
 // Run DB scripts
 

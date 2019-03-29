@@ -1,4 +1,1 @@
-?) tirar realty das variaveis globais (realtyTypesArray -> typesArray)... mais facil
- - talvez tirar 'Array' tb...
-
 ?) criar uma função única pros togglers no main.js (fazer primeiro da tenant e sale (que nem existe mais, mas blz))

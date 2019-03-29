@@ -17,14 +17,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         ownerQuery = req.query.owner,
         findObj = {};
     if(!typeQuery) {
-        typeQuery = req.app.locals.realtyTypesArray;
+        typeQuery = req.app.locals.realtyTypes;
     } else {
         if(!Array.isArray(typeQuery)) {
             typeQuery = typeQuery.split();
         }
     }
     if(!ownerQuery) {
-        ownerQuery = req.app.locals.realtyOwnersArray;
+        ownerQuery = req.app.locals.realtyOwners;
     } else {
         if(!Array.isArray(ownerQuery)) {
             ownerQuery = ownerQuery.split();
@@ -88,8 +88,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         pages: Math.ceil(count / perPage),
                                         perPage: perPage,
                                         count: count,
-                                        typesArray: req.app.locals.realtyTypesArray,
-                                        ownersArray: req.app.locals.realtyOwnersArray,
+                                        typesArray: req.app.locals.realtyTypes,
+                                        ownersArray: req.app.locals.realtyOwners,
                                         selectedTypesArray: typeQuery,
                                         selectedOwnersArray: ownerQuery,
                                         sortBy: req.query.sortBy,
@@ -110,7 +110,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 router.get("/novo", middleware.isAdmin, function(req, res) {
     Tenant.find().exec(function(err, tenants) {
         if(err) {handleError(err, res)} else {
-            res.render("realty/new", { tenants, typesArray: req.app.locals.realtyTypesArray });
+            res.render("realty/new", { tenants, typesArray: req.app.locals.realtyTypes });
         }
     });
 });
@@ -182,7 +182,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
                     console.log(err);
                     res.redirect("/imoveis");
                 } else {
-                    res.render("realty/edit", { realty, tenants, typesArray: req.app.locals.realtyTypesArray });
+                    res.render("realty/edit", { realty, tenants, typesArray: req.app.locals.realtyTypes });
                 }
             });
         }
