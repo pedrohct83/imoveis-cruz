@@ -37,6 +37,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     default: break;
                 }
             });
+            totalCondominium = totalCondominium.toFixed(2);
             Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
                 if(err) {handleError(err, res)} else {
                     Realty.find({ isFamily: true, type: { $in: typeQuery } }).exec(function(err, familyRealty) {
