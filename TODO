@@ -1,7 +1,3 @@
-?) handleError function?
-R: Feito para o routes/realty.js, mas como testar sá porra?
-
-
 ?) tirar realty das variaveis globais (realtyTypesArray -> typesArray)... mais facil
  - talvez tirar 'Array' tb...
 

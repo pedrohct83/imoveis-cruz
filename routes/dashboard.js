@@ -15,10 +15,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         }
     }
     Realty.find({ type: { $in: typeQuery } }).exec(function(err, allRealty) {
-        if (err) {
-            console.log(err);
-        }
-        else {
+        if(err) {handleError(err, res)} else {
             var totalCondominium = 0;
             let apartamentoCount = 0,
                 garagemCount = 0,
@@ -41,17 +38,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 }
             });
             Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
-                if (err) {
-                    console.log(err);
-                    res.redirect("back");
-                }
-                else {
+                if(err) {handleError(err, res)} else {
                     Realty.find({ isFamily: true, type: { $in: typeQuery } }).exec(function(err, familyRealty) {
-                        if (err) {
-                            console.log(err);
-                            res.redirect("back");
-                        }
-                        else {
+                        if(err) {handleError(err, res)} else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
                                 percentageOfAvailableRealty = (((allRealty.length - occupiedRealty.length) / allRealty.length) * 100).toFixed(2),
@@ -90,5 +79,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         }
     });
 });
+
+function handleError (err, res) {
+    console.log(err);
+    res.redirect("back");
+}
 
 module.exports = router;

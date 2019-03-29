@@ -13,10 +13,7 @@ router.get("/", middleware.isAdmin, function(req, res) {
 // USERS - Show users page
 router.get("/usuarios", middleware.isAdmin, function(req, res) {
     User.find().exec(function(err, users) {
-        if(err) {
-            console.log(err);
-            res.redirect("back");
-        } else {
+        if(err) {handleError(err, res)} else {
             res.render("admin/users", { users, page: "usuarios" });
         }
     });
@@ -37,11 +34,7 @@ router.post("/usuarios", middleware.isAdmin, bodyParser.urlencoded({ extended: t
         newUser.isAdmin = true;
     }
     User.register(newUser, req.body.password, function(err, user) {
-        if (err) {
-            console.log(err);
-            req.flash("error", "Ocorreu um erro ao adicionar o novo usuário");
-            res.redirect("/admin/usuarios");
-        } else {
+        if(err) {handleError(err, res)} else {
             req.flash("success", `Usuário "${user.username}" criado.`);
             res.redirect("/admin/usuarios");
         }
@@ -51,16 +44,17 @@ router.post("/usuarios", middleware.isAdmin, bodyParser.urlencoded({ extended: t
 // DESTROY - Delete user
 router.delete("/usuarios/:id", middleware.isAdmin, function(req, res) {
     User.findByIdAndRemove(req.params.id, function(err, user) {
-        if (err) {
-            console.log(err);
-            res.redirect("/admin/usuarios");
-        }
-        else {
+        if(err) {handleError(err, res)} else {
             user.remove();
             req.flash("success", `Usuário "${user.username}" foi removido.`);
             res.redirect("/admin/usuarios");
         }
     });
 });
+
+function handleError (err, res) {
+    console.log(err);
+    res.redirect("back");
+}
 
 module.exports = router;

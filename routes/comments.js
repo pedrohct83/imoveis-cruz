@@ -8,11 +8,7 @@ var express = require("express"),
 // CREATE
 router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }), function(req, res) {
     Realty.findById(req.params.id, function(err, realty) {
-        if (err) {
-            console.log(err);
-            res.redirect("back");
-        }
-        else {
+        if(err) {handleError(err, res)} else {
             Comment.create(req.body.comment, function(err, comment) {
                 if (err) {
                     req.flash("error", "Erro ao criar comentário");
@@ -34,28 +30,23 @@ router.post("/", middleware.isLoggedIn, bodyParser.urlencoded({ extended: true }
 // EDIT PAGE
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res) {
     Realty.findById(req.params.id, function(err, realty) {
-        if (err || !realty) {
-            req.flash("error", "Imóvel não encontrado");
-            return res.redirect("back");
+        if(err || !realty) {handleError(err, res)} else {
+            Comment.findById(req.params.comment_id, function(err, comment) {
+                if (err) {
+                    res.redirect("back");
+                }
+                else {
+                    res.render("comments/edit", { realtyId: req.params.id, comment });
+                }
+            });
         }
-        Comment.findById(req.params.comment_id, function(err, comment) {
-            if (err) {
-                res.redirect("back");
-            }
-            else {
-                res.render("comments/edit", { realtyId: req.params.id, comment });
-            }
-        });
     });
 });
 
 // UPDATE
 router.put("/:comment_id", middleware.checkCommentOwnership, bodyParser.urlencoded({ extended: true }), function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment) {
-        if (err) {
-            res.redirect("back");
-        }
-        else {
+        if(err) {handleError(err, res)} else {
             res.redirect("/imoveis/" + req.params.id);
         }
     });
@@ -64,14 +55,16 @@ router.put("/:comment_id", middleware.checkCommentOwnership, bodyParser.urlencod
 // DESTROY
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     Comment.findByIdAndDelete(req.params.comment_id, function(err) {
-        if (err) {
-            res.redirect("back");
-        }
-        else {
+        if(err) {handleError(err, res)} else {
             req.flash("success", "Comentário removido");
             res.redirect("/imoveis/" + req.params.id);
         }
     });
 });
+
+function handleError (err, res) {
+    console.log(err);
+    res.redirect("back");
+}
 
 module.exports = router;
