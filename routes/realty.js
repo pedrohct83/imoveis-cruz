@@ -4,55 +4,18 @@ var express = require("express"),
     Realty = require("../models/realty"),
     Tenant = require("../models/tenant"),
     Comment = require("../models/comment"),
-    middleware = require("../middleware");
+    middleware = require("../middleware"),
+    prepareQueryModRef = require("../modules/prepareQuery");
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
-        pageNumber = pageQuery ? pageQuery : 1,
-        sortBy = {},
-        searchQuery = req.query.searchQuery,
-        typeQuery = req.query.type,
-        ownerQuery = req.query.owner,
-        findObj = {};
-    if(!typeQuery) {
-        typeQuery = req.app.locals.realtyTypes;
-    } else {
-        if(!Array.isArray(typeQuery)) {
-            typeQuery = typeQuery.split();
-        }
-    }
-    if(!ownerQuery) {
-        ownerQuery = req.app.locals.realtyOwners;
-    } else {
-        if(!Array.isArray(ownerQuery)) {
-            ownerQuery = ownerQuery.split();
-        }
-    }
-    if(searchQuery) {
-        findObj.type = {$in: typeQuery};
-        findObj.owner = {$in: ownerQuery};
-        let searchQueryQuoted = `\"${searchQuery}\"`;
-        findObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
-    } else {
-        findObj.type = {$in: typeQuery};
-        findObj.owner = {$in: ownerQuery};
-    }
-    switch(req.query.sortBy) {
-        case "1": sortBy.name = 1; break;
-        case "2": sortBy.name = -1; break;
-        case "3": sortBy.type = 1; break;
-        case "4": sortBy.type = -1; break;
-        case "5": sortBy.rentValue = 1; break;
-        case "6": sortBy.rentValue = -1; break;
-        case "7": sortBy.condominiumValue = 1; break;
-        case "8": sortBy.condominiumValue = -1; break;
-        default: sortBy.rentValue = -1;
-    }
+        pageNumber = pageQuery ? pageQuery : 1;
+    var queryObj = prepareQueryModRef.prepareQuery(req);
     Realty.find().exec(function(err, allRealty) {
         if(err) {handleError(err, res)} else {
-            Realty.find(findObj).exec(function(err, searchRealty) {
+            Realty.find(queryObj.findObj).exec(function(err, searchRealty) {
                 if(err) {handleError(err, res)} else {
                     let apartamentoCount = 0,
                         garagemCount = 0,
@@ -71,14 +34,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             default: break;
                         }
                     });
-                    Realty.find(findObj)
-                    .sort(sortBy).collation({locale: "pt", numericOrdering: true})
+                    Realty.find(queryObj.findObj)
+                    .sort(queryObj.sortBy).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
                         if(err) {handleError(err, res)} else {
-                            Realty.countDocuments(findObj).exec(function (err, count) {
+                            Realty.countDocuments(queryObj.findObj).exec(function (err, count) {
                                 if(err) {handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,
@@ -90,10 +53,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         count: count,
                                         typesArray: req.app.locals.realtyTypes,
                                         ownersArray: req.app.locals.realtyOwners,
-                                        selectedTypesArray: typeQuery,
-                                        selectedOwnersArray: ownerQuery,
+                                        selectedTypesArray: queryObj.typeQuery,
+                                        selectedOwnersArray: queryObj.ownerQuery,
                                         sortBy: req.query.sortBy,
-                                        searchQuery: searchQuery || "",
+                                        searchQuery: queryObj.searchQuery || "",
                                         apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
                                     });
                                 }
