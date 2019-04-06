@@ -1,20 +1,13 @@
 var express = require("express"),
     router = express.Router(),
     Realty = require("../models/realty"),
-    middleware = require("../middleware/");
+    middleware = require("../middleware/"),
+    prepareQueryModRef = require("../modules/prepareQuery");
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var typeQuery = req.query.type;
-    if (!typeQuery) {
-        typeQuery = req.app.locals.realtyTypes;
-    }
-    else {
-        if (!Array.isArray(typeQuery)) {
-            typeQuery = typeQuery.split();
-        }
-    }
-    Realty.find({ type: { $in: typeQuery } }).exec(function(err, allRealty) {
+    var queryObj = prepareQueryModRef.prepareQuery(req);
+    Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
         if(err) {handleError(err, res)} else {
             var totalCondominium = 0;
             let apartamentoCount = 0,
@@ -38,7 +31,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 }
             });
             totalCondominium = totalCondominium.toFixed(2);
-            Realty.find({ isRented: "Sim", type: { $in: typeQuery } }).exec(function(err, occupiedRealty) {
+            Realty.find({ isRented: "Sim", type: { $in: queryObj.typeQuery } }).exec(function(err, occupiedRealty) {
                 if(err) {handleError(err, res)} else {
                     let totalCondominiumByOthers = 0;
                     occupiedRealty.forEach(function(item) {
@@ -47,7 +40,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         }
                     });
                     totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
-                    Realty.find({ isFamily: true, type: { $in: typeQuery } }).exec(function(err, familyRealty) {
+                    Realty.find({ isFamily: true, type: { $in: queryObj.typeQuery } }).exec(function(err, familyRealty) {
                         if(err) {handleError(err, res)} else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
@@ -76,8 +69,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalRentValue,
                                 totalIptuValue,
                                 typesArray: req.app.locals.realtyTypes,
-                                selectedTypesArray: typeQuery,
-                                selectedTypesString: typeQuery.join(", "),
+                                selectedTypesArray: queryObj.typeQuery,
+                                selectedTypesString: queryObj.typeQuery.join(", "),
                                 page: "visao-geral",
                                 apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
                             });
