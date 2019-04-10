@@ -14,7 +14,7 @@ module.exports.prepareQuery = function (req) {
         // Type Z-A
         case "4": sortBy.type = -1; break;
         // Lower rentValue
-        case "5": sortBy.isRented = -1; sortBy.rentValue = 1; sortBy.name = 1; break;
+        case "5": sortBy.isRented = -1; sortBy.isFamily = 1; sortBy.rentValue = 1; sortBy.name = 1; break;
         // Higher rentValue
         case "6": sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1; break;
         // Lower condominiumValue
