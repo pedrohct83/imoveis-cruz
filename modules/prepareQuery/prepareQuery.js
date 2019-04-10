@@ -5,15 +5,24 @@ module.exports.prepareQuery = function (req) {
         sortBy = {},
         findObj = {};
     switch(req.query.sortBy) {
+        // Name A-Z
         case "1": sortBy.name = 1; break;
+        // Name Z-A
         case "2": sortBy.name = -1; break;
+        // Type A-Z
         case "3": sortBy.type = 1; break;
+        // Type Z-A
         case "4": sortBy.type = -1; break;
-        case "5": sortBy.rentValue = 1; break;
-        case "6": sortBy.rentValue = -1; break;
-        case "7": sortBy.condominiumValue = 1; break;
-        case "8": sortBy.condominiumValue = -1; break;
-        default: sortBy.rentValue = -1;
+        // Lower rentValue
+        case "5": sortBy.isRented = -1; sortBy.rentValue = 1; sortBy.name = 1; break;
+        // Higher rentValue
+        case "6": sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1; break;
+        // Lower condominiumValue
+        case "7": sortBy.condominiumValue = 1; sortBy.name = 1; break;
+        // Higher condominiumValue
+        case "8": sortBy.condominiumValue = -1; sortBy.name = 1; break;
+        // Default
+        default: sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1;
     }
     if(!typeQuery) {
         typeQuery = req.app.locals.realtyTypes;
