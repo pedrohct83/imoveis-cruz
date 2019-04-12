@@ -5,7 +5,8 @@ var express = require("express"),
     Tenant = require("../models/tenant"),
     Comment = require("../models/comment"),
     middleware = require("../middleware"),
-    prepareQueryModRef = require("../modules/prepareQuery");
+    prepareQueryModRef = require("../modules/prepareQuery"),
+    handleErrorModRef = require("../modules/handleError");
 
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
@@ -14,9 +15,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         pageNumber = pageQuery ? pageQuery : 1;
     var queryObj = prepareQueryModRef.prepareQuery(req);
     Realty.find().exec(function(err, allRealty) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             Realty.find(queryObj.findObj).exec(function(err, searchRealty) {
-                if(err) {handleError(err, res)} else {
+                if(err) {handleErrorModRef.handleError(err, res)} else {
                     let apartamentoCount = 0,
                         garagemCount = 0,
                         lojaCount = 0,
@@ -40,9 +41,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
-                        if(err) {handleError(err, res)} else {
+                        if(err) {handleErrorModRef.handleError(err, res)} else {
                             Realty.countDocuments(queryObj.findObj).exec(function (err, count) {
-                                if(err) {handleError(err, res)} else {
+                                if(err) {handleErrorModRef.handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,
                                         realty: sortSkipLimitRealty,
@@ -72,7 +73,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 // NEW - Show the create realty form page
 router.get("/novo", middleware.isAdmin, function(req, res) {
     Tenant.find().exec(function(err, tenants) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("realty/new", { tenants, typesArray: req.app.locals.realtyTypes });
         }
     });
@@ -81,7 +82,7 @@ router.get("/novo", middleware.isAdmin, function(req, res) {
 // SHOW - Show more info about a realty
 router.get("/:id", middleware.isLoggedIn, function(req, res) {
     Realty.findById(req.params.id).populate("comments").exec(function(err, realty) {
-        if(err || !realty) {handleError(err, res)} else {
+        if(err || !realty) {handleErrorModRef.handleError(err, res)} else {
             Tenant.findById(realty.tenant.id).exec(function(err, tenant) {
                 if(err) {
                     console.log(err);
@@ -115,7 +116,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
     (req.body.isFamily === "on") ? newRealty.isFamily = true : newRealty.isFamily = false;
     if(req.body.isRented === "Sim" && req.body.tenantId) {
         Tenant.findById(req.body.tenantId, function(err, tenant) {
-            if(err || !tenant) {handleError(err, res)} else {
+            if(err || !tenant) {handleErrorModRef.handleError(err, res)} else {
                 newRealty.tenant = {
                     id: tenant._id,
                     name: tenant.name,
@@ -139,7 +140,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
 // EDIT - Show the edit realty form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     Realty.findById(req.params.id, function(err, realty){
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             Tenant.find().exec(function(err, tenants) {
                 if(err) {
                     console.log(err);
@@ -159,13 +160,13 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
         req.body.realty.rentValue = 0;
         req.body.realty.isFamily = false;
         Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
-            if(err) {handleError(err, res)} else {
+            if(err) {handleErrorModRef.handleError(err, res)} else {
                 res.redirect("/imoveis/" + req.params.id);
             }
         });
     } else {
         Tenant.findById(req.body.realty.tenantId, function(err, tenant) {
-            if(err) {handleError(err, res)} else {
+            if(err) {handleErrorModRef.handleError(err, res)} else {
                 req.body.realty.tenant = {
                     id: req.body.realty.tenantId,
                     name: tenant.name
@@ -187,7 +188,7 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
 // DESTROY - Delete realty
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     Realty.findByIdAndRemove(req.params.id, function(err, realty) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             Comment.remove({"_id": {$in: realty.comments}}, function (err) {
                 if(err) {
                     console.log(err);
@@ -201,10 +202,5 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
         }
     });
 });
-
-function handleError (err, res) {
-    console.log(err);
-    res.redirect("back");
-}
 
 module.exports = router;

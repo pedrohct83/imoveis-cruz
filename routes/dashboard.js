@@ -2,13 +2,14 @@ var express = require("express"),
     router = express.Router(),
     Realty = require("../models/realty"),
     middleware = require("../middleware/"),
-    prepareQueryModRef = require("../modules/prepareQuery");
+    prepareQueryModRef = require("../modules/prepareQuery"),
+    handleErrorModRef = require("../modules/handleError");
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var queryObj = prepareQueryModRef.prepareQuery(req);
     Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             var totalCondominium = 0;
             let apartamentoCount = 0,
                 garagemCount = 0,
@@ -32,7 +33,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             });
             totalCondominium = totalCondominium.toFixed(2);
             Realty.find({ isRented: "Sim", type: { $in: queryObj.typeQuery } }).exec(function(err, occupiedRealty) {
-                if(err) {handleError(err, res)} else {
+                if(err) {handleErrorModRef.handleError(err, res)} else {
                     let totalCondominiumByOthers = 0;
                     occupiedRealty.forEach(function(item) {
                         if (item.condominiumValue != 0) {
@@ -41,7 +42,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     });
                     totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
                     Realty.find({ isFamily: true, type: { $in: queryObj.typeQuery } }).exec(function(err, familyRealty) {
-                        if(err) {handleError(err, res)} else {
+                        if(err) {handleErrorModRef.handleError(err, res)} else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
                                 percentageOfAvailableRealty = (((allRealty.length - occupiedRealty.length) / allRealty.length) * 100).toFixed(2),
@@ -81,10 +82,5 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         }
     });
 });
-
-function handleError (err, res) {
-    console.log(err);
-    res.redirect("back");
-}
 
 module.exports = router;

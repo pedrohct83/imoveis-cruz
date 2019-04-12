@@ -2,12 +2,13 @@ var express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
     Tenant = require("../models/tenant"),
-    middleware = require("../middleware");
+    middleware = require("../middleware"),
+    handleErrorModRef = require("../modules/handleError");
 
 // INDEX - Show all tenants
 router.get("/", middleware.isLoggedIn, function(req, res) {
     Tenant.find().exec(function(err, tenants) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("tenants/index", { tenants, page: "inquilinos" });
         }
     });
@@ -41,7 +42,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
 // EDIT - Show the edit tenant form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     Tenant.findById(req.params.id, function(err, tenant){
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("tenants/edit", { tenant });
         }
     });
@@ -51,7 +52,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
     (req.body.tenant.type === "Pessoa Física") ? req.body.tenant.cnpj = "" : req.body.tenant.cpf = "";
     Tenant.findByIdAndUpdate(req.params.id, req.body.tenant, function(err, tenant) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             res.redirect("/inquilinos");
         }
     });  
@@ -60,17 +61,12 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
 // DESTROY - Delete tenant
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {
-        if(err) {handleError(err, res)} else {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
             tenant.remove();
             req.flash("success", `Inquilino "${tenant.name}" foi removido.`);
             res.redirect("/inquilinos");
         }
     });
 });
-
-function handleError (err, res) {
-    console.log(err);
-    res.redirect("back");
-}
 
 module.exports = router;
