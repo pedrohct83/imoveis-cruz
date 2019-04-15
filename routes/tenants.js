@@ -3,13 +3,24 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     Tenant = require("../models/tenant"),
     middleware = require("../middleware"),
+    prepareQueryModRef = require("../modules/prepareQuery"),
     handleErrorModRef = require("../modules/handleError");
 
 // INDEX - Show all tenants
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    Tenant.find().exec(function(err, tenants) {
+    Tenant.find().exec(function(err, allTenants) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            res.render("tenants/index", { tenants, page: "inquilinos" });
+            var queryObj = prepareQueryModRef.prepareQuery(req);
+            Tenant.find(queryObj.queryObj).exec(function(err, searchTenants) {
+                if(err) {handleErrorModRef.handleError(err, res)} else {
+                    res.render("tenants/index", {
+                        allTenants,
+                        tenants: allTenants,
+                        page: "inquilinos",
+                        searchQuery: queryObj.searchQuery || ""
+                    });
+                }
+            });
         }
     });
 });

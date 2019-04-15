@@ -13,10 +13,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1;
-    var queryObj = prepareQueryModRef.prepareQuery(req);
     Realty.find().exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            Realty.find(queryObj.findObj).exec(function(err, searchRealty) {
+            var queryObj = prepareQueryModRef.prepareQuery(req);
+            Realty.find(queryObj.queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     let apartamentoCount = 0,
                         garagemCount = 0,
@@ -35,14 +35,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             default: break;
                         }
                     });
-                    Realty.find(queryObj.findObj)
+                    Realty.find(queryObj.queryObj)
                     .sort(queryObj.sortBy).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
-                            Realty.countDocuments(queryObj.findObj).exec(function (err, count) {
+                            Realty.countDocuments(queryObj.queryObj).exec(function (err, count) {
                                 if(err) {handleErrorModRef.handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,

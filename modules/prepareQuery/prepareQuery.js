@@ -3,7 +3,7 @@ module.exports.prepareQuery = function (req) {
         typeQuery = req.query.type,
         ownerQuery = req.query.owner,
         sortBy = {},
-        findObj = {};
+        queryObj = {};
     switch(req.query.sortBy) {
         // Name A-Z
         case "1": sortBy.name = 1; break;
@@ -39,17 +39,17 @@ module.exports.prepareQuery = function (req) {
         }
     }
     if(searchQuery) {
-        findObj.type = {$in: typeQuery};
-        findObj.owner = {$in: ownerQuery};
+        queryObj.type = {$in: typeQuery};
+        queryObj.owner = {$in: ownerQuery};
         let searchQueryQuoted = `\"${searchQuery}\"`;
-        findObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
+        queryObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
     } else {
-        findObj.type = {$in: typeQuery};
-        findObj.owner = {$in: ownerQuery};
+        queryObj.type = {$in: typeQuery};
+        queryObj.owner = {$in: ownerQuery};
     }
     return {
         searchQuery,
-        findObj,
+        queryObj,
         typeQuery,
         ownerQuery,
         sortBy
