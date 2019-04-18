@@ -11,4 +11,6 @@ var tenantSchema = new mongoose.Schema({
     notes: String,
 });
 
+tenantSchema.path("name").index({text: true});
+
 module.exports = mongoose.model("Tenant", tenantSchema);

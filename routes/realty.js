@@ -18,6 +18,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             var queryObj = prepareQueryModRef.prepareQuery(req);
             Realty.find(queryObj.queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
+                    console.log(searchRealty);
                     let apartamentoCount = 0,
                         garagemCount = 0,
                         lojaCount = 0,
