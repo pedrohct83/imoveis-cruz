@@ -1,6 +1,6 @@
 - searchRealty retorna um array cheio, tenantRealty retorna um array vazio
-R: prob no queryObj.queryObj que tá enviando type, owner etc (que nao tem nada haver com tenant) pro tenant.js route e isso é usado no Tenant.find(queryObj.queryObj). Ou seja, esse find não reconhece type, owner nem nada e retorna um array vazio. My level.
-R2: Vai ter que separar os queries... Primeiro faz do searchQuery, cria um modulo separado.
+R: prob no queryObj.queryObj que tá enviando type, owner etc (que nao tem nada haver com tenant) pro tenant.js route e isso é usado no Tenant.find(queryObj.queryObj). Ou seja, esse find não reconhece type, owner e retorna um array vazio. My level.
+R2: Vai ter que separar os queries... Primeiro faz do searchQuery, cria um modulo separado. (switch to a new branch!)
 
 - dropdown filter in dashboard
 - criar um modulo para type counts (esquece o totalCondominium por enquanto, talvez isso vá para outro modulo)
