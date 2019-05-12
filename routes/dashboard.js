@@ -3,32 +3,19 @@ var express = require("express"),
     Realty = require("../models/realty"),
     middleware = require("../middleware/"),
     prepareQueryModRef = require("../modules/prepareQuery"),
-    handleErrorModRef = require("../modules/handleError");
+    handleErrorModRef = require("../modules/handleError"),
+    realtyTypeCountModRef = require("../modules/realtyTypeCount");
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var queryObj = prepareQueryModRef.prepareQuery(req);
     Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
+            var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(allRealty);
             var totalCondominium = 0;
-            let apartamentoCount = 0,
-                garagemCount = 0,
-                lojaCount = 0,
-                pavimentoCount = 0,
-                salaCount = 0,
-                terrenoCount = 0;
             allRealty.forEach(function(item) {
                 if (item.condominiumValue != 0) {
                     totalCondominium += Number(item.condominiumValue);
-                }
-                switch(item.type) {
-                    case "Apartamento": apartamentoCount++; break;
-                    case "Garagem": garagemCount++; break;
-                    case "Loja": lojaCount++; break;
-                    case "Pavimento": pavimentoCount++; break;
-                    case "Sala": salaCount++; break;
-                    case "Terreno": terrenoCount++; break;
-                    default: break;
                 }
             });
             totalCondominium = totalCondominium.toFixed(2);
@@ -73,7 +60,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 selectedTypesArray: queryObj.typeQuery,
                                 selectedTypesString: queryObj.typeQuery.join(", "),
                                 page: "visao-geral",
-                                apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
+                                realtyTypeCount
                             });
                         }
                     });

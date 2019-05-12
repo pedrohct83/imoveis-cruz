@@ -6,8 +6,9 @@ var express = require("express"),
     Comment = require("../models/comment"),
     middleware = require("../middleware"),
     prepareQueryModRef = require("../modules/prepareQuery"),
-    handleErrorModRef = require("../modules/handleError");
-
+    handleErrorModRef = require("../modules/handleError"),
+    realtyTypeCountModRef = require("../modules/realtyTypeCount");
+    
 // INDEX - Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
@@ -18,23 +19,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             var queryObj = prepareQueryModRef.prepareQuery(req);
             Realty.find(queryObj.queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    let apartamentoCount = 0,
-                        garagemCount = 0,
-                        lojaCount = 0,
-                        pavimentoCount = 0,
-                        salaCount = 0,
-                        terrenoCount = 0;
-                    searchRealty.forEach(function(item) {
-                        switch(item.type) {
-                            case "Apartamento": apartamentoCount++; break;
-                            case "Garagem": garagemCount++; break;
-                            case "Loja": lojaCount++; break;
-                            case "Pavimento": pavimentoCount++; break;
-                            case "Sala": salaCount++; break;
-                            case "Terreno": terrenoCount++; break;
-                            default: break;
-                        }
-                    });
+                    var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty);
                     Realty.find(queryObj.queryObj)
                     .sort(queryObj.sortBy).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
@@ -59,7 +44,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         sortBy: req.query.sortBy,
                                         searchQuery: queryObj.searchQuery || "",
                                         ownerQuery: queryObj.ownerQuery,
-                                        apartamentoCount, garagemCount, lojaCount, pavimentoCount, salaCount, terrenoCount
+                                        realtyTypeCount
                                     });
                                 }
                             });

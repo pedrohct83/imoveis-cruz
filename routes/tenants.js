@@ -13,10 +13,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             var queryObj = prepareQueryModRef.prepareQuery(req);
             Tenant.find(queryObj.queryObj).exec(function(err, searchTenants) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    console.log(searchTenants);
                     res.render("tenants/index", {
                         allTenants,
-                        // MUDAR PRA SEARCHTENANTS PRA FUNCIONAR DPS DO TODO NUMERO 1 !!!!!!!!!
                         tenants: allTenants,
                         page: "inquilinos",
                         searchQuery: queryObj.searchQuery || ""

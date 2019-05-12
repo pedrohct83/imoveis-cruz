@@ -44,39 +44,7 @@
                         <% } %>
                     <% } %>
                     <label class="d-block font-weight-bold mt-3">Mostrar somente:</label>
-                    <% for (let i in typesArray) { %>
-                        <% if(selectedTypesArray.includes(typesArray[i])) { %>
-                            <!-- Checked -->
-                            <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-                                <input type="checkbox" checked class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">
-                                <label class="custom-control-label" for="<%= typesArray[i] %>">
-                                    <%= typesArray[i] %>
-                                    <% if (typesArray[i] === "Apartamento") { %>(<%= apartamentoCount %>)
-                                    <% } else if (typesArray[i] === "Garagem") { %>(<%= garagemCount %>)
-                                    <% } else if (typesArray[i] === "Loja") { %>(<%= lojaCount %>)
-                                    <% } else if (typesArray[i] === "Pavimento") { %>(<%= pavimentoCount %>)
-                                    <% } else if (typesArray[i] === "Sala") { %>(<%= salaCount %>)
-                                    <% } else if (typesArray[i] === "Terreno") { %>(<%= terrenoCount %>)
-                                    <% } %>
-                                </label>
-                            </div>
-                        <% } else { %>
-                            <!-- Not checked -->
-                            <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-                                <input type="checkbox" class="custom-control-input" id="<%= typesArray[i] %>" name="type" value="<%= typesArray[i] %>">
-                                <label class="custom-control-label" for="<%= typesArray[i] %>">
-                                    <%= typesArray[i] %>
-                                    <% if (typesArray[i] === "Apartamento") { %>(<%= apartamentoCount %>)
-                                    <% } else if (typesArray[i] === "Garagem") { %>(<%= garagemCount %>)
-                                    <% } else if (typesArray[i] === "Loja") { %>(<%= lojaCount %>)
-                                    <% } else if (typesArray[i] === "Pavimento") { %>(<%= pavimentoCount %>)
-                                    <% } else if (typesArray[i] === "Sala") { %>(<%= salaCount %>)
-                                    <% } else if (typesArray[i] === "Terreno") { %>(<%= terrenoCount %>)
-                                    <% } %>
-                                </label>
-                            </div>
-                        <% } %>
-                    <% } %>
+                    <% include ../components/realtyTypeFilter %>
                     <hr>
                     <button type="submit" class="btn btn-primary btn-block rounded-0 mt-3">Aplicar</button>
                 </form>
