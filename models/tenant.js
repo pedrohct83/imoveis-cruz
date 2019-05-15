@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var tenantSchema = new mongoose.Schema({
-    name: String,
+    name: { type: String, text: true },
     type: String,
     cpf: String,
     cnpj: String,

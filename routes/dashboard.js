@@ -2,13 +2,13 @@ var express = require("express"),
     router = express.Router(),
     Realty = require("../models/realty"),
     middleware = require("../middleware/"),
-    prepareQueryModRef = require("../modules/prepareQuery"),
+    prepareRealtyQueryModRef = require("../modules/prepareRealtyQuery"),
     handleErrorModRef = require("../modules/handleError"),
     realtyTypeCountModRef = require("../modules/realtyTypeCount");
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var queryObj = prepareQueryModRef.prepareQuery(req);
+    var queryObj = prepareRealtyQueryModRef.prepareQuery(req);
     Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(allRealty);

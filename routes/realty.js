@@ -5,7 +5,7 @@ var express = require("express"),
     Tenant = require("../models/tenant"),
     Comment = require("../models/comment"),
     middleware = require("../middleware"),
-    prepareQueryModRef = require("../modules/prepareQuery"),
+    prepareRealtyQueryModRef = require("../modules/prepareRealtyQuery"),
     handleErrorModRef = require("../modules/handleError"),
     realtyTypeCountModRef = require("../modules/realtyTypeCount");
     
@@ -16,18 +16,18 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         pageNumber = pageQuery ? pageQuery : 1;
     Realty.find().exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var queryObj = prepareQueryModRef.prepareQuery(req);
-            Realty.find(queryObj.queryObj).exec(function(err, searchRealty) {
+            var query = prepareRealtyQueryModRef.prepareRealtyQuery(req);
+            Realty.find(query.queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty);
-                    Realty.find(queryObj.queryObj)
-                    .sort(queryObj.sortBy).collation({locale: "pt", numericOrdering: true})
+                    Realty.find(query.queryObj)
+                    .sort(query.sortBy).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
-                            Realty.countDocuments(queryObj.queryObj).exec(function (err, count) {
+                            Realty.countDocuments(query.queryObj).exec(function (err, count) {
                                 if(err) {handleErrorModRef.handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,
@@ -39,11 +39,11 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         count: count,
                                         typesArray: req.app.locals.realtyTypes,
                                         ownersArray: req.app.locals.realtyOwners,
-                                        selectedTypesArray: queryObj.typeQuery,
-                                        selectedOwnersArray: queryObj.ownerQuery,
+                                        selectedTypesArray: query.typeQuery,
+                                        selectedOwnersArray: query.ownerQuery,
                                         sortBy: req.query.sortBy,
-                                        searchQuery: queryObj.searchQuery || "",
-                                        ownerQuery: queryObj.ownerQuery,
+                                        searchQuery: query.searchQuery || "",
+                                        ownerQuery: query.ownerQuery,
                                         realtyTypeCount
                                     });
                                 }

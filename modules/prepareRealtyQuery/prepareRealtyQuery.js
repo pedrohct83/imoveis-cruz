@@ -1,4 +1,4 @@
-module.exports.prepareQuery = function (req) {
+module.exports.prepareRealtyQuery = function (req) {
     var searchQuery = req.query.searchQuery,
         typeQuery = req.query.type,
         ownerQuery = req.query.owner,
