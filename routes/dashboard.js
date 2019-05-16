@@ -8,7 +8,7 @@ var express = require("express"),
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var queryObj = prepareRealtyQueryModRef.prepareQuery(req);
+    var queryObj = prepareRealtyQueryModRef.prepareRealtyQuery(req);
     Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(allRealty);

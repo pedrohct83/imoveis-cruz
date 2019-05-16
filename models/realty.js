@@ -40,8 +40,6 @@ var realtySchema = new mongoose.Schema({
     ],
 });
 
-realtySchema.path("name").index({text: true});
-
 function getPrice(num){
     return (num/100).toFixed(2);
 }
