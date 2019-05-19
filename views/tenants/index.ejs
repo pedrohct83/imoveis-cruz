@@ -20,6 +20,7 @@
                         <tr>
                             <th scope="col" class="border-0">Inquilino</th>
                             <th scope="col" class="border-0">Contato</th>
+                            <th scope="col" class="border-0">Locações</th>
                             <th scope="col" class="border-0">Informações Adicionais</th>
                             <% if (currentUser.isAdmin) { %>
                                 <th scope="col" class="d-none d-lg-table-cell border-0">Ações</th>
@@ -37,6 +38,12 @@
                                     <%= tenant.contactName %>
                                     <small class="d-block text-muted"><%= tenant.contactEmail %></small>
                                     <small class="d-block text-muted"><%= tenant.phone %></small>
+                                </td>
+                                <td class="align-middle">
+                                    <% tenant.realty.forEach(function(realty, index) {%>
+                                        <a href="/imoveis/<%= tenant.realty[index].id %>"><%= tenant.realty[index].name %></a>
+                                        <br>
+                                    <% }) %>
                                 </td>
                                 <td class="align-middle"><%= tenant.notes %></td>
                                 <% if (currentUser.isAdmin) { %>
@@ -69,7 +76,7 @@
                                     </div>
                                 <% } %>
                             </tr>
-                        <% }); %>
+                        <% }) %>
                     </tbody>
                 </table>       
             </div> 

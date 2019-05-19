@@ -2,7 +2,6 @@ var express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
     Tenant = require("../models/tenant"),
-    Realty = require("../models/realty"),
     middleware = require("../middleware"),
     handleErrorModRef = require("../modules/handleError");
 
@@ -17,22 +16,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 query.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
             }
             Tenant.find(query).exec(function(err, searchTenants) {
-                
-                
-                
-                // CONSOLE.LOG RETORNA ARRAYS VAZIOS! QUEREMOS OS REALTIES PRA MOSTRAR NA TABELA DE INQUILINOS (TB TENTEI COM EL.ID, QUE É O IDEAL)
-                searchTenants.forEach(function(el, index) {
-                    Realty.find({type: "Apartamento"}).exec(function(err, realty) {
-                        if(err) {handleErrorModRef.handleError(err, res)} else {
-                            console.log(realty);
-                        }
-                    });
-                });
-                
-                
-                
-                
                 if(err) {handleErrorModRef.handleError(err, res)} else {
+                    console.log(searchTenants);
                     res.render("tenants/index", {
                         allTenants,
                         tenants: searchTenants,
@@ -59,7 +44,8 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         cnpj: req.body.cnpj,
         contactName: req.body.contactName,
         contactEmail: req.body.contactEmail,
-        notes: req.body.notes
+        notes: req.body.notes,
+        realty: []
     };
     try {
         Tenant.create(newTenant);

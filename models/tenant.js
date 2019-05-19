@@ -1,4 +1,5 @@
-var mongoose = require("mongoose");
+var mongoose = require("mongoose"),
+    Realty = require("../models/realty");
 
 var tenantSchema = new mongoose.Schema({
     name: { type: String, text: true },
@@ -9,6 +10,7 @@ var tenantSchema = new mongoose.Schema({
     contactEmail: String,
     phone: String,
     notes: String,
+    realty: [Realty.schema]
 });
 
 module.exports = mongoose.model("Tenant", tenantSchema);

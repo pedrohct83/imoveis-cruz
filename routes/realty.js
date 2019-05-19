@@ -108,9 +108,14 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
                     name: tenant.name,
                     notes: tenant.notes
                 };
-                Realty.create(newRealty);
-                req.flash("success", "Novo imóvel adicionado");
-                res.redirect("/imoveis");
+                Realty.create(newRealty, function(err, realty) {
+                    if(err) {handleErrorModRef.handleError(err, res)} else {
+                        tenant.realty.push(realty);
+                        tenant.save();
+                        req.flash("success", "Novo imóvel adicionado");
+                        res.redirect("/imoveis");
+                    }
+                });
             }
         });
     } else {
@@ -159,10 +164,9 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
                 };
                 (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
                 Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
-                    if(err) {
-                        console.log(err);
-                        res.redirect("/imoveis");
-                    } else {
+                    if(err) {handleErrorModRef.handleError(err, res)} else {
+                        tenant.realty.push(realty);
+                        tenant.save();
                         res.redirect("/imoveis/" + req.params.id);
                     }
                 });
