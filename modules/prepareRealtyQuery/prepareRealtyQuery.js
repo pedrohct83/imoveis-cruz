@@ -31,6 +31,7 @@ module.exports.prepareRealtyQuery = function (req) {
             typeQuery = typeQuery.split();
         }
     }
+    queryObj.type = {$in: typeQuery};
     if(!ownerQuery) {
         ownerQuery = req.app.locals.realtyOwners;
     } else {
@@ -38,14 +39,10 @@ module.exports.prepareRealtyQuery = function (req) {
             ownerQuery = ownerQuery.split();
         }
     }
+    queryObj.owner = {$in: ownerQuery};
     if(searchQuery) {
-        queryObj.type = {$in: typeQuery};
-        queryObj.owner = {$in: ownerQuery};
         let searchQueryQuoted = `\"${searchQuery}\"`;
         queryObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
-    } else {
-        queryObj.type = {$in: typeQuery};
-        queryObj.owner = {$in: ownerQuery};
     }
     return {
         searchQuery,

@@ -8,8 +8,8 @@ var express = require("express"),
 
 // INDEX - Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var queryObj = prepareRealtyQueryModRef.prepareRealtyQuery(req);
-    Realty.find({ type: { $in: queryObj.typeQuery } }).exec(function(err, allRealty) {
+    var query = prepareRealtyQueryModRef.prepareRealtyQuery(req);
+    Realty.find({ type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(allRealty);
             var totalCondominium = 0;
@@ -19,7 +19,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 }
             });
             totalCondominium = totalCondominium.toFixed(2);
-            Realty.find({ isRented: "Sim", type: { $in: queryObj.typeQuery } }).exec(function(err, occupiedRealty) {
+            Realty.find({ isRented: "Sim", type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, occupiedRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     let totalCondominiumByOthers = 0;
                     occupiedRealty.forEach(function(item) {
@@ -28,7 +28,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         }
                     });
                     totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
-                    Realty.find({ isFamily: true, type: { $in: queryObj.typeQuery } }).exec(function(err, familyRealty) {
+                    Realty.find({ isFamily: true, type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, familyRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
@@ -57,8 +57,11 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalRentValue,
                                 totalIptuValue,
                                 typesArray: req.app.locals.realtyTypes,
-                                selectedTypesArray: queryObj.typeQuery,
-                                selectedTypesString: queryObj.typeQuery.join(", "),
+                                ownersArray: req.app.locals.realtyOwners,
+                                selectedTypesArray: query.typeQuery,
+                                selectedTypesString: query.typeQuery.join(", "),
+                                selectedOwnersArray: query.ownerQuery,
+                                selectedOwnersString: query.ownerQuery.join(", "),
                                 page: "visao-geral",
                                 realtyTypeCount
                             });

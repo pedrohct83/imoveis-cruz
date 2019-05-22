@@ -5,6 +5,9 @@
     </div>
     <div class="card-body">
         <form action="/visao-geral" method="GET">
+            <label class="d-block font-weight-bold">Proprietários:</label>
+            <% include ../components/ownersFilter %>
+            <label class="d-block font-weight-bold mt-3">Tipos:</label>
             <% include ../components/realtyTypeFilter %>
             <hr>
             <button type="submit" class="btn btn-primary btn-block rounded-0 mt-3">Aplicar</button>
