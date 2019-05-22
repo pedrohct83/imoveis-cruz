@@ -9,8 +9,13 @@
             <% } %>
             <% var sort = "&sortBy=" + sortBy %>
             <% var search = "&searchQuery=" + searchQuery %>
-            <% var owner = "&owner=" + ownerQuery %>
-            <% var allParameters = search + owner + sort + typesUrl %>
+            <% var ownersUrl = "" %>
+            <% if(ownerQuery.length !== 0) { %>
+                <% for (let i in ownerQuery) { %>
+                    <% ownersUrl = ownersUrl + "&owner=" + ownerQuery[i]; %>
+                <% } %>
+            <% } %>
+            <% var allParameters = search + ownersUrl + sort + typesUrl %>
             <% if (current == 1) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0"><small>Primeira</small></a>
