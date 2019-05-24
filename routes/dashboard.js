@@ -6,7 +6,7 @@ var express = require("express"),
     handleErrorModRef = require("../modules/handleError"),
     realtyTypeCountModRef = require("../modules/realtyTypeCount");
 
-// INDEX - Show dashboard page
+// INDEX
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var query = prepareRealtyQueryModRef.prepareRealtyQuery(req);
     Realty.find({ type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, allRealty) {
@@ -44,6 +44,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             }
                             totalRentValue = totalRentValue.toFixed(2);
                             totalIptuValue = totalIptuValue.toFixed(2);
+                            
+                            // Render
                             res.render("dashboard/index", {
                                 allRealty,
                                 occupiedRealtyByFamily,
