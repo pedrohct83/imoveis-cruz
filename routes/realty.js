@@ -1,33 +1,88 @@
 var express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
+    
+    // Models
     Realty = require("../models/realty"),
     Tenant = require("../models/tenant"),
     Comment = require("../models/comment"),
+    
+    // Middlewares
     middleware = require("../middleware"),
-    prepareRealtyQueryModRef = require("../modules/prepareRealtyQuery"),
+    
+    // Modules
     handleErrorModRef = require("../modules/handleError"),
     realtyTypeCountModRef = require("../modules/realtyTypeCount");
-    
-// INDEX - Show all realty
+
+// INDEX
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1;
+        
     Realty.find().exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var query = prepareRealtyQueryModRef.prepareRealtyQuery(req);
-            Realty.find(query.queryObj).exec(function(err, searchRealty) {
+            var searchQuery = req.query.searchQuery,
+                typeQuery = req.query.type,
+                ownerQuery = req.query.owner,
+                sortBy = {},
+                queryObj = {};
+                
+            switch(req.query.sortBy) {
+                // Name A-Z
+                case "1": sortBy.name = 1; break;
+                // Name Z-A
+                case "2": sortBy.name = -1; break;
+                // Type A-Z
+                case "3": sortBy.type = 1; break;
+                // Type Z-A
+                case "4": sortBy.type = -1; break;
+                // Lower rentValue
+                case "5": sortBy.isRented = -1; sortBy.isFamily = 1; sortBy.rentValue = 1; sortBy.name = 1; break;
+                // Higher rentValue
+                case "6": sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1; break;
+                // Lower condominiumValue
+                case "7": sortBy.condominiumValue = 1; sortBy.name = 1; break;
+                // Higher condominiumValue
+                case "8": sortBy.condominiumValue = -1; sortBy.name = 1; break;
+                // Default
+                default: sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1;
+            }
+            
+            if(!typeQuery) {
+                typeQuery = req.app.locals.realtyTypes;
+            } else {
+                if(!Array.isArray(typeQuery)) {
+                    typeQuery = typeQuery.split();
+                }
+            }
+            queryObj.type = {$in: typeQuery};
+            
+            if(!ownerQuery) {
+                ownerQuery = req.app.locals.realtyOwners;
+            } else {
+                if(!Array.isArray(ownerQuery)) {
+                    ownerQuery = ownerQuery.split();
+                }
+            }
+            queryObj.owner = {$in: ownerQuery};
+            
+            if(searchQuery) {
+                let searchQueryQuoted = `\"${searchQuery}\"`;
+                queryObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
+            }
+            
+            Realty.find(queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty);
-                    Realty.find(query.queryObj)
-                    .sort(query.sortBy).collation({locale: "pt", numericOrdering: true})
+                    Realty.find(queryObj)
+                    .sort(sortBy).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
-                            Realty.countDocuments(query.queryObj).exec(function (err, count) {
+                            Realty.countDocuments(queryObj).exec(function (err, count) {
                                 if(err) {handleErrorModRef.handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,
@@ -39,11 +94,11 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         count: count,
                                         typesArray: req.app.locals.realtyTypes,
                                         ownersArray: req.app.locals.realtyOwners,
-                                        selectedTypesArray: query.typeQuery,
-                                        selectedOwnersArray: query.ownerQuery,
+                                        selectedTypesArray: typeQuery,
+                                        selectedOwnersArray: ownerQuery,
                                         sortBy: req.query.sortBy,
-                                        searchQuery: query.searchQuery || "",
-                                        ownerQuery: query.ownerQuery,
+                                        searchQuery: queryObj.searchQuery || "",
+                                        ownerQuery: ownerQuery,
                                         realtyTypeCount
                                     });
                                 }
@@ -56,7 +111,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     });
 });
 
-// NEW - Show the create realty form page
+// NEW
 router.get("/novo", middleware.isAdmin, function(req, res) {
     Tenant.find().exec(function(err, tenants) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
@@ -65,7 +120,7 @@ router.get("/novo", middleware.isAdmin, function(req, res) {
     });
 });
 
-// SHOW - Show more info about a realty
+// SHOW
 router.get("/:id", middleware.isLoggedIn, function(req, res) {
     Realty.findById(req.params.id).populate("comments").exec(function(err, realty) {
         if(err || !realty) {handleErrorModRef.handleError(err, res)} else {
@@ -81,7 +136,7 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
     });
 });
     
-// CREATE - Add new realty to db
+// CREATE
 router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     var newRealty = {
         name: req.body.name,
@@ -128,7 +183,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
     }
 });
 
-// EDIT - Show the edit realty form page
+// EDIT
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     Realty.findById(req.params.id, function(err, realty){
         if(err) {handleErrorModRef.handleError(err, res)} else {
@@ -144,7 +199,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     });
 });
 
-// UPDATE - Update realty
+// UPDATE
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
     if(req.body.realty.isRented == "Não") {
         req.body.realty.tenant = {};
@@ -175,7 +230,7 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
     }
 });
 
-// DESTROY - Delete realty
+// DESTROY
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     Realty.findByIdAndRemove(req.params.id, function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
