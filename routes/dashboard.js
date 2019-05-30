@@ -58,7 +58,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalCondominiumByOthers,
                                 totalRentValue,
                                 totalIptuValue,
-                                typesArray: req.app.locals.realtyTypes,
+                                allRealtyTypes: req.app.locals.realtyTypes,
                                 ownersArray: req.app.locals.realtyOwners,
                                 selectedTypesArray: query.typeQuery,
                                 selectedTypesString: query.typeQuery.join(", "),

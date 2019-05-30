@@ -10,9 +10,9 @@
             <% var sortUrl = "&sort=" + sort %>
             <% var search = "&searchQuery=" + searchQuery %>
             <% var ownersUrl = "" %>
-            <% if(ownerQuery.length !== 0) { %>
-                <% for (let i in ownerQuery) { %>
-                    <% ownersUrl = ownersUrl + "&owner=" + ownerQuery[i]; %>
+            <% if(owners.length !== 0) { %>
+                <% for (let i in owners) { %>
+                    <% ownersUrl = ownersUrl + "&owner=" + owners[i]; %>
                 <% } %>
             <% } %>
             <% var allParameters = search + sortUrl + ownersUrl + typesUrl %>

@@ -19,38 +19,38 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1;
-        
+    
     Realty.find().exec(function(err, allRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var searchQuery = req.query.searchQuery,
-                typeQuery = req.query.type,
-                ownerQuery = req.query.owner,
-                queryObj = {};
+            var search = req.query.searchQuery,
+                type = req.query.type,
+                owners = req.query.owner,
+                query = {};
             
-            if(!typeQuery) {
-                typeQuery = req.app.locals.realtyTypes;
+            if(!type) {
+                type = req.app.locals.realtyTypes;
             } else {
-                if(!Array.isArray(typeQuery)) {
-                    typeQuery = typeQuery.split();
+                if(!Array.isArray(type)) {
+                    type = type.split();
                 }
             }
-            queryObj.type = {$in: typeQuery};
+            query.type = {$in: type};
             
-            if(!ownerQuery) {
-                ownerQuery = req.app.locals.realtyOwners;
+            if(!owners) {
+                owners = req.app.locals.realtyOwners;
             } else {
-                if(!Array.isArray(ownerQuery)) {
-                    ownerQuery = ownerQuery.split();
+                if(!Array.isArray(owners)) {
+                    owners = owners.split();
                 }
             }
-            queryObj.owner = {$in: ownerQuery};
+            query.owner = {$in: owners};
             
-            if(searchQuery) {
-                let searchQueryQuoted = `\"${searchQuery}\"`;
-                queryObj.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
+            if(search) {
+                let searchQueryQuoted = `\"${search}\"`;
+                query.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
             }
             
-            Realty.find(queryObj).exec(function(err, searchRealty) {
+            Realty.find(query).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty),
                         sort = {};
@@ -76,31 +76,31 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         default: sort.isRented = -1; sort.rentValue = -1; sort.name = 1;
                     }
                     
-                    Realty.find(queryObj)
+                    Realty.find(query)
                     .sort(sort).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
                     .exec(function(err, sortSkipLimitRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
-                            Realty.countDocuments(queryObj).exec(function (err, count) {
+                            Realty.countDocuments(query).exec(function (err, count) {
                                 if(err) {handleErrorModRef.handleError(err, res)} else {
                                     res.render("realty/index", {
                                         allRealty,
+                                        realtyTypeCount,
                                         realty: sortSkipLimitRealty,
                                         page: "imoveis",
                                         current: pageNumber,
                                         pages: Math.ceil(count / perPage),
                                         perPage: perPage,
                                         count: count,
-                                        typesArray: req.app.locals.realtyTypes,
+                                        allRealtyTypes: req.app.locals.realtyTypes,
                                         ownersArray: req.app.locals.realtyOwners,
-                                        selectedTypesArray: typeQuery,
-                                        selectedOwnersArray: ownerQuery,
+                                        selectedTypesArray: type,
+                                        selectedOwnersArray: owners,
                                         sort: req.query.sort,
-                                        searchQuery: queryObj.searchQuery || "",
-                                        ownerQuery: ownerQuery,
-                                        realtyTypeCount
+                                        searchQuery: query.searchQuery || "",
+                                        owners: owners
                                     });
                                 }
                             });
