@@ -25,29 +25,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             var searchQuery = req.query.searchQuery,
                 typeQuery = req.query.type,
                 ownerQuery = req.query.owner,
-                sortBy = {},
                 queryObj = {};
-                
-            switch(req.query.sortBy) {
-                // Name A-Z
-                case "1": sortBy.name = 1; break;
-                // Name Z-A
-                case "2": sortBy.name = -1; break;
-                // Type A-Z
-                case "3": sortBy.type = 1; break;
-                // Type Z-A
-                case "4": sortBy.type = -1; break;
-                // Lower rentValue
-                case "5": sortBy.isRented = -1; sortBy.isFamily = 1; sortBy.rentValue = 1; sortBy.name = 1; break;
-                // Higher rentValue
-                case "6": sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1; break;
-                // Lower condominiumValue
-                case "7": sortBy.condominiumValue = 1; sortBy.name = 1; break;
-                // Higher condominiumValue
-                case "8": sortBy.condominiumValue = -1; sortBy.name = 1; break;
-                // Default
-                default: sortBy.isRented = -1; sortBy.rentValue = -1; sortBy.name = 1;
-            }
             
             if(!typeQuery) {
                 typeQuery = req.app.locals.realtyTypes;
@@ -74,9 +52,32 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             
             Realty.find(queryObj).exec(function(err, searchRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty);
+                    let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty),
+                        sort = {};
+                    
+                    switch(req.query.sort) {
+                        // Name A-Z
+                        case "1": sort.name = 1; break;
+                        // Name Z-A
+                        case "2": sort.name = -1; break;
+                        // Type A-Z
+                        case "3": sort.type = 1; break;
+                        // Type Z-A
+                        case "4": sort.type = -1; break;
+                        // Lower rentValue
+                        case "5": sort.isRented = -1; sort.isFamily = 1; sort.rentValue = 1; sort.name = 1; break;
+                        // Higher rentValue
+                        case "6": sort.isRented = -1; sort.rentValue = -1; sort.name = 1; break;
+                        // Lower condominiumValue
+                        case "7": sort.condominiumValue = 1; sort.name = 1; break;
+                        // Higher condominiumValue
+                        case "8": sort.condominiumValue = -1; sort.name = 1; break;
+                        // Default
+                        default: sort.isRented = -1; sort.rentValue = -1; sort.name = 1;
+                    }
+                    
                     Realty.find(queryObj)
-                    .sort(sortBy).collation({locale: "pt", numericOrdering: true})
+                    .sort(sort).collation({locale: "pt", numericOrdering: true})
                     .skip((perPage * pageNumber) - perPage)
                     .limit(perPage)
                     .populate("comments")
@@ -96,7 +97,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                         ownersArray: req.app.locals.realtyOwners,
                                         selectedTypesArray: typeQuery,
                                         selectedOwnersArray: ownerQuery,
-                                        sortBy: req.query.sortBy,
+                                        sort: req.query.sort,
                                         searchQuery: queryObj.searchQuery || "",
                                         ownerQuery: ownerQuery,
                                         realtyTypeCount
