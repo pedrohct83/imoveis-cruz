@@ -16,7 +16,7 @@ var express = require("express"),
 
 // INDEX
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 2,
+    var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         search = req.query.search,
