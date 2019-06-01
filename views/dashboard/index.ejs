@@ -15,7 +15,7 @@
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                             <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light"><%= allRealty.length %></h2>
+                            <h2 class="font-weight-light"><%= realty.length %></h2>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                             <h1 class="h6 text-warning">Disponíveis</h1>
                             <h2 class="font-weight-light">
-                                <%= allRealty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
+                                <%= realty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
                                 <small class="font-weight-light">(<%= percentageOfAvailableRealty %>%)</small>
                             </h2>
                         </div>

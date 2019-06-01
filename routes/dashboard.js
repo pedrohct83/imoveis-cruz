@@ -2,24 +2,46 @@ var express = require("express"),
     router = express.Router(),
     Realty = require("../models/realty"),
     middleware = require("../middleware/"),
-    prepareRealtyQueryModRef = require("../modules/prepareRealtyQuery"),
     handleErrorModRef = require("../modules/handleError"),
     realtyTypeCountModRef = require("../modules/realtyTypeCount");
 
 // INDEX
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var query = prepareRealtyQueryModRef.prepareRealtyQuery(req);
-    Realty.find({ type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, allRealty) {
+    var selectedRealtyTypes = req.query.type,
+        selectedRealtyOwners = req.query.owner,
+        query = {};
+        
+    if(!selectedRealtyTypes) {
+        selectedRealtyTypes = req.app.locals.realtyTypes;
+    } else {
+        if(!Array.isArray(selectedRealtyTypes)) {
+            selectedRealtyTypes = selectedRealtyTypes.split();
+        }
+    }
+    query.type = {$in: selectedRealtyTypes};
+    
+    if(!selectedRealtyOwners) {
+        selectedRealtyOwners = req.app.locals.realtyOwners;
+    } else {
+        if(!Array.isArray(selectedRealtyOwners)) {
+            selectedRealtyOwners = selectedRealtyOwners.split();
+        }
+    }
+    query.owner = {$in: selectedRealtyOwners};    
+    
+    
+    Realty.find({ type: query.type, owner: query.owner }).exec(function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(allRealty);
+            var realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(realty);
             var totalCondominium = 0;
-            allRealty.forEach(function(item) {
+            realty.forEach(function(item) {
                 if (item.condominiumValue != 0) {
                     totalCondominium += Number(item.condominiumValue);
                 }
             });
             totalCondominium = totalCondominium.toFixed(2);
-            Realty.find({ isRented: "Sim", type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, occupiedRealty) {
+            
+            Realty.find({ isRented: "Sim", type: query.type, owner: query.owner }).exec(function(err, occupiedRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     let totalCondominiumByOthers = 0;
                     occupiedRealty.forEach(function(item) {
@@ -28,13 +50,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         }
                     });
                     totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
-                    Realty.find({ isFamily: true, type: { $in: query.typeQuery }, owner: {$in: query.ownerQuery} }).exec(function(err, familyRealty) {
+                    
+                    Realty.find({ isFamily: true, type: query.type, owner: query.owner }).exec(function(err, familyRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
                             let occupiedRealtyByFamily = familyRealty.length,
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
-                                percentageOfAvailableRealty = (((allRealty.length - occupiedRealty.length) / allRealty.length) * 100).toFixed(2),
-                                percentageOfOccupiedRealty = ((occupiedRealty.length / allRealty.length) * 100).toFixed(2),
-                                percentageOfOccupiedRealtyByFamily = ((familyRealty.length / allRealty.length) * 100).toFixed(2),
+                                percentageOfAvailableRealty = (((realty.length - occupiedRealty.length) / realty.length) * 100).toFixed(2),
+                                percentageOfOccupiedRealty = ((occupiedRealty.length / realty.length) * 100).toFixed(2),
+                                percentageOfOccupiedRealtyByFamily = ((familyRealty.length / realty.length) * 100).toFixed(2),
                                 percentageOfOccupiedRealtyByOthers = (percentageOfOccupiedRealty - percentageOfOccupiedRealtyByFamily).toFixed(2),
                                 totalRentValue = 0,
                                 totalIptuValue = 0;
@@ -45,9 +68,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             totalRentValue = totalRentValue.toFixed(2);
                             totalIptuValue = totalIptuValue.toFixed(2);
                             
-                            // Render
                             res.render("dashboard/index", {
-                                allRealty,
+                                realty,
                                 occupiedRealtyByFamily,
                                 occupiedRealtyByOthers,
                                 percentageOfAvailableRealty,
@@ -58,10 +80,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalCondominiumByOthers,
                                 totalRentValue,
                                 totalIptuValue,
-                                allRealtyTypes: req.app.locals.realtyTypes,
-                                ownersArray: req.app.locals.realtyOwners,
-                                selectedRealtyTypes: query.typeQuery,
-                                selectedRealtyOwners: query.ownerQuery,
+                                realtyTypes: req.app.locals.realtyTypes,
+                                realtyOwners: req.app.locals.realtyOwners,
+                                selectedRealtyTypes,
+                                selectedRealtyOwners,
                                 page: "visao-geral",
                                 realtyTypeCount
                             });
