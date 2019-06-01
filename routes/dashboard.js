@@ -27,8 +27,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             selectedRealtyOwners = selectedRealtyOwners.split();
         }
     }
-    query.owner = {$in: selectedRealtyOwners};    
-    
+    query.owner = {$in: selectedRealtyOwners};
     
     Realty.find({ type: query.type, owner: query.owner }).exec(function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {

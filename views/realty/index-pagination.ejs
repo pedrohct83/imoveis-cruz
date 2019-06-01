@@ -8,14 +8,14 @@
                 <% } %>
             <% } %>
             <% var sortUrl = "&sort=" + sort %>
-            <% var search = "&search=" + search %>
+            <% var searchUrl = "&search=" + search %>
             <% var ownersUrl = "" %>
             <% if(selectedRealtyOwners.length !== 0) { %>
                 <% for (let i in selectedRealtyOwners) { %>
                     <% ownersUrl = ownersUrl + "&owner=" + selectedRealtyOwners[i]; %>
                 <% } %>
             <% } %>
-            <% var allParameters = search + sortUrl + ownersUrl + typesUrl %>
+            <% var allParameters = searchUrl + sortUrl + ownersUrl + typesUrl %>
             <% if (current == 1) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0"><small>Primeira</small></a>

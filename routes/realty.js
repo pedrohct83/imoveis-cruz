@@ -16,7 +16,7 @@ var express = require("express"),
 
 // INDEX
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    var perPage = 25,
+    var perPage = 2,
         pageQuery = parseInt(req.query.page, 10),
         pageNumber = pageQuery ? pageQuery : 1,
         search = req.query.search,
@@ -90,13 +90,11 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 realtyTypeCount,
                                 realtyOwners: req.app.locals.realtyOwners,
                                 selectedRealtyOwners,
-                                
                                 page: "imoveis",
                                 current: pageNumber,
                                 pages: Math.ceil(realtyCount / perPage),
                                 perPage,
-                                
-                                search: query.search || "",
+                                search: req.query.search || "",
                                 sort: req.query.sort
                             });
                         }
