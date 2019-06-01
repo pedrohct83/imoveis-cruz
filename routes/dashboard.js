@@ -60,10 +60,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 totalIptuValue,
                                 allRealtyTypes: req.app.locals.realtyTypes,
                                 ownersArray: req.app.locals.realtyOwners,
-                                selectedTypesArray: query.typeQuery,
-                                selectedTypesString: query.typeQuery.join(", "),
-                                selectedOwnersArray: query.ownerQuery,
-                                selectedOwnersString: query.ownerQuery.join(", "),
+                                selectedRealtyTypes: query.typeQuery,
+                                selectedRealtyOwners: query.ownerQuery,
                                 page: "visao-geral",
                                 realtyTypeCount
                             });

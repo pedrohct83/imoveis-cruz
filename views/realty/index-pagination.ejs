@@ -2,17 +2,17 @@
     <nav aria-label="Paginação dos imóveis" class="table-responsive w-auto order-1 box-shadow" style="display: table-row-group">
         <ul class="pagination pagination-sm rounded-0 m-0">
             <% var typesUrl = "" %>
-            <% if(selectedTypesArray.length !== 0) {%>
-                <% for (let i in selectedTypesArray) { %>
-                    <% typesUrl = typesUrl + "&type=" + selectedTypesArray[i]; %>
+            <% if(selectedRealtyTypes.length !== 0) {%>
+                <% for (let i in selectedRealtyTypes) { %>
+                    <% typesUrl = typesUrl + "&type=" + selectedRealtyTypes[i]; %>
                 <% } %>
             <% } %>
             <% var sortUrl = "&sort=" + sort %>
-            <% var search = "&searchQuery=" + searchQuery %>
+            <% var search = "&search=" + search %>
             <% var ownersUrl = "" %>
-            <% if(owners.length !== 0) { %>
-                <% for (let i in owners) { %>
-                    <% ownersUrl = ownersUrl + "&owner=" + owners[i]; %>
+            <% if(selectedRealtyOwners.length !== 0) { %>
+                <% for (let i in selectedRealtyOwners) { %>
+                    <% ownersUrl = ownersUrl + "&owner=" + selectedRealtyOwners[i]; %>
                 <% } %>
             <% } %>
             <% var allParameters = search + sortUrl + ownersUrl + typesUrl %>

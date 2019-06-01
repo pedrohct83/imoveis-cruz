@@ -10,7 +10,7 @@
             <div class="card-body">
                 <form action="/imoveis" method="GET">
                     <label class="font-weight-bold">Nome do imóvel:</label>
-                    <input type="text" class="form-control rounded-0 mb-3" id="search" name="searchQuery" placeholder="ex: Jusmar" value="<%= searchQuery %>">
+                    <input type="text" class="form-control rounded-0 mb-3" id="search" name="search" placeholder="ex: Jusmar" value="<%= search %>">
                     <label class="font-weight-bold">Ordenar por:</label>
                     <select class="custom-select rounded-0 mb-3" name="sort">
                         <option value="1" <%= (sort == 1) ? "selected" : "" %>>Nome: A-Z</option>

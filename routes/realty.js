@@ -18,91 +18,86 @@ var express = require("express"),
 router.get("/", middleware.isLoggedIn, function(req, res) {
     var perPage = 25,
         pageQuery = parseInt(req.query.page, 10),
-        pageNumber = pageQuery ? pageQuery : 1;
+        pageNumber = pageQuery ? pageQuery : 1,
+        search = req.query.search,
+        selectedRealtyTypes = req.query.type,
+        selectedRealtyOwners = req.query.owner,
+        query = {};
     
-    Realty.find().exec(function(err, allRealty) {
+    if(!selectedRealtyTypes) {
+        selectedRealtyTypes = req.app.locals.realtyTypes;
+    } else {
+        if(!Array.isArray(selectedRealtyTypes)) {
+            selectedRealtyTypes = selectedRealtyTypes.split();
+        }
+    }
+    query.type = {$in: selectedRealtyTypes};
+    
+    if(!selectedRealtyOwners) {
+        selectedRealtyOwners = req.app.locals.realtyOwners;
+    } else {
+        if(!Array.isArray(selectedRealtyOwners)) {
+            selectedRealtyOwners = selectedRealtyOwners.split();
+        }
+    }
+    query.owner = {$in: selectedRealtyOwners};
+    
+    if(search) {
+        let searchQueryQuoted = `\"${search}\"`;
+        query.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
+    }
+    
+    Realty.find(query).exec(function(err, queryRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var search = req.query.searchQuery,
-                type = req.query.type,
-                owners = req.query.owner,
-                query = {};
+            let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(queryRealty),
+                sort = {};
             
-            if(!type) {
-                type = req.app.locals.realtyTypes;
-            } else {
-                if(!Array.isArray(type)) {
-                    type = type.split();
-                }
-            }
-            query.type = {$in: type};
-            
-            if(!owners) {
-                owners = req.app.locals.realtyOwners;
-            } else {
-                if(!Array.isArray(owners)) {
-                    owners = owners.split();
-                }
-            }
-            query.owner = {$in: owners};
-            
-            if(search) {
-                let searchQueryQuoted = `\"${search}\"`;
-                query.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
+            switch(req.query.sort) {
+                // Name A-Z
+                case "1": sort.name = 1; break;
+                // Name Z-A
+                case "2": sort.name = -1; break;
+                // Type A-Z
+                case "3": sort.type = 1; break;
+                // Type Z-A
+                case "4": sort.type = -1; break;
+                // Lower rentValue
+                case "5": sort.isRented = -1; sort.isFamily = 1; sort.rentValue = 1; sort.name = 1; break;
+                // Higher rentValue
+                case "6": sort.isRented = -1; sort.rentValue = -1; sort.name = 1; break;
+                // Lower condominiumValue
+                case "7": sort.condominiumValue = 1; sort.name = 1; break;
+                // Higher condominiumValue
+                case "8": sort.condominiumValue = -1; sort.name = 1; break;
+                // Default
+                default: sort.isRented = -1; sort.rentValue = -1; sort.name = 1;
             }
             
-            Realty.find(query).exec(function(err, searchRealty) {
+            Realty.find(query)
+            .sort(sort).collation({locale: "pt", numericOrdering: true})
+            .skip((perPage * pageNumber) - perPage)
+            .limit(perPage)
+            .populate("comments")
+            .exec(function(err, querySortSkipLimitRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(searchRealty),
-                        sort = {};
-                    
-                    switch(req.query.sort) {
-                        // Name A-Z
-                        case "1": sort.name = 1; break;
-                        // Name Z-A
-                        case "2": sort.name = -1; break;
-                        // Type A-Z
-                        case "3": sort.type = 1; break;
-                        // Type Z-A
-                        case "4": sort.type = -1; break;
-                        // Lower rentValue
-                        case "5": sort.isRented = -1; sort.isFamily = 1; sort.rentValue = 1; sort.name = 1; break;
-                        // Higher rentValue
-                        case "6": sort.isRented = -1; sort.rentValue = -1; sort.name = 1; break;
-                        // Lower condominiumValue
-                        case "7": sort.condominiumValue = 1; sort.name = 1; break;
-                        // Higher condominiumValue
-                        case "8": sort.condominiumValue = -1; sort.name = 1; break;
-                        // Default
-                        default: sort.isRented = -1; sort.rentValue = -1; sort.name = 1;
-                    }
-                    
-                    Realty.find(query)
-                    .sort(sort).collation({locale: "pt", numericOrdering: true})
-                    .skip((perPage * pageNumber) - perPage)
-                    .limit(perPage)
-                    .populate("comments")
-                    .exec(function(err, sortSkipLimitRealty) {
+                    Realty.countDocuments(query).exec(function (err, realtyCount) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
-                            Realty.countDocuments(query).exec(function (err, count) {
-                                if(err) {handleErrorModRef.handleError(err, res)} else {
-                                    res.render("realty/index", {
-                                        allRealty,
-                                        realtyTypeCount,
-                                        realty: sortSkipLimitRealty,
-                                        page: "imoveis",
-                                        current: pageNumber,
-                                        pages: Math.ceil(count / perPage),
-                                        perPage: perPage,
-                                        count: count,
-                                        allRealtyTypes: req.app.locals.realtyTypes,
-                                        ownersArray: req.app.locals.realtyOwners,
-                                        selectedTypesArray: type,
-                                        selectedOwnersArray: owners,
-                                        sort: req.query.sort,
-                                        searchQuery: query.searchQuery || "",
-                                        owners: owners
-                                    });
-                                }
+                            res.render("realty/index", {
+                                realty: querySortSkipLimitRealty,
+                                realtyCount,
+                                realtyTypes: req.app.locals.realtyTypes,
+                                selectedRealtyTypes,
+                                realtyTypeCount,
+                                realtyOwners: req.app.locals.realtyOwners,
+                                selectedRealtyOwners,
+                                
+                                page: "imoveis",
+                                current: pageNumber,
+                                pages: Math.ceil(realtyCount / perPage),
+                                perPage,
+                                
+                                search: query.search || "",
+                                sort: req.query.sort
                             });
                         }
                     });
