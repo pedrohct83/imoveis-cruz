@@ -17,7 +17,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
             }
             Tenant.find(query).exec(function(err, searchTenants) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    console.log(searchTenants);
                     res.render("tenants/index", {
                         allTenants,
                         tenants: searchTenants,

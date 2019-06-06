@@ -207,15 +207,26 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
     } else {
         Tenant.findById(req.body.realty.tenantId, function(err, tenant) {
             if(err) {handleErrorModRef.handleError(err, res)} else {
-                req.body.realty.tenant = {
-                    id: req.body.realty.tenantId,
-                    name: tenant.name
-                };
-                (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
                 Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
                     if(err) {handleErrorModRef.handleError(err, res)} else {
-                        tenant.realty.push(realty);
-                        tenant.save();
+                        let match = false;
+                        tenant.realty.every(function(el) {
+                            if (el.id === realty.id) {
+                                match == true;
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
+                        req.body.realty.tenant = {
+                            id: req.body.realty.tenantId,
+                            name: tenant.name
+                        };
+                        (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
+                        if (!match) {
+                            tenant.realty.push(realty);
+                            tenant.save();
+                        }                        
                         res.redirect("/imoveis/" + req.params.id);
                     }
                 });
