@@ -46,6 +46,7 @@ router.get("/novo", middleware.isAdmin, function(req, res) {
 
 // CREATE - Add new tenant to db
 router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
+    // Create 'newTenant' object that will be added to the db
     var newTenant = {
         name: req.body.name,
         type: req.body.type,
@@ -56,6 +57,8 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         notes: req.body.notes,
         realty: []
     };
+    
+    // Try to add the new tenant to db and if throws exception, catch the error
     try {
         Tenant.create(newTenant);
         req.flash("success", "Novo inquilino adicionado");
