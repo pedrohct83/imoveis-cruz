@@ -12,9 +12,9 @@
                             <div class="form-group">
                                 <label for="type">Tipo do imóvel <span class="text-danger">*</span></label>
                                 <select class="custom-select" id="type" name="realty[type]" required>
-                                    <% for (var i = 0; i < typesArray.length; i++) { %>
-                                        <% var selected = (typesArray[i] == realty.type) ? "selected" : "" %>
-                                        <option value="<%= typesArray[i] %>" <%= selected %>><%= typesArray[i] %></option>
+                                    <% for (var i = 0; i < realtyTypes.length; i++) { %>
+                                        <% var selected = (realtyTypes[i] == realty.type) ? "selected" : "" %>
+                                        <option value="<%= realtyTypes[i] %>" <%= selected %>><%= realtyTypes[i] %></option>
                                     <% } %>
                                 </select>
                             </div>

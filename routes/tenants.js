@@ -1,38 +1,48 @@
 var express = require("express"),
     router = express.Router(),
     bodyParser = require("body-parser"),
+    // Models
     Tenant = require("../models/tenant"),
+    // Middlewares
     middleware = require("../middleware"),
+    // Modules
     handleErrorModRef = require("../modules/handleError");
 
-// INDEX - Show all tenants
+
+
+// Index - Show all tenants
 router.get("/", middleware.isLoggedIn, function(req, res) {
-    Tenant.find().exec(function(err, allTenants) {
+    // Query vars
+    var search = req.query.search,
+        query = {};
+        
+    // If there's a search query, quote it and prepare 'query.$text' object
+    // 'diactricSensitive' set as false so ignore accents and cedillas when searching
+    if(search) {
+        let searchQuoted = `\"${search}\"`;
+        query.$text = {$search: searchQuoted, $diacriticSensitive: false};
+    }
+    
+    // Find tenants filtered by 'query'
+    Tenant.find(query).exec(function(err, searchTenants) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            var searchQuery = req.query.searchQuery,
-                query = {};
-            if(searchQuery) {
-                let searchQueryQuoted = `\"${searchQuery}\"`;
-                query.$text = {$search: searchQueryQuoted, $diacriticSensitive: false};
-            }
-            Tenant.find(query).exec(function(err, searchTenants) {
-                if(err) {handleErrorModRef.handleError(err, res)} else {
-                    res.render("tenants/index", {
-                        allTenants,
-                        tenants: searchTenants,
-                        page: "inquilinos",
-                        searchQuery: searchQuery || ""
-                    });
-                }
+            res.render("tenants/index", {
+                tenants: searchTenants,
+                page: "inquilinos",
+                search: search || ""
             });
         }
     });
 });
 
+
+
 // NEW - Show the create tenant form page
 router.get("/novo", middleware.isAdmin, function(req, res) {
     res.render("tenants/new");
 });
+
+
 
 // CREATE - Add new tenant to db
 router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
@@ -55,6 +65,8 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
     }
 });
 
+
+
 // EDIT - Show the edit tenant form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     Tenant.findById(req.params.id, function(err, tenant){
@@ -63,6 +75,8 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
         }
     });
 });
+
+
 
 // UPDATE - Update tenant
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
@@ -74,6 +88,8 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
     });  
 });
 
+
+
 // DESTROY - Delete tenant
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {
@@ -84,5 +100,7 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
         }
     });
 });
+
+
 
 module.exports = router;
