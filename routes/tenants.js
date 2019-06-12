@@ -24,7 +24,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     }
     
     // Find tenants filtered by 'query'
-    Tenant.find(query).exec(function(err, searchTenants) {
+    Tenant.find(query).populate("realty").exec(function(err, searchTenants) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("tenants/index", {
                 tenants: searchTenants,

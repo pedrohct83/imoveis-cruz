@@ -10,7 +10,12 @@ var tenantSchema = new mongoose.Schema({
     contactEmail: String,
     phone: String,
     notes: String,
-    realty: [Realty.schema]
+    realty: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Realty"
+        }
+    ],
 });
 
 module.exports = mongoose.model("Tenant", tenantSchema);

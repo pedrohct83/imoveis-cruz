@@ -199,8 +199,8 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
                         // Push 'realty' object to 'tenant.realty' objects array then save the tenant
                         tenant.realty.push(realty);
                         tenant.save();
-                        req.flash("success", "Novo imóvel adicionado");
                         
+                        req.flash("success", "Novo imóvel adicionado");
                         res.redirect("/imoveis");
                     }
                 });
@@ -236,61 +236,63 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
 
 // Update: Update realty
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
-    // Realty not rented
-    if(req.body.realty.isRented == "Não") {
-        // Realty has no tenant, set 'req.body.tenant' as an empty object
-        req.body.realty.tenant = {};
-        // Set 'rentValue' as 0
-        req.body.realty.rentValue = 0;
-        // Set 'isFamily' as false
-        req.body.realty.isFamily = false;
-        
-        // Find and update realty
-        Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
-            if(err) {handleErrorModRef.handleError(err, res)} else {
-                res.redirect("/imoveis/" + req.params.id);
-            }
-        });
-    // Realty Rented
-    } else {
-        // Find selected tenant by id
-        Tenant.findById(req.body.realty.tenantId, function(err, tenant) {
-            if(err) {handleErrorModRef.handleError(err, res)} else {
-                // Set 'req.body.realty.tenant' fields
-                req.body.realty.tenant = {
-                    id: req.body.realty.tenantId,
-                    name: tenant.name
-                };
-                
-                // Set 'req.body.realty.isFamily' field
-                (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
-                
-                // Find and update realty
-                Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, realty) {
+    // Find realty using the id request parameter
+    Realty.findById(req.params.id, function(err, realty) {
+        if(err) {handleErrorModRef.handleError(err, res)} else {
+            // Check if realty has a tenant
+            if (realty.tenant.id) {
+                // Realty has a tenant
+                Tenant.findById(realty.tenant.id, function(err, currentTenant) {
                     if(err) {handleErrorModRef.handleError(err, res)} else {
-                        // Check if the updated realty is present on 'tenant.realty' array
-                        let match = false;
-                        tenant.realty.every(function(el) {
-                            if (el.id === realty.id) {
-                                match == true;
-                                return false;
-                            } else {
-                                return true;
+                        // Remove 'realty' from 'currentTenant.realty'
+                        for (var i = 0; i < currentTenant.realty.length; i++){
+                            if (currentTenant.realty[i] == realty.id) {
+                                currentTenant.realty.splice(i, 1); 
+                                // i-- to not skip the next item in the array
+                                i--;
+                            }
+                        }
+                        currentTenant.save();
+                        
+                        // Find the new selected Tenant, so we can populate 'req.body.realty.tenant' fields
+                        // Even if the new selected tenant is the same, we still need to update the realty and push it into the newTenant realty array
+                        Tenant.findById(req.body.realty.tenantId, function(err, newTenant) {
+                            if(err) {handleErrorModRef.handleError(err, res)} else {
+                                // Set 'req.body.realty.tenant' fields
+                                req.body.realty.tenant = {
+                                    id: newTenant.id,
+                                    name: newTenant.name,
+                                    notes: newTenant.notes
+                                };  
+                                
+                                // Set 'req.body.realty.isFamily' field
+                                (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
+                                
+                                // Find and update realty
+                                Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, updatedRealty) {
+                                    if(err) {handleErrorModRef.handleError(err, res)} else {
+                                        // Add 'updatedRealty' into 'newTenant' realty array, then save 'newTenant'
+                                        newTenant.realty.push(updatedRealty);
+                                        newTenant.save();
+                                        
+                                        res.redirect("/imoveis/" + req.params.id);
+                                    }
+                                });                            
                             }
                         });
-                        
-                        // Push 'realty' object into 'tenant.realty' array if it's not already there
-                        if (!match) {
-                            tenant.realty.push(realty);
-                            tenant.save();
-                        }    
-                        
+                    }
+                });
+            }
+            else {
+                // Find and update realty
+                Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err) {
+                    if(err) {handleErrorModRef.handleError(err, res)} else {
                         res.redirect("/imoveis/" + req.params.id);
                     }
                 });
             }
-        });   
-    }
+        }
+    });
 });
 
 
@@ -300,7 +302,7 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
     // Find realty and remove it from the db
     Realty.findByIdAndRemove(req.params.id, function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            // Remove all comment documents with ids present in realty.comments
+            // Remove all comment documents which ids are present in realty.comments
             Comment.remove({"_id": {$in: realty.comments}}, function (err) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
                     req.flash("success", `Imóvel "${realty.name}" foi removido.`);
