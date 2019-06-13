@@ -24,7 +24,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     }
     
     // Find tenants filtered by 'query'
-    Tenant.find(query).exec(function(err, searchTenants) {
+    Tenant.find(query)
+    // Sort the result by name (a-z) and use a collation on the next stage to consider numeric ordering
+    .sort({ name: 1 }).collation({locale: "pt", numericOrdering: true})
+    .populate("realty").exec(function(err, searchTenants) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("tenants/index", {
                 tenants: searchTenants,
