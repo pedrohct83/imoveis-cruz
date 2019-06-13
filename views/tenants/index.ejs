@@ -40,8 +40,8 @@
                                     <small class="d-block text-muted"><%= tenant.phone %></small>
                                 </td>
                                 <td class="align-middle">
-                                    <% tenant.realty.forEach(function(realty, index) {%>
-                                        <a href="/imoveis/<%= tenant.realty[index].id %>"><%= tenant.realty[index].name %></a>
+                                    <% tenant.realty.forEach(function(realty) {%>
+                                        <a href="/imoveis/<%= realty.id %>"><%= realty.name %></a>
                                         <br>
                                     <% }) %>
                                 </td>

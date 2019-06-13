@@ -3,6 +3,7 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     // Models
     Tenant = require("../models/tenant"),
+    Realty = require("../models/realty"),
     // Middlewares
     middleware = require("../middleware"),
     // Modules
@@ -61,7 +62,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         realty: []
     };
     
-    // Try to add the new tenant to db and if throws exception, catch the error
+    // Try to add new tenant to db and if throws exception, catch the error
     try {
         Tenant.create(newTenant);
         req.flash("success", "Novo inquilino adicionado");
@@ -75,6 +76,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
 
 // EDIT - Show the edit tenant form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
+    // Find tenant
     Tenant.findById(req.params.id, function(err, tenant){
         if(err) {handleErrorModRef.handleError(err, res)} else {
             res.render("tenants/edit", { tenant });
@@ -86,10 +88,21 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
 
 // UPDATE - Update tenant
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
+    // Init 'req.body.tenant.cnpj' or 'req.body.tenant.cpf' depending on user choice
     (req.body.tenant.type === "Pessoa Física") ? req.body.tenant.cnpj = "" : req.body.tenant.cpf = "";
+    
+    // Find tenant and update
     Tenant.findByIdAndUpdate(req.params.id, req.body.tenant, function(err, tenant) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            res.redirect("/inquilinos");
+            // Update tenant name and notes fields in every realty that has this 'tenant'
+            Realty.updateMany(
+                {"tenant.id": tenant.id},
+                {$set: {"tenant.name": req.body.tenant.name}, "tenant.notes": req.body.tenant.notes}
+            ).exec(function(err) {
+                if(err) {handleErrorModRef.handleError(err, res)} else {
+                    res.redirect("/inquilinos");
+                } 
+            });
         }
     });  
 });
@@ -98,11 +111,26 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
 
 // DESTROY - Delete tenant
 router.delete("/:id", middleware.isAdmin, function(req, res) {
+    // Find and remove tenant
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            tenant.remove();
-            req.flash("success", `Inquilino "${tenant.name}" foi removido.`);
-            res.redirect("/inquilinos");
+            // Reset tenant related fields in every realty that has this tenant
+            Realty.updateMany(
+                {"tenant.id": tenant.id},
+                {$set: {
+                    tenant: {},
+                    isFamily: false,
+                    isRented: false,
+                    contractStart: null,
+                    contractEnd: null,
+                    rentValue: 0
+                }}
+            ).exec(function(err) {
+                if(err) {handleErrorModRef.handleError(err, res)} else {
+                    req.flash("success", `Inquilino "${tenant.name}" foi removido.`);
+                    res.redirect("/inquilinos");
+                } 
+            });
         }
     });
 });

@@ -91,11 +91,21 @@
                             <input type="checkbox" class="custom-control-input" id="isFamily" name="isFamily">    
                             <label class="custom-control-label" for="isFamily">Inquilino é do GrupoCTC ou membro da família Cruz</label>
                         </div>
-                    </div>  
+                    </div>
+                    <script>
+                        function filterSelectOptions(keyword) {
+                            var select = document.getElementById("tenantId");
+                            for (var i = 0; i < select.length; i++) {
+                                var txt = select.options[i].text;
+                                var include = txt.toLowerCase().startsWith(keyword.toLowerCase());
+                                select.options[i].style.display = include ? 'block' : 'none';
+                            }
+                        }
+                    </script>
                     <div class="form-group d-none tenantField">
                         <label for="tenantId">Selecione o Inquilino <span class="text-danger">*</span></label>
-                        <select class="custom-select" id="tenantId" name="tenantId" required>
-                            <option value="">-- Selecione o Inquilino --</option>
+                        <input type="text" id="search" class="form-control" name="search" onkeyup="filterSelectOptions(this.value)" placeholder="Filtrar nome" autocomplete="off">
+                        <select class="custom-select" id="tenantId" name="tenantId" required size="6">
                             <% tenants.forEach(function(tenant, index) { %>
                                 <option value="<%= tenant.id %>"><%= tenant.name %></option>
                             <% }) %>
