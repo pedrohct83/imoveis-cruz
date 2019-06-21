@@ -10,7 +10,7 @@ var express = require("express"),
 
 
 
-// Index
+// Show dashboard page
 router.get("/", middleware.isLoggedIn, function(req, res) {
     // Query vars
     var selectedRealtyTypes = req.query.type,
@@ -94,7 +94,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(realty);
                             
                             res.render("dashboard/index", {
-                                //Realty vars
+                                // Realty vars
                                 realty,
                                 occupiedRealtyByFamily,
                                 occupiedRealtyByOthers,

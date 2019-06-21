@@ -11,7 +11,7 @@ var express = require("express"),
 
 
 
-// Index - Show all tenants
+// Show all tenants
 router.get("/", middleware.isLoggedIn, function(req, res) {
     // Query vars
     var search = req.query.search,
@@ -41,14 +41,14 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 
 
 
-// NEW - Show the create tenant form page
+// Show the create tenant form page
 router.get("/novo", middleware.isAdmin, function(req, res) {
     res.render("tenants/new");
 });
 
 
 
-// CREATE - Add new tenant to db
+// Add new tenant to db
 router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     // Create 'newTenant' object that will be added to the db
     var newTenant = {
@@ -74,7 +74,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
 
 
 
-// EDIT - Show the edit tenant form page
+// Show the edit tenant form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     // Find tenant
     Tenant.findById(req.params.id, function(err, tenant){
@@ -86,7 +86,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
 
 
 
-// UPDATE - Update tenant
+// Update tenant
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
     // Init 'req.body.tenant.cnpj' or 'req.body.tenant.cpf' depending on user choice
     (req.body.tenant.type === "Pessoa Física") ? req.body.tenant.cnpj = "" : req.body.tenant.cpf = "";
@@ -109,7 +109,7 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
 
 
 
-// DESTROY - Delete tenant
+// Delete tenant
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     // Find and remove tenant
     Tenant.findByIdAndRemove(req.params.id, function(err, tenant) {

@@ -13,7 +13,7 @@ var express = require("express"),
 
 
 
-// Index: Show all realty
+// Show all realty
 router.get("/", middleware.isLoggedIn, function(req, res) {
     // Pagination vars
     var perPage = 25,
@@ -129,7 +129,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
 
 
 
-// New: Show new realty form page
+// Show new realty form page
 router.get("/novo", middleware.isAdmin, function(req, res) {
     // Find tenants
     Tenant.find().exec(function(err, tenants) {
@@ -141,7 +141,7 @@ router.get("/novo", middleware.isAdmin, function(req, res) {
 
 
 
-// Show: Show realty page
+// Show realty page
 router.get("/:id", middleware.isLoggedIn, function(req, res) {
     // Find a realty by id
     Realty.findById(req.params.id)
@@ -161,7 +161,7 @@ router.get("/:id", middleware.isLoggedIn, function(req, res) {
  
  
     
-// Create: Add new realty to db
+// Add new realty to db
 router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function(req, res) {
     // Create 'newRealty' object for realty that will be added to the db
     var newRealty = {
@@ -219,7 +219,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
 
 
 
-// Edit: Show edit realty form page
+// Show edit realty form page
 router.get("/:id/edit", middleware.isAdmin, function(req, res) {
     // Find the realty that will be edited
     Realty.findById(req.params.id, function(err, realty){
@@ -236,7 +236,7 @@ router.get("/:id/edit", middleware.isAdmin, function(req, res) {
 
 
 
-// Update: Update realty
+// Update realty
 router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), function (req, res) {
     // Find realty using the id request parameter
     Realty.findById(req.params.id, function(err, realty) {
@@ -299,7 +299,7 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
 
 
 
-// Destroy: Delete realty
+// Delete realty
 router.delete("/:id", middleware.isAdmin, function(req, res) {
     // Find realty and remove it from the db
     Realty.findByIdAndRemove(req.params.id, function(err, realty) {

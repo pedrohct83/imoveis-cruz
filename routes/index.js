@@ -3,28 +3,35 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     passport = require("passport");
 
-// ROOT - Show landing page
+
+
+// Show landing page
 router.get("/", function(req, res) {
     res.render("landing");
 });
 
-// LOGIN - Show login form
+
+
+// Show login form
 router.get("/entrar", function(req, res) {
     res.render("login", {page: 'login'});
 });
 
-// LOGIN - Handle login logic
+
+
+// Handle login logic - Authenticate user using passport local strategy
 router.post("/entrar", bodyParser.urlencoded({ extended: true }), passport.authenticate("local", 
-    {
-        successRedirect: "/imoveis", 
-        failureRedirect: "/entrar"
-    }), function(req, res) {
+    {successRedirect: "/imoveis", failureRedirect: "/entrar"}), function(req, res) {
 });
 
-// LOGOUT - Log user out
+
+
+// Log user out
 router.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/");
 });
+
+
 
 module.exports = router;
