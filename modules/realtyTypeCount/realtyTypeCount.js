@@ -1,4 +1,5 @@
 module.exports.realtyTypeCount = function (realty) {
+    // Declare 'realtyTypeCount' object
     let realtyTypeCount = {
         apartamento: 0,
         garagem: 0,
@@ -7,6 +8,7 @@ module.exports.realtyTypeCount = function (realty) {
         sala: 0,
         terreno: 0
     };
+    // Run through all realty, check its type and increment its related type field
     realty.forEach(function(item) {
         switch(item.type) {
             case "Apartamento": realtyTypeCount.apartamento++; break;

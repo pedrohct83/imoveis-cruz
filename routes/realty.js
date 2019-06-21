@@ -57,7 +57,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     // Find realty filtered by 'query'
     Realty.find(query).exec(function(err, queryRealty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            // Create the 'realtyTypeCount' object with the number of each realty type in 'queryRealty'
+            // Create the 'realtyTypeCount' object.
+            // Fields are realty types. Values are realty types cont.
             let realtyTypeCount = realtyTypeCountModRef.realtyTypeCount(queryRealty),
                 sort = {};
                 
@@ -108,8 +109,9 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 realtyTypeCount,
                                 realtyOwners: req.app.locals.realtyOwners,
                                 selectedRealtyOwners,
-                                // Pagination vars
+                                // Page var
                                 page: "imoveis",
+                                // Pagination vars
                                 current: pageNumber,
                                 pages: Math.ceil(realtyCount / perPage),
                                 perPage,
