@@ -1,19 +1,13 @@
+<!--Iterate thru realty owners-->
 <% for (let i in realtyOwners) { %>
-    <% if(selectedRealtyOwners.includes(realtyOwners[i])) { %>
-        <!-- Checked -->
-        <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-            <input type="checkbox" checked class="custom-control-input" id="<%= realtyOwners[i] %>" name="owner" value="<%= realtyOwners[i] %>">
-            <label class="custom-control-label" for="<%= realtyOwners[i] %>">
-                <%= realtyOwners[i] %>
-            </label>
-        </div>
-    <% } else { %>
-        <!-- Not checked -->
-        <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-            <input type="checkbox" class="custom-control-input" id="<%= realtyOwners[i] %>" name="owner" value="<%= realtyOwners[i] %>">
-            <label class="custom-control-label" for="<%= realtyOwners[i] %>">
-                <%= realtyOwners[i] %>
-            </label>
-        </div>
-    <% } %>
+    <!--Checked var set with "checked" or "" depending if this realty owner is one of the selected or not-->
+    <% let checked = (selectedRealtyOwners.includes(realtyOwners[i])) ? "checked" : "" %>
+    
+    <!--Checkbox-->
+    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+        <input type="checkbox" <%= checked %> class="custom-control-input" id="<%= realtyOwners[i] %>" name="owner" value="<%= realtyOwners[i] %>">
+        <label class="custom-control-label" for="<%= realtyOwners[i] %>">
+            <%= realtyOwners[i] %>
+        </label>
+    </div>
 <% } %>

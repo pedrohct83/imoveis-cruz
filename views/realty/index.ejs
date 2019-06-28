@@ -3,57 +3,82 @@
 
 <section class="container-fluid content-height py-3">
     <div class="row">
+        <!--Sidebar-->
         <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
             <% include index-sidebar %>       
         </div>
+        
+        <!--Main panel-->
         <div class="col-lg-9 col-xl-10">
             <div class="d-flex justify-content-between align-items-start mb-3">
-                <a href="/imoveis/novo" class="btn btn-secondary rounded-0 box-shadow" title="Adicionar imóvel">Novo imóvel</a>
-                <% if(perPage > realtyCount) { %>
-                    <% perPage = realtyCount %>
-                <% } %>
+                <!--Add realty button-->
+                <a href="/imoveis/novo" class="btn btn-secondary rounded-0 box-shadow" title="Adicionar imóvel">
+                    Novo imóvel
+                </a>
+                
+                <!--Information about how many realty are displayed and the total number of pages-->
                 <div>
+                    <% if(perPage > realtyCount) { %>
+                        <% perPage = realtyCount %>
+                    <% } %>
                     <small class="d-block">Exibindo <%= perPage %> imóveis de <%= realtyCount %></small>
                     <small class="d-block">Total de páginas: <%= pages %></small>
                 </div>
             </div>
-            <% if(realtyCount > 0 && search) { %>
-                <span class="d-block mb-3 text-muted">Exibindo imóveis com o termo: <strong><%= search %></strong></span>
-            <% } else if (search) { %>
-                <span class="d-block mb-3 text-danger">Nenhum imóvel encontrado com o termo: <%= search %></span>
+            
+            <!--No realty found message-->
+            <% if(realtyCount <= 0) { %>
+                <span class="d-block mb-3 text-danger">Nenhum imóvel encontrado. Redefina os filtros da pesquisa.</span>
             <% } %>
+            
+            <!--Realty table-->
             <div class="table-responsive box-shadow">
                 <table class="table table-sm bg-white mb-0">
+                    <!--Table head-->
                     <thead>
                         <tr>
                             <th scope="col" class="border-0">Imóvel</th>
                             <th scope="col" class="border-0">Locação</th>
                             <th scope="col" class="border-0">Condomínio / IPTU</th>
+                            
+                            <!--Show Ações table head item if user is admin-->
                             <% if (currentUser.isAdmin) { %>
                                 <th scope="col" class="d-none d-lg-table-cell border-0">Ações</th>
                             <% } %>
                         </tr>
                     </thead>
+                    
+                    <!--Table body-->
                     <tbody>
                         <% realty.forEach(function(realty, index) { %>
+                            <!--Color table rows according to realty status-->
                             <% var isRented = (realty.isRented === "Sim") ? "rented" : "available" %>
                             <% var isFamily = (realty.isFamily) ? "occupiedByFamily" : "" %>
                             <tr class="<%= isRented %> <%= isFamily %>">
+                                <!--Realty info-->
                                 <td class="align-middle">
                                     <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
                                         <%= realty.name %>    
                                     </a>
                                     <small class="d-block text-muted">Tipo: <%= realty.type %></small>
                                     <% if(realty.comments.length > 0) { %>
-                                        <small class="d-block text-muted"><i class="far fa-comment"></i> <%= realty.comments.length %> comentário(s)</small>
+                                        <small class="d-block text-muted">
+                                            <i class="far fa-comment"></i> <%= realty.comments.length %> comentário(s)
+                                        </small>
                                     <% } %>
                                 </td>
+                                
+                                <!--Rent info-->
                                 <td class="align-middle">
                                     <%= realty.tenant.name %>
                                     <% if(realty.rentValue > 0) { %>
-                                        <small class="d-block text-muted">Aluguel: R$<%= realty.rentValue %></small>   
+                                        <small class="d-block text-muted">
+                                            Aluguel: R$<%= realty.rentValue %>
+                                        </small>   
                                     <% } %>
                                 </td>
+                                
+                                <!--Condominium and IPTU infos-->
                                 <td class="align-middle">
                                     <% if(realty.condominiumValue > 0) { %>
                                         <span class="d-block"><span class="text-muted">Condomínio:</span> R$<%= realty.condominiumValue %></span>
@@ -62,6 +87,8 @@
                                         <span class="d-block"><span class="text-muted">IPTU:</span> R$<%= realty.iptuValue %></span>
                                     <% } %>
                                 </td>
+                                
+                                <!--Show action buttons if user is admin-->
                                 <% if (currentUser.isAdmin) { %>
                                     <td class="d-none d-lg-table-cell align-middle">
                                         <!-- Actions -->
@@ -69,6 +96,7 @@
                                         <a href="#" class="text-danger" data-toggle="modal" data-target="#realty<%= index %>" title="Deletar imóvel"><i class="fas fa-trash"></i></a>
                                     </td>
                                 <% } %>
+                                
                                 <!-- Delete realty modal -->
                                 <div class="modal fade" id="realty<%= index %>" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
@@ -96,7 +124,10 @@
                     </tbody>
                 </table>
             </div>
+            
+            <!--Pagination and realty status color labels-->
             <div class="d-block d-lg-flex justify-content-between align-items-start mt-3">
+                <!--Color labels-->
                 <div class="order-2 mb-2">
                     <small class="d-block">
                         <span class="mr-1"><i class="fas fa-xs fa-circle text-success"></i> Alugado</span>
@@ -104,6 +135,8 @@
                         <span><i class="fas fa-xs fa-circle text-danger"></i> GrupoCTC ou Família</span>
                     </small>
                 </div>
+                
+                <!--Pagination-->
                 <div>
                     <% include index-pagination %>    
                 </div>

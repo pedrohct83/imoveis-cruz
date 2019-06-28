@@ -1,21 +1,36 @@
+<!--If there are pages-->
 <% if (pages && pages > 0) { %>
     <nav aria-label="Paginação dos imóveis" class="table-responsive w-auto order-1 box-shadow" style="display: table-row-group">
         <ul class="pagination pagination-sm rounded-0 m-0">
-            <% var typesUrl = "" %>
-            <% if(selectedRealtyTypes.length !== 0) {%>
-                <% for (let i in selectedRealtyTypes) { %>
-                    <% typesUrl = typesUrl + "&type=" + selectedRealtyTypes[i]; %>
-                <% } %>
-            <% } %>
-            <% var sortUrl = "&sort=" + sort %>
+            <!--Create URL parameters-->
+            <!--Search-->
             <% var searchUrl = "&search=" + search %>
+            
+            <!--Sort-->
+            <% var sortUrl = "&sort=" + sort %>
+            
+            <!--Owners-->
             <% var ownersUrl = "" %>
             <% if(selectedRealtyOwners.length !== 0) { %>
                 <% for (let i in selectedRealtyOwners) { %>
                     <% ownersUrl = ownersUrl + "&owner=" + selectedRealtyOwners[i]; %>
                 <% } %>
             <% } %>
+            
+            <!--Types-->
+            <% var typesUrl = "" %>
+            <% if(selectedRealtyTypes.length !== 0) {%>
+                <% for (let i in selectedRealtyTypes) { %>
+                    <% typesUrl = typesUrl + "&type=" + selectedRealtyTypes[i]; %>
+                <% } %>
+            <% } %>
+            
+            <!--Concatenate parameters into allParameters var-->
             <% var allParameters = searchUrl + sortUrl + ownersUrl + typesUrl %>
+            
+            <!--Pagination-->
+            <!--First-->
+            <!--If current page is not the 1st, add first page href link-->
             <% if (current == 1) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0"><small>Primeira</small></a>
@@ -25,6 +40,9 @@
                     <a href="/imoveis?page=1<%= allParameters %>" class="page-link border-0"><small>Primeira</small></a>
                 </li>
             <% } %>
+            
+            <!--Previous-->
+            <!--If current page is not the 1st, add previous page href link -->
             <% if (current == 1) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0" aria-label="Anterior">
@@ -38,26 +56,42 @@
                     </a>
                 </li>
             <% } %>
+            
+            <!--Page: i-->              
+            <!--If current page is 4 or higher, show '...' page-item-->
             <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
             <% if (i !== 1) { %>
                 <li class="page-item disabled"><a class="page-link border-0">...</a></li>
             <% } %>
+            
+            <!--Loop from i (set above) to current page + 2-->
+            <!--We want to show only 2 previous numbers and 2 next numbers-->
             <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                <!--Current page, disable link-->
                 <% if (i == current) { %>
                     <li class="page-item disabled active">
                         <a class="page-link border-0"><%= i %></a>
                     </li>
+                    
+                <!--Not current page, add href-->
                 <% } else { %>
                     <li class="page-item">
-                        <a class="page-link border-0" href="/imoveis?page=<%= i %><%= allParameters %>"><%= i %></a>
+                        <a class="page-link border-0" href="/imoveis?page=<%= i %><%= allParameters %>">
+                            <%= i %>
+                        </a>
                     </li>
                 <% } %>
+                
+                <!--Show '...' instead of 'i' for page-item above current page + 2-->
                 <% if (i == Number(current) + 2 && i < pages) { %>
                     <li class="page-item disabled">
                         <a class="page-link border-0">...</a>
                     </li>
                 <% } %>
             <% } %>
+            
+            <!--Next-->
+            <!--If current page is not the last, add next page href link-->
             <% if (current == pages) { %>
                 <li class="page-item">
                     <a class="page-link border-0 disabled" aria-label="Próximo">
@@ -71,6 +105,9 @@
                     </a>
                 </li>
             <% } %>
+
+            <!--Last-->
+            <!--If current page is not the last one, add last page href link-->
             <% if (current == pages) { %>
                 <li class="page-item disabled">
                     <a class="page-link border-0"><small>Última</small></a>

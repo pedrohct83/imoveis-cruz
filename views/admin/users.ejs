@@ -2,10 +2,14 @@
 <% include ../partials/nav-admin %>
 
 <section class="container content-height py-3">
+    <!--Add user button-->
     <a href="/admin/usuarios/novo" class="btn btn-primary btn-sm mb-3">Adicionar Usuário</a>
+    
+    <!--Users table-->
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-sm bg-white">
             <caption class="sr-only">Lista de usuários</caption>
+            <!--Table header-->
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -15,6 +19,8 @@
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
+            
+            <!--Table body-->
             <tbody>
                 <% users.forEach(function(user, index) { %>
                     <tr>
@@ -23,12 +29,13 @@
                         <td><%= user.email %></td>
                         <td><%= user.isAdmin %></td>
                         <td>
-                            <!-- Button trigger delete user modal -->
+                            <!--Trigger delete user modal-->
                             <a href="#" class="text-danger" data-toggle="modal" data-target="#user<%= index %>">
                                 <i class="fas fa-trash mr-1"></i>Excluir
                             </a>
                         </td>
-                        <!-- Delete realty modal -->
+                        
+                        <!--Delete user modal-->
                         <div class="modal fade" id="user<%= index %>" tabindex="-1" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">

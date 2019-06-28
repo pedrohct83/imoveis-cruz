@@ -1,33 +1,21 @@
 <% for (let i in realtyTypes) { %>
-    <% if(selectedRealtyTypes.includes(realtyTypes[i])) { %>
-        <!-- Checked -->
-        <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-            <input type="checkbox" checked class="custom-control-input" id="<%= realtyTypes[i] %>" name="type" value="<%= realtyTypes[i] %>">    
-            <label class="custom-control-label" for="<%= realtyTypes[i] %>">
-                <%= realtyTypes[i] %>
-                <% if (realtyTypes[i] === "Apartamento") { %>(<%= realtyTypeCount.apartamento %>)
-                <% } else if (realtyTypes[i] === "Garagem") { %>(<%= realtyTypeCount.garagem %>)
-                <% } else if (realtyTypes[i] === "Loja") { %>(<%= realtyTypeCount.loja %>)
-                <% } else if (realtyTypes[i] === "Pavimento") { %>(<%= realtyTypeCount.pavimento %>)
-                <% } else if (realtyTypes[i] === "Sala") { %>(<%= realtyTypeCount.sala %>)
-                <% } else if (realtyTypes[i] === "Terreno") { %>(<%= realtyTypeCount.terreno %>)
-                <% } %>
-            </label>
-        </div>
-    <% } else { %>
-        <!-- Not checked -->
-        <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
-            <input type="checkbox" class="custom-control-input" id="<%= realtyTypes[i] %>" name="type" value="<%= realtyTypes[i] %>">    
-            <label class="custom-control-label" for="<%= realtyTypes[i] %>">
-                <%= realtyTypes[i] %>
-                <% if (realtyTypes[i] === "Apartamento") { %>(<%= realtyTypeCount.apartamento %>)
-                <% } else if (realtyTypes[i] === "Garagem") { %>(<%= realtyTypeCount.garagem %>)
-                <% } else if (realtyTypes[i] === "Loja") { %>(<%= realtyTypeCount.loja %>)
-                <% } else if (realtyTypes[i] === "Pavimento") { %>(<%= realtyTypeCount.pavimento %>)
-                <% } else if (realtyTypes[i] === "Sala") { %>(<%= realtyTypeCount.sala %>)
-                <% } else if (realtyTypes[i] === "Terreno") { %>(<%= realtyTypeCount.terreno %>)
-                <% } %>
-            </label>
-        </div>
-    <% } %>
+    <!--Checked var set with "checked" or "" depending if this realty type is one of the selected or not-->
+    <% let checked = (selectedRealtyTypes.includes(realtyTypes[i])) ? "checked" : "" %>
+    
+    <!-- Checkbox -->
+    <div class="custom-control custom-checkbox d-inline-flex d-lg-block mr-2 mr-lg-0">
+        <input type="checkbox" <%= checked %> class="custom-control-input" id="<%= realtyTypes[i] %>" name="type" value="<%= realtyTypes[i] %>">    
+        <label class="custom-control-label" for="<%= realtyTypes[i] %>">
+            <%= realtyTypes[i] %>
+            
+            <!--Add the number of each realty type in paranthesis-->
+            <% if (realtyTypes[i] === "Apartamento") { %>(<%= realtyTypeCount.apartamento %>)
+            <% } else if (realtyTypes[i] === "Garagem") { %>(<%= realtyTypeCount.garagem %>)
+            <% } else if (realtyTypes[i] === "Loja") { %>(<%= realtyTypeCount.loja %>)
+            <% } else if (realtyTypes[i] === "Pavimento") { %>(<%= realtyTypeCount.pavimento %>)
+            <% } else if (realtyTypes[i] === "Sala") { %>(<%= realtyTypeCount.sala %>)
+            <% } else if (realtyTypes[i] === "Terreno") { %>(<%= realtyTypeCount.terreno %>)
+            <% } %>
+        </label>
+    </div>
 <% } %>

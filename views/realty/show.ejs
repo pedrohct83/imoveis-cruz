@@ -3,7 +3,10 @@
 
 <section class="container content-height py-3">
     <div class="d-md-flex justify-content-between align-items-baseline">
+        <!--Title-->
         <h1 class="font-weight-light m-0"><%= realty.name %></h1>
+        
+        <!--isRented, type and owner-->
         <div>
             <% if(realty.isRented === "Sim") { %>
                 <span class="badge badge-success p-lg-2">Alugado: <%= realty.isRented %></span>
@@ -15,9 +18,12 @@
         </div>
     </div>
     <hr>
+    
+    <!--Google map iframe-->
     <div class="realty-map box-shadow">
         <%- realty.mapIframe %>
     </div>
+    
     <div class="row my-3">
         <div class="col-md-6 mb-3 mb-md-0 pr-md-2">
             <div class="card border-0 rounded-0 box-shadow h-100">
@@ -86,19 +92,33 @@
             </div>
         </div>
     </div>
+    
+    <!--Comments section-->
     <div class="card border-0 rounder-0 box-shadow my-3">
         <div class="card-body">
+            <!--Title-->
             <% var totalComments = (realty.comments.length > 0) ? " (" + realty.comments.length + ")" : "" %>
             <h5 class="card-title">Comentários<%= totalComments %></h5>
+            
+            <!--No comments found-->
             <% if(realty.comments.length === 0 ) { %>
                 <p>Não há comentários para este imóvel</p>
+                
+            <!--Comments found-->
             <% } else { %>
+                <!--Loop through comments-->
                 <% realty.comments.forEach(function(comment) { %>
-                    <div class="comment border-left pl-2 mb-3">
+                    <!--Comment-->
+                    <div class="comment border-left pl-2 mb-3">`
+                        <!--Author and created at-->
                         <small><span class="font-weight-bold"><%= comment.author.username %></span>, <%= moment(comment.createdAt).fromNow() %></small>
+                        
+                        <!--Comment content-->
                         <div class="comment-content mt-2">
                             &ldquo;<%= comment.text %>&rdquo;
                         </div>
+                        
+                        <!--Edit and delete comment buttons (must be logged in and be the author or admin)-->
                         <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
                             <div class="comment-actions mt-2">
                                 <a class="btn btn-link text-info p-0 mr-2" href="/imoveis/<%= realty._id %>/comments/<%= comment._id %>/edit">
@@ -114,7 +134,12 @@
                     </div>
                 <% }) %>
             <% } %>
+            
+            <!--Add a new comment section-->
+            <!--Toggle collapse button-->
             <i class="fas fa-comments text-primary"></i> <a data-toggle="collapse" href="#newCommentCollapse" role="button">Adicionar comentário</a>
+            
+            <!--Collapse section-->
             <div class="collapse mt-3" id="newCommentCollapse">
                 <div class="card card-body">
                     <form action="/imoveis/<%= realty._id %>/comments" method="POST">
@@ -130,8 +155,12 @@
             </div>            
         </div>
     </div>
+    
     <div class="d-flex justify-content-between align-items-center">
+        <!--Back link-->
         <a href="javascript:history.back()">&laquo; Voltar</a>
+        
+        <!--Edit and delete buttons-->
         <div>
             <a href="/imoveis/<%= realty._id %>/edit" class="text-info mr-3"><i class="fas fa-edit mr-1"></i>Editar</a>
             <a href="#" class="text-danger" data-toggle="modal" data-target="#deleteRealtyModal">
@@ -139,7 +168,8 @@
             </a>
         </div>
     </div>
-    <!-- MODAL -->
+    
+    <!-- Delete modal -->
     <div class="modal fade" id="deleteRealtyModal" tabindex="-1" role="dialog" aria-labelledby="deleteRealtyModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

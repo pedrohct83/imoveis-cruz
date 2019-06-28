@@ -3,19 +3,28 @@
 
 <section class="container-fluid content-height py-3">
     <div class="row">
+        <!--Sidebar-->
         <div class="col-lg-3 col-xl-2 mb-3 mb-lg-0 pr-lg-0">
             <% include index-sidebar %>       
         </div>  
+        
+        <!--Main panel-->
         <div class="col-lg-9 col-xl-10">
             <div class="d-flex justify-content-between align-items-start">
+                <!--New tenant button-->
                 <a href="/inquilinos/novo" class="btn btn-secondary rounded-0 box-shadow mb-3" title="Adicionar inquilino">Novo Inquilino</a>
+                
+                <!--Total tenants number info-->
                 <div class="text-right">
                     <small class="d-block">Total: <%= tenants.length %> inquilinos</small>
                 </div>
             </div>
+            
+            <!--Tenants table-->
             <div class="table-responsive box-shadow">
                 <table class="table table-sm bg-white mb-0">
                     <caption class="sr-only">Lista de inquilinos</caption>
+                    <!--Table head-->
                     <thead>
                         <tr>
                             <th scope="col" class="border-0">Inquilino</th>
@@ -27,32 +36,44 @@
                             <% } %>
                         </tr>
                     </thead>
+                    
+                    <!--Table body-->
                     <tbody>
                         <% tenants.forEach(function(tenant, index) { %>
                             <tr>
+                                <!--Name-->
                                 <td class="align-middle">
                                     <%= tenant.name %>
                                     <small class="d-block text-muted"><%= tenant.cpf || tenant.cnpj %></small>
                                 </td>
+                                
+                                <!--Contact name, phone and e-mail-->
                                 <td class="align-middle">
                                     <%= tenant.contactName %>
                                     <small class="d-block text-muted"><%= tenant.contactEmail %></small>
                                     <small class="d-block text-muted"><%= tenant.phone %></small>
                                 </td>
+                                
+                                <!--Associated realty links-->
                                 <td class="align-middle">
                                     <% tenant.realty.forEach(function(realty) {%>
                                         <a href="/imoveis/<%= realty.id %>"><%= realty.name %></a>
                                         <br>
                                     <% }) %>
                                 </td>
+                                
+                                <!--Notes-->
                                 <td class="align-middle"><%= tenant.notes %></td>
+                                
+                                <!--Edit and delete section-->
                                 <% if (currentUser.isAdmin) { %>
+                                    <!--Edit and delete buttons-->
                                     <td class="align-middle">
-                                        <!-- Actions -->
                                         <a href="/inquilinos/<%= tenant._id %>/edit" class="text-info mr-1" title="Editar inquilino"><i class="fas fa-edit"></i></a>
                                         <a href="#" class="text-danger " data-toggle="modal" data-target="#tenant<%= index %>"><i class="fas fa-trash"></i></a>
                                     </td>
-                                    <!-- Delete tenant modal -->
+                                    
+                                    <!-- Delete modal -->
                                     <div class="modal fade" id="tenant<%= index %>" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">

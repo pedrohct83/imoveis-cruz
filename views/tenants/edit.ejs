@@ -3,10 +3,13 @@
 
 <div class="container content-height py-3">
     <div class="d-flex flex-column align-items-center justify-content-center">
+        <!--Title-->
         <h1 class="font-weight-light text-center mb-3">Editar Inquilino</h1>
         <div class="card bg-white rounded">
             <div class="card-body">
+                <!--Edit tenant form-->
                 <form action="/inquilinos/<%= tenant._id %>?_method=PUT" method="POST">
+                    <!--Name and type-->
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -27,14 +30,20 @@
                             </div>
                         </div>
                     </div> 
+                    
+                    <!--CPF-->
                     <div class="form-group d-none cpfField">
                         <label for="cpf">CPF</label>
                         <input type="text" class="form-control" id="cpf" name="tenant[cpf]" data-inputmask="'mask': '999.999.999-99'" value="<%= tenant.cpf  %>">
                     </div>
+                    
+                    <!--CNPJ-->
                     <div class="form-group d-none cnpjField">
                         <label for="cnpj">CNPJ</label>
                         <input type="text" class="form-control" id="cnpj" name="tenant[cnpj]" data-inputmask="'mask': '99.999.999/9999-99'" value="<%= tenant.cnpj %>">
                     </div>
+                    
+                    <!--Contact name and telephone-->
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -49,10 +58,14 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--Contact e-mail-->
                     <div class="form-group">
                         <label for="contactEmail">Email p/ Contato</label>
                         <input type="email" class="form-control" id="contactEmail" name="tenant[contactEmail]"  value="<%= tenant.contactEmail %>">
                     </div>
+                    
+                    <!--Notes-->
                     <div class="form-group">
                         <label for="notes">Informações Adicionais</label>
                         <textarea class="form-control" id="notes" name="tenant[notes]" rows="4" maxlength="300"><%= tenant.notes %></textarea>
@@ -60,6 +73,8 @@
                             Máximo: 300 caracteres.
                         </small>
                     </div>
+                    
+                    <!--Save button-->
                     <div class="d-flex justify-content-between align-items-start">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                         <p class="text-danger">* <small class="m-0">Campos obrigatórios</small></p>
@@ -67,6 +82,8 @@
                 </form>
             </div>
         </div>
+        
+        <!--Back link-->
         <a href="javascript:history.back()" class="mt-3">&laquo; Voltar</a>
     </div>
 </div>

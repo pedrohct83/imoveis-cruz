@@ -3,11 +3,15 @@
 
 <div class="container content-height py-3">
     <div class="d-flex flex-column align-items-center justify-content-center">
+        <!--Title-->
         <h1 class="font-weight-light text-center mb-3">Editar Imóvel</h1>
         <div class="card bg-white rounded">
             <div class="card-body">
+                <!--Edit realty form (action uses method override specified in app.js)-->
                 <form action="/imoveis/<%= realty._id %>?_method=PUT" method="POST">
+                    <!--1st row-->
                     <div class="form-row">
+                        <!--Type-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="type">Tipo do imóvel <span class="text-danger">*</span></label>
@@ -19,6 +23,8 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <!--Owner-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="owner">Dono/Proprietário <span class="text-danger">*</span></label>
@@ -32,13 +38,18 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--2nd row-->
                     <div class="form-row">
+                        <!--Name-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="name">Nome <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="name" name="realty[name]" value="<%= realty.name %>" required>
                             </div>
                         </div>
+                        
+                        <!--Address-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="location">Endereço <span class="text-danger">*</span></label>
@@ -46,6 +57,9 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--3rd row-->
+                    <!--Map iframe-->
                     <div class="form-group">
                         <label for="mapIframe">Localização do Google Maps</label>
                         <input type="text" class="form-control" id="mapIframe" name="realty[mapIframe]" value="<%= realty.mapIframe %>">
@@ -53,13 +67,18 @@
                             <a href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=pt-BR" target="Google Maps iframe">Como obter o iframe de uma localização?</a>
                         </small>
                     </div>
+                    
+                    <!--4th row-->
                     <div class="form-row">
+                        <!--Area-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="areaSize">Área <small>(m<sup>2</sup>)</small></label>
                                 <input type="number" class="form-control" id="areaSize" name="realty[areaSize]" min="1" step="0.01" value="<%= realty.areaSize %>">
                             </div>
                         </div>
+                        
+                        <!--Fiscal number-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="fiscalNum">Inscrição Fiscal</label>
@@ -67,13 +86,18 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--5th row-->
                     <div class="form-row">
+                        <!--Condominium value-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="condominiumValue">Valor do Condomínio <small>(R$)</small></label>
                                 <input type="number" class="form-control" id="condominiumValue" name="realty[condominiumValue]" min="0" step="0.01" value="<%= realty.condominiumValue %>">
                             </div>
                         </div>
+                        
+                        <!--IPTU value-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="iptuValue">Valor do IPTU <small>(R$)</small></label>
@@ -81,6 +105,9 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--6th row-->
+                    <!--Rented?-->
                     <div class="form-group">
                         <label for="isRented">Este imóvel está alugado? <span class="text-danger">*</span></label>
                         <select class="custom-select" id="isRented" name="realty[isRented]" required>
@@ -91,6 +118,9 @@
                             <% } %>
                         </select>
                     </div>
+                    
+                    <!--7th row-->
+                    <!--Tenant is member of family/company?-->
                     <div class="form-group d-none tenantField">
                         <div class="custom-control custom-checkbox">
                             <% var checked = (realty.isFamily) ? "checked" : "" %>
@@ -98,27 +128,44 @@
                             <label class="custom-control-label" for="realty[isFamily]">Inquilino é do GrupoCTC ou membro da família Cruz</label>
                         </div>
                     </div> 
+                    
+                    <!--8th row-->
+                    <!--Filter a select tag options-->
                     <script>
                         function filterSelectOptions(keyword) {
+                            // Get the select tag
                             var select = document.getElementById("tenantId");
+                            
+                            // Iterate thru all select options (tenants)
                             for (var i = 0; i < select.length; i++) {
+                                // Store option text in txt var
                                 var txt = select.options[i].text;
+                                
+                                // Include var is true if lowercased option text (tenant name) starts with the typed keyword
                                 var include = txt.toLowerCase().startsWith(keyword.toLowerCase());
+                                
+                                // Add display block if include var is true
                                 select.options[i].style.display = include ? 'block' : 'none';
                             }
                         } 
                     </script>
+                    
+                    <!--Select tenant-->
                     <div class="form-group d-none tenantField">
                         <label for="tenantId">Selecione o Inquilino <span class="text-danger">*</span></label>
+                        <!--On key up, call filterSelectOptions function-->
                         <input type="text" id="search" class="form-control" name="search" onkeyup="filterSelectOptions(this.value)" placeholder="Filtrar nome" autocomplete="off">
                         <select class="custom-select" id="tenantId" name="realty[tenantId]" size="6">
-                            <% for (var i = 0; i < tenants.length; i++) { %>
+                            <% tenants.forEach(function(tenant, i) { %>
                                 <% var selected = (tenants[i].name == realty.tenant.name) ? "selected" : "" %>
                                 <option value="<%= tenants[i]._id %>" <%= selected %>><%= tenants[i].name %></option>
-                            <% } %>
+                            <% }) %>
                         </select>
                     </div>
+                    
+                    <!--9th row-->
                     <div class="form-row">
+                        <!--Contract start-->
                         <div class="col-lg-6">
                             <div class="form-group d-none tenantField">
                                 <label for="contractStart">Início do Contrato</label>
@@ -128,6 +175,8 @@
                                 </small>
                             </div>
                         </div>
+                        
+                        <!--Contract end-->
                         <div class="col-lg-6">
                             <div class="form-group d-none tenantField">
                                 <label for="contractEnd">Fim do Contrato</label>
@@ -138,10 +187,16 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!--10th row-->
+                    <!--Rent value-->
                     <div class="form-group d-none tenantField">
                         <label for="rentValue">Valor do Aluguel <small>(R$)</small></label>
                         <input type="number" class="form-control" id="rentValue" name="realty[rentValue]" min="0" step="0.01" value="<%= realty.rentValue %>">
                     </div>
+                    
+                    <!--11th row-->
+                    <!--Notes-->
                     <div class="form-group">
                         <label for="notes">Observações</label>
                         <textarea class="form-control" id="notes" name="realty[notes]" rows="4" maxlength="300"><%= realty.notes %></textarea>
@@ -149,6 +204,8 @@
                             Máximo: 300 caracteres.
                         </small>
                     </div>
+                    
+                    <!--Save button-->
                     <div class="d-flex justify-content-between align-items-start">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                         <p class="text-danger">* <small class="m-0">Campos obrigatórios</small></p>
@@ -156,6 +213,8 @@
                 </form>
             </div>
         </div>
+        
+        <!--Back link-->
         <a href="javascript:history.back()" class="mt-3">&laquo; Voltar</a>
     </div>
 </div>
