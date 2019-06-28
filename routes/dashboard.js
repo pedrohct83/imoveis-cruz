@@ -40,22 +40,33 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     query.owner = {$in: selectedRealtyOwners};
     
     // Find realty filtered by query type and owner
-    Realty.find({ type: query.type, owner: query.owner }).exec(function(err, realty) {
+    Realty.find({
+        type: query.type,
+        owner: query.owner
+    }).exec(function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
-            
             // Find realty filtered by query: isRented, type and owner
-            Realty.find({ isRented: "Sim", type: query.type, owner: query.owner }).exec(function(err, occupiedRealty) {
+            Realty.find({
+                isRented: "Sim",
+                type: query.type,
+                owner: query.owner
+            }).exec(function(err, occupiedRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    
                     // Find realty filtered by: isFamily, type and owner
-                    Realty.find({ isFamily: true, type: query.type, owner: query.owner }).exec(function(err, familyRealty) {
+                    Realty.find({
+                        isFamily: true,
+                        type: query.type,
+                        owner: query.owner
+                    }).exec(function(err, familyRealty) {
                         if(err) {handleErrorModRef.handleError(err, res)} else {
                             // % of available and occupied realty
                             let percentageOfAvailableRealty = (((realty.length - occupiedRealty.length) / realty.length) * 100).toFixed(2),
                                 percentageOfOccupiedRealty = ((occupiedRealty.length / realty.length) * 100).toFixed(2),
+                                
                             // Number and % of occupied realty by family/company
                                 occupiedRealtyByFamily = familyRealty.length,
                                 percentageOfOccupiedRealtyByFamily = ((familyRealty.length / realty.length) * 100).toFixed(2),
+                                
                             // Number and % of occupied realty by everyone else but family/comány
                                 occupiedRealtyByOthers = occupiedRealty.length - familyRealty.length,
                                 percentageOfOccupiedRealtyByOthers = (percentageOfOccupiedRealty - percentageOfOccupiedRealtyByFamily).toFixed(2);
@@ -70,15 +81,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                             totalRentValue = totalRentValue.toFixed(2);
                             totalIptuValue = totalIptuValue.toFixed(2);
                             
-                            // Get the total condominium value paid by others
-                            let totalCondominiumByOthers = 0;
-                            occupiedRealty.forEach(function(item) {
-                                if (item.condominiumValue != 0) {
-                                    totalCondominiumByOthers += Number(item.condominiumValue);
-                                }
-                            });
-                            totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
-                            
                             // Create 'totalCondominium' var.
                             // It stores the sum of all realty types condominium values
                             let totalCondominium = 0;
@@ -88,6 +90,15 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 }
                             });
                             totalCondominium = totalCondominium.toFixed(2);
+                            
+                            // Get the total condominium value paid by others
+                            let totalCondominiumByOthers = 0;
+                            occupiedRealty.forEach(function(item) {
+                                if (item.condominiumValue != 0) {
+                                    totalCondominiumByOthers += Number(item.condominiumValue);
+                                }
+                            });
+                            totalCondominiumByOthers = totalCondominiumByOthers.toFixed(2);
                             
                             // Create 'realtyTypeCount' object.
                             // Fields are realty types. Values are realty types count.
@@ -111,6 +122,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                                 selectedRealtyTypes,
                                 selectedRealtyOwners,
                                 realtyTypeCount,
+                                
                                 // Page var
                                 page: "visao-geral"
                             });

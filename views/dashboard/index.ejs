@@ -69,24 +69,40 @@
                 </div>
                 
                 <!--Condominium total-->
-                <div class="col-12 col-lg-6 mb-2">
+                <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body text-center">
                             <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light"><small class="font-weight-light">R$</small><%= totalCondominium %></h2>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalCondominium %>
+                            </h2>
                         </div>
                     </div>
                 </div>        
                 
-                <!--Condominium paid by tenants-->
-                <div class="col-12 col-lg-6 mb-2">
+                <!--Condominium paid by tenants (tenants, family and company)-->
+                <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body text-center">
                             <h1 class="h6 text-success">Pago por Inquilinos</h1>
-                            <h2 class="font-weight-light"><small class="font-weight-light">R$</small><%= totalCondominiumByOthers %></h2>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalCondominiumByOthers %>
+                            </h2>
                         </div>
                     </div>
-                </div>       
+                </div>
+                
+                <!--Condominium of available realty-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6 text-danger">Imóveis Disponíveis</h1>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalCondominium - totalCondominiumByOthers %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
