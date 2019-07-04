@@ -119,7 +119,6 @@ router.delete("/:id", middleware.isAdmin, function(req, res) {
                 {"tenant.id": tenant.id},
                 {$set: {
                     tenant: {},
-                    isFamily: false,
                     isRented: false,
                     contractStart: null,
                     contractEnd: null,

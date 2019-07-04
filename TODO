@@ -1,3 +1,5 @@
+** Lembrar que 5 lojas do Iberia, ap Carmem e ap Victor foram deletados para não influenciar nas estatísticas
+
 Extras:
 1) realtyTypeCount module: use app.locals.realtyTypes ?
 2) create realtyOwnerCounter module

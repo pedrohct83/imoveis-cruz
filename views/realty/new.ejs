@@ -9,9 +9,8 @@
             <div class="card-body">
                 <!--New realty form-->
                 <form action="/imoveis" method="POST">
-                    <!--1st row-->
+                    <!--Type & Owner-->
                     <div class="form-row">
-                        <!--Type-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="type">Tipo do imóvel <span class="text-danger">*</span></label>
@@ -22,8 +21,6 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        <!--Owner-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="owner">Dono/Proprietário <span class="text-danger">*</span></label>
@@ -37,17 +34,14 @@
                         </div>
                     </div>
                     
-                    <!--2nd row-->
+                    <!--Name & Address-->
                     <div class="form-row">
-                        <!--Name-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="name">Nome <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="ex.: Armazém Av. Vitória" required>
                             </div>
                         </div>
-                        
-                        <!--Address-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="location">Endereço <span class="text-danger">*</span></label>
@@ -56,7 +50,6 @@
                         </div>
                     </div>
                     
-                    <!--3rd row-->
                     <!--Map iframe-->
                     <div class="form-group">
                         <label for="mapIframe">Localização do Google Maps</label>
@@ -66,17 +59,14 @@
                         </small>
                     </div>
                     
-                    <!--4th row-->
+                    <!--Area & Fiscal number-->
                     <div class="form-row">
-                        <!--Area-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="areaSize">Área <small>(m<sup>2</sup>)</small></label>
                                 <input type="number" class="form-control" id="areaSize" name="areaSize" min="1" step="0.01" placeholder="ex.: 150.40">
                             </div>
                         </div>
-                        
-                        <!--Fiscal number-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="fiscalNum">Inscrição Fiscal</label>
@@ -85,17 +75,14 @@
                         </div>
                     </div>
                     
-                    <!--5th row-->
+                    <!--Condominium & IPTU Value-->
                     <div class="form-row">
-                        <!--Condominium value-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="condominiumValue">Valor do Condomínio <small>(R$)</small></label>
                                 <input type="number" class="form-control" id="condominiumValue" name="condominiumValue" min="0" step="0.01">
                             </div>
                         </div>
-                        
-                        <!--IPTU value-->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="iptuValue">Valor do IPTU <small>(R$)</small></label>
@@ -104,7 +91,6 @@
                         </div>
                     </div>
                     
-                    <!--6th row-->
                     <!--Rented?-->
                     <div class="form-group">
                         <label for="isRented">Está alugado? <span class="text-danger">*</span></label>
@@ -114,16 +100,6 @@
                         </select>
                     </div>
                     
-                    <!--7th row-->
-                    <!--Tenant is member of family/company?-->
-                    <div class="form-group d-none tenantField">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="isFamily" name="isFamily">    
-                            <label class="custom-control-label" for="isFamily">Inquilino é do GrupoCTC ou membro da família Cruz</label>
-                        </div>
-                    </div>
-                    
-                    <!--8th row-->
                     <!--Filter a select tag options-->
                     <script>
                         function filterSelectOptions(keyword) {
@@ -156,9 +132,8 @@
                         </select>
                     </div>
                     
-                    <!--9th row-->
+                    <!--Contract start & end-->
                     <div class="form-row">
-                        <!--Contract start-->
                         <div class="col-lg-6">
                             <div class="form-group d-none tenantField">
                                 <label for="contractStart">Início do Contrato</label>
@@ -168,8 +143,6 @@
                                 </small>
                             </div>
                         </div>
-                        
-                        <!--Contract end-->
                         <div class="col-lg-6">
                             <div class="form-group d-none tenantField">
                                 <label for="contractEnd">Fim do Contrato</label>
@@ -181,14 +154,12 @@
                         </div>
                     </div>
                     
-                    <!--10th row-->
                     <!--Rent value-->
                     <div class="form-group d-none tenantField">
                         <label for="rentValue">Valor do Aluguel <small>(R$)</small></label>
                         <input type="number" class="form-control" id="rentValue" name="rentValue" min="0" step="0.01">
                     </div>
                     
-                    <!--11th row-->
                     <!--Notes-->
                     <div class="form-group">
                         <label for="notes">Observações</label>

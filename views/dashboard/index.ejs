@@ -10,7 +10,7 @@
         
         <!--Main panel-->
         <div class="col-lg-9 col-xl-10">
-            <!--1st row-->
+            <!--Realty row-->
             <div class="row no-gutters mb-3">
                 <!--Title-->
                 <div class="col-12">
@@ -18,7 +18,7 @@
                 </div>
                 
                 <!--Total realty number-->
-                <div class="col-12 col-lg-3 mb-2">
+                <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                             <h1 class="h6">Total</h1>
@@ -27,41 +27,40 @@
                     </div>
                 </div>
                 
-                <!--Occupied realty, except family/company-->
-                <div class="col-12 col-lg-3 mb-2">
+                <!--Occupied realty-->
+                <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6 text-success">Ocupado por Inquilinos</h1>
-                            <h2 class="font-weight-light"><%= occupiedRealtyByOthers %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByOthers %>%)</small></h2>
-                        </div>
-                    </div>
-                </div>
-                
-                <!--Available realty-->
-                <div class="col-12 col-lg-3 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6 text-warning">Disponíveis</h1>
+                            <h1 class="h6 text-success">Alugados</h1>
                             <h2 class="font-weight-light">
-                                <%= realty.length - (occupiedRealtyByFamily + occupiedRealtyByOthers) %> 
-                                <small class="font-weight-light">(<%= percentageOfAvailableRealty %>%)</small>
+                                <%= occupiedRealty.length %> 
+                                <small class="font-weight-light">
+                                    (<%= ((occupiedRealty.length / realty.length) * 100).toFixed(2) %>%)
+                                </small>
                             </h2>
                         </div>
                     </div>
                 </div>
                 
-                <!--Occupied realty by family/company-->
-                <div class="col-12 col-lg-3 mb-2">
+                <!--Available realty-->
+                <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6 text-danger">Ocupado por Familiares ou Grupo CTC</h1>
-                            <h2 class="font-weight-light"><%= occupiedRealtyByFamily %> <small class="font-weight-light">(<%= percentageOfOccupiedRealtyByFamily %>%)</small></h2>
+                            <h1 class="h6 text-danger">Disponíveis</h1>
+                            <h2 class="font-weight-light">
+                                <%= realty.length - occupiedRealty.length %>
+                                <small class="font-weight-light">
+                                    (<%=
+                                        (((realty.length - occupiedRealty.length) / realty.length) * 100).toFixed(2)
+                                    %>%)
+                                </small>
+                            </h2>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!--2nd row-->
+            <!--Condominium row-->
             <div class="row no-gutters">
                 <!--Title-->
                 <div class="col-12">
@@ -84,9 +83,9 @@
                 <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body text-center">
-                            <h1 class="h6 text-success">Pago por Inquilinos</h1>
+                            <h1 class="h6 text-success">Alugados</h1>
                             <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalCondominiumByOthers %>
+                                <small class="font-weight-light">R$</small><%= totalOccupiedCondominium %>
                             </h2>
                         </div>
                     </div>
@@ -96,9 +95,10 @@
                 <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body text-center">
-                            <h1 class="h6 text-danger">Imóveis Disponíveis</h1>
+                            <h1 class="h6 text-danger">Disponíveis</h1>
                             <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalCondominium - totalCondominiumByOthers %>
+                                <% var totalCondominiumAvailableRealty = (totalCondominium - totalOccupiedCondominium).toFixed(2) %>
+                                <small class="font-weight-light">R$</small><%= totalCondominiumAvailableRealty %>
                             </h2>
                         </div>
                     </div>

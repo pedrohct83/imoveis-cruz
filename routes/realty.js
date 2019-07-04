@@ -74,7 +74,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 // Type Z-A
                 case "4": sort.type = -1; break;
                 // Lower rentValue
-                case "5": sort.isRented = -1; sort.isFamily = 1; sort.rentValue = 1; sort.name = 1; break;
+                case "5": sort.isRented = -1; sort.rentValue = 1; sort.name = 1; break;
                 // Higher rentValue
                 case "6": sort.isRented = -1; sort.rentValue = -1; sort.name = 1; break;
                 // Lower condominiumValue
@@ -181,9 +181,6 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         notes: req.body.notes
     };
     
-    // Add 'isFamily' field to 'newRealty'
-    (req.body.isFamily === "on") ? newRealty.isFamily = true : newRealty.isFamily = false;
-    
     // Add rent related fields depending on 'isRented' boolean
     if(req.body.isRented === "Sim" && req.body.tenantId) {
         // Find tenant chosen by the user
@@ -265,10 +262,7 @@ router.put("/:id", middleware.isAdmin, bodyParser.urlencoded({ extended: true })
                                     id: newTenant.id,
                                     name: newTenant.name,
                                     notes: newTenant.notes
-                                };  
-                                
-                                // Set 'req.body.realty.isFamily' field
-                                (req.body.realty.isFamily === "on") ? req.body.realty.isFamily = true : req.body.realty.isFamily = false;
+                                };
                                 
                                 // Find and update realty
                                 Realty.findByIdAndUpdate(req.params.id, req.body.realty, function(err, updatedRealty) {

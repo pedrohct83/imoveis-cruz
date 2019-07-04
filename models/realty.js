@@ -41,7 +41,6 @@ var realtySchema = new mongoose.Schema({
         name: String,
         notes: String
     },
-    isFamily: Boolean,
     contractStart: Date,
     contractEnd: Date,
     rentValue: {type: Number, get: getPrice, set: setPrice}
