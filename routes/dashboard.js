@@ -18,7 +18,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
         query = {};
         
     // Prepare 'query.type'
-    // If 'selectedRealtyTypes' does not exist, show all types, else, make sure 'selectedRealtyTypes' is an array        
+    // If 'selectedRealtyTypes' doesn´t exist, show all types, else, make sure 'selectedRealtyTypes' is an array
     if(!selectedRealtyTypes) {
         selectedRealtyTypes = req.app.locals.realtyTypes;
     } else {
@@ -29,7 +29,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     query.type = {$in: selectedRealtyTypes};
     
     // Prepare 'query.owner'
-    // If 'selectedRealtyOwners' does not exist, show all owners, else, make sure 'selectedRealtyOwners' is an array
+    // If 'selectedRealtyOwners' doesn´t exist, show all owners, else, make sure 'selectedRealtyOwners' is an array
     if(!selectedRealtyOwners) {
         selectedRealtyOwners = req.app.locals.realtyOwners;
     } else {
@@ -39,11 +39,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
     }
     query.owner = {$in: selectedRealtyOwners};
     
-    // Find realty filtered by query type and owner
-    Realty.find({
-        type: query.type,
-        owner: query.owner
-    }).exec(function(err, realty) {
+    // Find realty filtered by query: type and owner
+    Realty.find({ type: query.type, owner: query.owner }).exec(function(err, realty) {
         if(err) {handleErrorModRef.handleError(err, res)} else {
             // Find realty filtered by query: isRented, type and owner
             Realty.find({
@@ -52,8 +49,8 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                 owner: query.owner
             }).exec(function(err, occupiedRealty) {
                 if(err) {handleErrorModRef.handleError(err, res)} else {
-                    // Create 'totalCondominium' var.
-                    // It stores the sum of all realty types condominium values
+                    // Condominium
+                    // It stores the sum of all condominium values
                     let totalCondominium = 0;
                     realty.forEach(function(item) {
                         if (item.condominiumValue > 0) {
@@ -62,7 +59,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     });
                     totalCondominium = totalCondominium.toFixed(2);
                     
-                    // Get the total condominium value paid by others
+                    // Get the total condominium value paid by tenants
                     let totalOccupiedCondominium = 0;
                     occupiedRealty.forEach(function(item) {
                         if (item.condominiumValue != 0) {
@@ -70,6 +67,44 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         }
                     });
                     totalOccupiedCondominium = totalOccupiedCondominium.toFixed(2);
+                    
+                    // IPTU
+                    // It stores the sum of all IPTU values
+                    let totalIptu = 0;
+                    realty.forEach(function(item) {
+                        if (item.iptuValue > 0) {
+                            totalIptu += Number(item.iptuValue);
+                        }
+                    });
+                    totalIptu = totalIptu.toFixed(2);
+                    
+                    // Get the total IPTU value paid by tenants
+                    let totalOccupiedIptu = 0;
+                    occupiedRealty.forEach(function(item) {
+                        if (item.iptuValue != 0) {
+                            totalOccupiedIptu += Number(item.iptuValue);
+                        }
+                    });
+                    totalOccupiedIptu = totalOccupiedIptu.toFixed(2);
+                    
+                    // Rent
+                    // It stores the sum of all IPTU values
+                    let totalRent = 0;
+                    realty.forEach(function(item) {
+                        if (item.rentValue > 0) {
+                            totalRent += Number(item.rentValue);
+                        }
+                    });
+                    totalRent = totalRent.toFixed(2);
+                    
+                    // Get the total rent value paid by tenants
+                    let totalOccupiedRent = 0;
+                    occupiedRealty.forEach(function(item) {
+                        if (item.rentValue != 0) {
+                            totalOccupiedRent += Number(item.rentValue);
+                        }
+                    });
+                    totalOccupiedRent = totalOccupiedRent.toFixed(2);
                     
                     // Create 'realtyTypeCount' object.
                     // Fields are realty types. Values are realty types count.
@@ -81,6 +116,10 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         occupiedRealty,
                         totalCondominium,
                         totalOccupiedCondominium,
+                        totalIptu,
+                        totalOccupiedIptu,
+                        totalRent,
+                        totalOccupiedRent,
                         realtyTypes: req.app.locals.realtyTypes,
                         realtyOwners: req.app.locals.realtyOwners,
                         selectedRealtyTypes,

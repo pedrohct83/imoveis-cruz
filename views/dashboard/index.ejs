@@ -61,7 +61,7 @@
             </div>
             
             <!--Condominium row-->
-            <div class="row no-gutters">
+            <div class="row no-gutters mb-3">
                 <!--Title-->
                 <div class="col-12">
                     <h1 class="h4">Condomínios</h1>
@@ -79,7 +79,7 @@
                     </div>
                 </div>        
                 
-                <!--Condominium paid by tenants (tenants, family and company)-->
+                <!--Condominium paid by tenants-->
                 <div class="col-12 col-lg-4 mb-2">
                     <div class="card rounded-0 border-0 box-shadow h-100">
                         <div class="card-body text-center">
@@ -99,6 +99,96 @@
                             <h2 class="font-weight-light">
                                 <% var totalCondominiumAvailableRealty = (totalCondominium - totalOccupiedCondominium).toFixed(2) %>
                                 <small class="font-weight-light">R$</small><%= totalCondominiumAvailableRealty %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--IPTU row-->
+            <div class="row no-gutters">
+                <!--Title-->
+                <div class="col-12">
+                    <h1 class="h4">IPTUs</h1>
+                </div>
+                
+                <!--IPTU total-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6">Total</h1>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalIptu %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>        
+                
+                <!--IPTU paid by tenants-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6 text-success">Alugados</h1>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalOccupiedIptu %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--IPTU of available realty-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6 text-danger">Disponíveis</h1>
+                            <h2 class="font-weight-light">
+                                <% var totalIptuAvailableRealty = (totalIptu - totalOccupiedIptu).toFixed(2) %>
+                                <small class="font-weight-light">R$</small><%= totalIptuAvailableRealty %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Rent row-->
+            <div class="row no-gutters">
+                <!--Title-->
+                <div class="col-12">
+                    <h1 class="h4">Aluguéis</h1>
+                </div>
+                
+                <!--Rent total-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6">Total</h1>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalRent %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>        
+                
+                <!--Rent paid by tenants-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6 text-success">Alugados</h1>
+                            <h2 class="font-weight-light">
+                                <small class="font-weight-light">R$</small><%= totalOccupiedRent %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Rent of available realty-->
+                <div class="col-12 col-lg-4 mb-2">
+                    <div class="card rounded-0 border-0 box-shadow h-100">
+                        <div class="card-body text-center">
+                            <h1 class="h6 text-danger">Disponíveis</h1>
+                            <h2 class="font-weight-light">
+                                <% var totalRentAvailableRealty = (totalRent - totalOccupiedRent).toFixed(2) %>
+                                <small class="font-weight-light">R$</small><%= totalRentAvailableRealty %>
                             </h2>
                         </div>
                     </div>
