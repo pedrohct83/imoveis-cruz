@@ -8,192 +8,134 @@
             <% include index-sidebar %>       
         </div>
         
+        <!--Percentage vars-->
+        <% var percentageOfAvailableRealty = (((realty.length - occupiedRealty.length) / realty.length) * 100).toFixed(2) %>
+        <% var percentageOfOccupiedRealty = ((occupiedRealty.length / realty.length) * 100).toFixed(2) %>
+        <% var percentageOfAvailableCondominium = (((totalCondominium - totalOccupiedCondominium) / totalCondominium) * 100).toFixed(2) %>
+        <% var percentageOfOccupiedCondominium = ((totalOccupiedCondominium / totalCondominium) * 100).toFixed(2) %>
+        <% var percentageOfAvailableIptu = (((totalIptu - totalOccupiedIptu) / totalIptu) * 100).toFixed(2) %>
+        <% var percentageOfOccupiedIptu = ((totalOccupiedIptu / totalIptu) * 100).toFixed(2) %>
+        
         <!--Main panel-->
         <div class="col-lg-9 col-xl-10">
-            <!--Realty row-->
             <div class="row no-gutters mb-3">
-                <!--Title-->
-                <div class="col-12">
-                    <h1 class="h4">Imóveis</h1>
-                </div>
-                
-                <!--Total realty number-->
-                <div class="col-12 col-lg-4 mb-2">
+                <!--Realty-->
+                <div class="col-12 col-md-6 col-xl-4">
                     <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light"><%= realty.length %></h2>
+                        <div class="card-body text-center">
+                            <h1 class="h4 d-inline">Imóveis</h1>
+                            <span class="font-weight-normal"> (<%= realty.length %>)</span>
+                            <canvas id="realtyIsRentedChart" class="mt-2" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('realtyIsRentedChart');
+                            var myDoughnutChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: [
+                                        'Alugados (<%= percentageOfOccupiedRealty %>%)',
+                                        'Disponiveis (<%= percentageOfAvailableRealty %>%)'
+                                    ],
+                                    datasets: [{
+                                        data: [<%= occupiedRealty.length %>, <%= realty.length - occupiedRealty.length %>],
+                                        backgroundColor: [
+                                            'rgba(40, 167, 69, 0.2)',
+                                            'rgba(220, 53, 69, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(40, 167, 69, 1)',
+                                            'rgba(220, 53, 69, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                }
+                            });
+                            </script>
                         </div>
                     </div>
                 </div>
                 
-                <!--Occupied realty-->
-                <div class="col-12 col-lg-4 mb-2">
+                <!--Condominium-->
+                <div class="col-12 col-md-6 col-xl-4">
                     <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6 text-success">Alugados</h1>
-                            <h2 class="font-weight-light">
-                                <%= occupiedRealty.length %> 
-                                <small class="font-weight-light">
-                                    (<%= ((occupiedRealty.length / realty.length) * 100).toFixed(2) %>%)
-                                </small>
-                            </h2>
+                        <div class="card-body text-center">
+                            <h1 class="h4 d-inline">Condomínios</h1>
+                            <span class="font-weight-normal"> (R$<%= totalCondominium %>/mês)</span>
+                            <canvas id="realtyCondominiumChart" class="mt-2" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('realtyCondominiumChart');
+                            var myDoughnutChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: [
+                                        'Alugados (<%= percentageOfOccupiedCondominium %>%)',
+                                        'Disponiveis (<%= percentageOfAvailableCondominium %>%)'
+                                    ],
+                                    datasets: [{
+                                        data: [
+                                            <%= totalOccupiedCondominium %>,
+                                            <%= (totalCondominium - totalOccupiedCondominium).toFixed(2) %>
+                                        ],
+                                        backgroundColor: [
+                                            'rgba(40, 167, 69, 0.2)',
+                                            'rgba(220, 53, 69, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(40, 167, 69, 1)',
+                                            'rgba(220, 53, 69, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                }
+                            });
+                            </script>
                         </div>
                     </div>
                 </div>
                 
-                <!--Available realty-->
-                <div class="col-12 col-lg-4 mb-2">
+                <!--IPTU-->
+                <div class="col-12 col-md-6 col-xl-4">
                     <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <h1 class="h6 text-danger">Disponíveis</h1>
-                            <h2 class="font-weight-light">
-                                <%= realty.length - occupiedRealty.length %>
-                                <small class="font-weight-light">
-                                    (<%=
-                                        (((realty.length - occupiedRealty.length) / realty.length) * 100).toFixed(2)
-                                    %>%)
-                                </small>
-                            </h2>
+                        <div class="card-body text-center">
+                            <h1 class="h4 d-inline">IPTU</h1>
+                            <span class="font-weight-normal"> R$<%= totalIptu %>/ano)</span>
+                            <canvas id="realtyIptuChart" class="mt-2" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('realtyIptuChart');
+                            var myDoughnutChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: [
+                                        'Alugados (<%= percentageOfAvailableIptu %>%)',
+                                        'Disponiveis (<%= percentageOfOccupiedIptu %>%)'
+                                    ],
+                                    datasets: [{
+                                        data: [
+                                            <%= totalOccupiedIptu %>,
+                                            <%= (totalIptu - totalOccupiedIptu).toFixed(2) %>
+                                        ],
+                                        backgroundColor: [
+                                            'rgba(40, 167, 69, 0.2)',
+                                            'rgba(220, 53, 69, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(40, 167, 69, 1)',
+                                            'rgba(220, 53, 69, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                }
+                            });
+                            </script>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!--Condominium row-->
-            <div class="row no-gutters mb-3">
-                <!--Title-->
-                <div class="col-12">
-                    <h1 class="h4">Condomínios</h1>
-                </div>
-                
-                <!--Condominium total-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalCondominium %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>        
-                
-                <!--Condominium paid by tenants-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-success">Alugados</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalOccupiedCondominium %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                
-                <!--Condominium of available realty-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-danger">Disponíveis</h1>
-                            <h2 class="font-weight-light">
-                                <% var totalCondominiumAvailableRealty = (totalCondominium - totalOccupiedCondominium).toFixed(2) %>
-                                <small class="font-weight-light">R$</small><%= totalCondominiumAvailableRealty %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!--IPTU row-->
-            <div class="row no-gutters">
-                <!--Title-->
-                <div class="col-12">
-                    <h1 class="h4">IPTUs</h1>
-                </div>
-                
-                <!--IPTU total-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalIptu %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>        
-                
-                <!--IPTU paid by tenants-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-success">Alugados</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalOccupiedIptu %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                
-                <!--IPTU of available realty-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-danger">Disponíveis</h1>
-                            <h2 class="font-weight-light">
-                                <% var totalIptuAvailableRealty = (totalIptu - totalOccupiedIptu).toFixed(2) %>
-                                <small class="font-weight-light">R$</small><%= totalIptuAvailableRealty %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!--Rent row-->
-            <div class="row no-gutters">
-                <!--Title-->
-                <div class="col-12">
-                    <h1 class="h4">Aluguéis</h1>
-                </div>
-                
-                <!--Rent total-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6">Total</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalRent %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>        
-                
-                <!--Rent paid by tenants-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-success">Alugados</h1>
-                            <h2 class="font-weight-light">
-                                <small class="font-weight-light">R$</small><%= totalOccupiedRent %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                
-                <!--Rent of available realty-->
-                <div class="col-12 col-lg-4 mb-2">
-                    <div class="card rounded-0 border-0 box-shadow h-100">
-                        <div class="card-body text-center">
-                            <h1 class="h6 text-danger">Disponíveis</h1>
-                            <h2 class="font-weight-light">
-                                <% var totalRentAvailableRealty = (totalRent - totalOccupiedRent).toFixed(2) %>
-                                <small class="font-weight-light">R$</small><%= totalRentAvailableRealty %>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="row no-gutters">-->
+            <!--    <div class="col-12">-->
+            <!--        <h1 class="h4">Aluguel - Condomínio - IPTU/mês</h1>-->
+            <!--    </div>-->
+            <!--</div>-->
         </div>
     </div>
 </section>

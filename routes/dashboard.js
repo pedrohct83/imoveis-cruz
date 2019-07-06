@@ -88,7 +88,7 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                     totalOccupiedIptu = totalOccupiedIptu.toFixed(2);
                     
                     // Rent
-                    // It stores the sum of all IPTU values
+                    // It stores the sum of all rent values
                     let totalRent = 0;
                     realty.forEach(function(item) {
                         if (item.rentValue > 0) {
@@ -96,15 +96,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         }
                     });
                     totalRent = totalRent.toFixed(2);
-                    
-                    // Get the total rent value paid by tenants
-                    let totalOccupiedRent = 0;
-                    occupiedRealty.forEach(function(item) {
-                        if (item.rentValue != 0) {
-                            totalOccupiedRent += Number(item.rentValue);
-                        }
-                    });
-                    totalOccupiedRent = totalOccupiedRent.toFixed(2);
                     
                     // Create 'realtyTypeCount' object.
                     // Fields are realty types. Values are realty types count.
@@ -119,7 +110,6 @@ router.get("/", middleware.isLoggedIn, function(req, res) {
                         totalIptu,
                         totalOccupiedIptu,
                         totalRent,
-                        totalOccupiedRent,
                         realtyTypes: req.app.locals.realtyTypes,
                         realtyOwners: req.app.locals.realtyOwners,
                         selectedRealtyTypes,
