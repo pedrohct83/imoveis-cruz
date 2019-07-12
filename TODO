@@ -1,6 +1,5 @@
-** Lembrar que 5 lojas do Iberia, ap Carmem e ap Victor foram deletados para não influenciar nas estatísticas
-
 tirar "total" das vars
+remover Apartamento (n existe mais imoveis desse tipo)
 
 Extras:
 1) realtyTypeCount module: use app.locals.realtyTypes ?
