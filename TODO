@@ -1,5 +1,6 @@
-tirar "total" das vars
-remover Apartamento (n existe mais imoveis desse tipo)
+1) o update realty nao adiciona o tenant ao realty qdo o realty nao tem tenant (disponivel)
+2) tirar "total" das vars
+3) remover Apartamento (n existe mais imoveis desse tipo)
 
 Extras:
 1) realtyTypeCount module: use app.locals.realtyTypes ?
