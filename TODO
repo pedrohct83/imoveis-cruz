@@ -1,8 +1,9 @@
-1) o update realty nao adiciona o tenant ao realty qdo o realty nao tem tenant (disponivel)
-2) tirar "total" das vars
-3) remover Apartamento (n existe mais imoveis desse tipo)
+
+
+??) Será que vale a pena criar uma nova propriedade no realty model pra indicar imóveis que não devem interferir nas estatísticas?
 
 Extras:
 1) realtyTypeCount module: use app.locals.realtyTypes ?
 2) create realtyOwnerCounter module
+3) tirar "total" das vars do dashboard
 
