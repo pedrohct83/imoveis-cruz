@@ -26,6 +26,11 @@
                     Inquilinos
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <%= typeof page !== 'undefined' && page === 'extras' ? 'active' : '' %>" href="/extras">
+                    Extras
+                </a>
+            </li>
             
             <!--Show if user is not logged in-->
             <% if(!currentUser) { %>

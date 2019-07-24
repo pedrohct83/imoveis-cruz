@@ -17,6 +17,7 @@ var indexRoutes = require("./routes/index"),
     tenantRoutes = require("./routes/tenants"),
     adminRoutes = require("./routes/admin"),
     dashboardRoutes = require("./routes/dashboard"),
+    otherRoutes = require("./routes/others"),
     commentRoutes = require("./routes/comments");
 
 // Set EJS as the view engine
@@ -91,6 +92,7 @@ app.use("/imoveis", realtyRoutes);
 app.use("/inquilinos", tenantRoutes);
 app.use("/admin", adminRoutes);
 app.use("/visao-geral", dashboardRoutes);
+app.use("/extras", otherRoutes);
 app.use("/imoveis/:id/comments", commentRoutes);
 
 // Binds and listens for connections on the specified host and port
