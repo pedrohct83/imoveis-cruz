@@ -23,6 +23,7 @@ var realtySchema = new mongoose.Schema({
     // We are storing currency numbers like 123.45 as 1245 (set), but when we get it, we need it as 123.45 (get)
     condominiumValue: {type: Number, get: getPrice, set: setPrice},
     iptuValue: {type: Number, get: getPrice, set: setPrice},
+    spuValue: {type: Number, get: getPrice, set: setPrice},
     notes: String,
     comments: [
         {

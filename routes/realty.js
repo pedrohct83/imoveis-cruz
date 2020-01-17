@@ -178,6 +178,7 @@ router.post("/", middleware.isAdmin, bodyParser.urlencoded({ extended: true }), 
         rentValue: req.body.rentValue || 0,
         condominiumValue: req.body.condominiumValue || 0,
         iptuValue: req.body.iptuValue || 0,
+        spuValue: req.body.spuValue || 0,
         notes: req.body.notes
     };
     

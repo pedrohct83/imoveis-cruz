@@ -59,7 +59,13 @@
                         </small>
                     </div>
                     
-                    <!--Area & Fiscal number-->
+                    <!--Fiscal number-->
+                    <div class="form-group">
+                        <label for="fiscalNum">Inscrição Fiscal</label>
+                        <input type="number" class="form-control" id="fiscalNum" name="fiscalNum" min="1" step="1">
+                    </div>
+                    
+                    <!--Area & SPU-->
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -69,8 +75,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="fiscalNum">Inscrição Fiscal</label>
-                                <input type="number" class="form-control" id="fiscalNum" name="fiscalNum" min="1" step="1">
+                                <label for="spuValue">Valor do SPU <small>(R$)</small></label>
+                                <input type="number" class="form-control" id="spuValue" name="spuValue" min="0" step="0.01">
                             </div>
                         </div>
                     </div>

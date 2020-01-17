@@ -61,7 +61,13 @@
                         </small>
                     </div>
                     
-                    <!--Area & Fiscal number-->
+                    <!--Fiscal number-->
+                    <div class="form-group">
+                        <label for="fiscalNum">Inscrição Fiscal</label>
+                        <input type="number" class="form-control" id="fiscalNum" name="realty[fiscalNum]" min="1" step="1" value="<%= realty.fiscalNum %>">
+                    </div>
+                    
+                    <!--Area & SPU-->
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -71,13 +77,13 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="fiscalNum">Inscrição Fiscal</label>
-                                <input type="number" class="form-control" id="fiscalNum" name="realty[fiscalNum]" min="1" step="1" value="<%= realty.fiscalNum %>">
+                                <label for="spuValue">Valor do SPU <small>(R$)</small></label>
+                                <input type="number" class="form-control" id="spuValue" name="realty[spuValue]" min="0" step="0.01" value="<%= realty.spuValue %>">
                             </div>
                         </div>
                     </div>
                     
-                    <!--Condominium & IPTU Value-->
+                    <!--Condominium & IPTU-->
                     <div class="form-row">
                         <div class="col-lg-6">
                             <div class="form-group">

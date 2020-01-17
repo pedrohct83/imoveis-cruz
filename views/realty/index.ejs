@@ -39,7 +39,8 @@
                         <tr>
                             <th scope="col" class="border-0">Imóvel</th>
                             <th scope="col" class="border-0">Locação</th>
-                            <th scope="col" class="border-0">Condomínio / IPTU</th>
+                            <th scope="col" class="border-0">Condomínio</th>
+                            <th scope="col" class="border-0">IPTU/SPU (anual)</th>
                             
                             <!--Show Ações table head item if user is admin-->
                             <% if (currentUser.isAdmin) { %>
@@ -54,7 +55,7 @@
                             <!--Color table rows according to realty status-->
                             <% var isRented = (realty.isRented === "Sim") ? "rented" : "available" %>
                             <tr class="<%= isRented %>">
-                                <!--Realty info-->
+                                <!--Realty-->
                                 <td class="align-middle">
                                     <a href="/imoveis/<%= realty._id %>" title="Acessar página do imóvel">
                                         <%= realty.name %>    
@@ -67,7 +68,7 @@
                                     <% } %>
                                 </td>
                                 
-                                <!--Rent info-->
+                                <!--Rent-->
                                 <td class="align-middle">
                                     <%= realty.tenant.name %>
                                     <% if(realty.rentValue > 0) { %>
@@ -77,13 +78,20 @@
                                     <% } %>
                                 </td>
                                 
-                                <!--Condominium and IPTU infos-->
+                                <!--Condominium-->
                                 <td class="align-middle">
                                     <% if(realty.condominiumValue > 0) { %>
-                                        <span class="d-block"><span class="text-muted">Condomínio:</span> R$<%= realty.condominiumValue %></span>
+                                        <span class="d-block">R$<%= realty.condominiumValue %></span>
                                     <% } %>
+                                </td>
+                                
+                                <!--IPTU and SPU-->
+                                <td class="align-middle">
                                     <% if(realty.iptuValue > 0) { %>
                                         <span class="d-block"><span class="text-muted">IPTU:</span> R$<%= realty.iptuValue %></span>
+                                    <% } %>
+                                    <% if(realty.spuValue > 0) { %>
+                                        <span class="d-block"><span class="text-muted">SPU:</span> R$<%= realty.spuValue %></span>
                                     <% } %>
                                 </td>
                                 
